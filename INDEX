@@ -1,0 +1,47 @@
+agesurv                 Age-Based Survival Estimators
+agesurvcl               Age-Based Survival and Mortality Estimators for Cluster Sampling
+alkD				Sample Size Determination for Age Subsampling Using the D statistic
+alkdata			Age-Length Key for Gulf of Hauraki snapper, 1992-1993
+alkprop			Age-Length Key Proportions-At-Age
+alkss				Sample Size Determination for Age Subsampling
+baglimit			Bag Limit Analysis using Marine Recreational Fisheries Statistics Survey Data
+bheq1				Length-based Beverton-Holt Equilibrium Z Estimator
+bheq2				Length-based Beverton-Holt Equilibrium Z Estimator with Bias-Correction
+bhnoneq			Length-based Beverton-Holt Nonequilibrium Z Estimator
+buffalo			Life Table Data for African Buffalo
+catch				Number of cod captured in 10 standardized bottom trawl hauls from Massachusetts, 1985
+catchpertrip		Catch-Per-Trip Analysis using Marine Recreational Fisheries Statistics Survey Data 
+catchseries			Summarize Catch Estimates from the Marine Recreational Fisheries Statistics Survey
+clusmean			Estimation of Mean Population Attribute and Effective Sample Size When Samples Are Collected Using Fisheries Gears
+codcluslen			Lengths of Atlantic cod caught during Massachusetts Division of Marine Fisheries bottom trawl survey, spring 1985
+codlengths			Individual lengths of Atlantic cod from cooperative trawling in winter of 2000, Massachusetts Bay
+codstrcluslen		Lengths of Atlantic cod caught during Massachusetts Division of Marine Fisheries stratified random bottom trawl survey, spring 1985
+convmort			Conversion of Fishing Mortality and Exploitation Rates
+darter			Catch Removal Data For Fantail Darter
+deltadist			Delta Distribution Mean and Variance Estimators
+deplet			Catch-Effort Depletion Methods For a Closed Population
+depletM			Catch-Effort Depletion Methods Incorporating Natural Mortality
+extractMRFSS		Extract Marine Recreational Fisheries Statistics Survey (MRFSS) Data
+Gerking			Mark-Recapture Data for Sunfish in an Indiana Lake
+goosefish			Mean Length and Numbers of Lengths for Northern Goosefish, 1963-2002
+haddock			Biological data for haddock (Melanogrammus aeglefinus)
+herring			Total length data for alewive (Alosa pseudoharengus) from Massachusetts waters
+Jensen			Age Frequency Data for Lake Whitefish By Individual Haul
+Kimura			Length and Age Data For Male and Female Pacific Hake
+lengthfreq			Calculate Length Frequencies from Marine Recreational Fisheries Statistics Survey Data
+lfclus			Statistical Comparison of Length Frequencies from Simple Random Cluster Sampling
+lfstrclus			Statistical Comparison of Length Frequencies from Stratified Random Cluster Sampling		
+lifetable			Life Table Construction
+M.empirical			Estimation of Natural Mortality Rates from Life History Parameters
+mrN.single			Estimators of Abundance for a Single Mark-recapture Experiment
+opt_slot			Optimum Slot and Trophy Size Limits for Recreational Fisheries
+opt_trophy			Optimum Trophy Size Limits for Recreational Fisheries
+powertrend			Power Analysis For Detecting Trends
+pstrat			Post-stratification of Marine Recreational Fisheries Statistics Survey Estimates of Catch
+rockbass			Age Frequency Data for Rock Bass
+sbpr				Spawning Stock Biomass-Per-Recruit Analysis
+schnabel			Population Size Estimates from Repeated Mark-Recapture Experiments
+Shepherd			Seasonal Length Frequencies for Raja clavata
+slca				A Weakly Parametric Method for the Analysis of Length Composition Data
+vblrt				Likelihood Ratio Tests for Comparing Two von Bertalanffy Growth Curves
+ypr				Yield-Per-Recruit Analysis
