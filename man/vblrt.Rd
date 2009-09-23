@@ -6,7 +6,7 @@
 }
 \usage{
 vblrt(len = NULL, age = NULL, group = NULL, error = 1,
- select = 1, Linf = NULL, K = NULL, t0 = NULL)
+ select = 1, Linf = NULL, K = NULL, t0 = NULL,control=list(maxiter=10000,minFactor=1/1024,tol=1e-5))
 }
 \arguments{
   \item{len}{the vector of lengths of individual fish.}
@@ -21,6 +21,7 @@ lengths at age; 3=var of \emph{lij} varies with age. See methods a-c in Kimura (
  \item{Linf}{if \emph{select}=2, the starting value for \emph{L-infinity} of the von Bertalanffy equation.}
  \item{K}{if \emph{select}=2, the starting value for \emph{K} of the von Bertalanffy equation.}
  \item{t0}{if \emph{select}=2, the starting value for \emph{t0} of the von Bertalanffy equation.}
+ \item{control}{see function \emph{nls}.}
 }
 \details{
   Following Kimura (1980), the general model (6 parameters; one \emph{L-infinity}, \emph{K}, and \emph{t0} for each group) and four sub models are 

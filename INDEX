@@ -25,6 +25,7 @@ catchpertrip            Catch-Per-Trip Analysis for Marine Recreational
                         Fisheries Statistics Survey Data
 catchseries             Summary of Catch Estimates from the Marine
                         Recreational Fisheries Statistics Survey
+catchsurvey             Catch-Survey Analysis
 clusmean                Estimation of Population Attributes and
                         Effective Sample Size for Fishes Collected Via
                         Cluster Sampling
@@ -47,7 +48,6 @@ deplet                  Catch-Effort Depletion Methods For a Closed
                         Population
 extractMRFSS            Extraction of Marine Recreational Fisheries
                         Statistics Survey Data from SAS Transport Files
-fishmethods-package     Fisheries Methods and Models in R
 Gerking                 Mark-Recapture Data for Sunfish in an Indiana
                         Lake
 goosefish               Mean Length and Numbers of Lengths for Northern
@@ -81,6 +81,7 @@ M.empirical             Estimation of Natural Mortality Rates from Life
                         History Parameters
 mrN.single              Estimate of Population Size from a Single
                         Mark-Recapture Experiment
+nshrimp                 Data for Gulf of Maine northern shrimp
 opt_slot                Optimum Slot and Trophy Size Limits for
                         Recreational Fisheries
 opt_trophy              Optimum Trophy Size Limits for Recreational

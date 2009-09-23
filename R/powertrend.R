@@ -20,7 +20,7 @@ powertrend<-function(trend=1,A1=NULL,PSE=NULL,pserel=1,maxyrs=3,pR=100,step=5,al
            ifelse(pserel==2,((PSE*A1)^2)*(1+r*(nyr-1)*(1+(r/6)*(2*nyr-1))),
             ((PSE*A1)^2)*(1+(3*r/2)*(nyr-1)*(1+(r/3)*(2*nyr-1)+(r^2/6)*nyr*(nyr-1)))))           
         }
-        if (trend==2){ 
+        if (trend==2){
             r<-((R/100+1)^(1/(nyr-1)))-1
             b<-log(1+r)
             if(pserel==1){

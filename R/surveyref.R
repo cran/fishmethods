@@ -47,23 +47,14 @@ testyear[,1]<-round(testyear[,1],2)
 qdist<-as.data.frame(newq)[,1]
 qdist<-round(qdist,2)
 
-comb<-cbind(testyear,rep(qdist,nyr))
-joint<-(as.data.frame(table(comb[,1],comb[,2])))
-joint$prob<-joint$Freq/(nboot*nyr)
-names(joint)<-c("value","q","f","p")
-
-joint$value<-as.numeric(as.character(joint$value))
-joint$q<-as.numeric(as.character(joint$q))
-joint<-joint[order(joint$q,joint$value),]
-
- getqs<-sort(unique(joint$q))
- lq<-length(getqs)
- probs<-NULL
-   for(q in 1:lq){
-        dq<-getqs[q]
-        probs[q]<-sum(joint[joint$q<=dq & joint$value<dq,4])
-     }
-  probs<-cbind(getqs,probs)
+ref<-quantile(qdist,c(seq(0,1,0.05)))
+probs<-NULL
+loopcnt<-length(as.vector(ref))
+  for(cl in 1:loopcnt){
+   probs[cl]<-length(testyear[testyear[,1]<ref[cl],])/(nboot*length(compyear))
+  }
+  prob<-data.frame(confidence=c(sort(seq(0,100,5),decreasing=TRUE)),prob=probs)
+  prob<-prob[order(prob[,1]),]
 	ans<-NULL
       ans$comp_refpt<-as.data.frame(cbind(qvalue,mean(qdist)))
 		names(ans$comp_refpt)<-c("orig_q","boot_mean_q")
@@ -73,8 +64,8 @@ joint<-joint[order(joint$q,joint$value),]
 	    names(ans$emp_dist_index)<-c("value","freq")
   	ans$emp_dist_refpt<-as.data.frame(table(qdist))
 	    names(ans$emp_dist_refpt)<-c("value","freq")
-      ans$prob_index<-as.data.frame(probs)
-	    names(ans$prob_index)<-c("refpt","prob")
+      ans$prob_index<-prob
       if(allboots==TRUE) ans$boot_runs<-runs
       return(ans)
 } #end function
+

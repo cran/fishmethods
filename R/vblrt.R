@@ -1,7 +1,6 @@
 
-#data<-read.csv("P:/Rwork/Book/Kimura.csv",header=T)
-
-vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t0=NULL){
+vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t0=NULL,
+                control=list(maxiter=10000,minFactor=1/1024,tol=1e-5)){
    if(is.null(len)) 
          stop ("len is missing") 
    if(is.null(age)) 
@@ -43,6 +42,7 @@ vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t
     }
     if(select==2){
          L1<-L2<-Lboth<-Linf; K1<-K2<-Kboth<-K;t01<-t02<-t0b<-t0
+         Ld<-L2-L1;Kd<-K2-K1;td<-t02-t01
       }
       if(error==1) x$wgt<-1
  	if(error==2){
@@ -62,23 +62,23 @@ vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t
         }
   	 Ho<-nls(len~(Linf+ls*cat)*(1-exp(-(K+ks*cat)*(age-(t0+ts*cat)))),data=x,       
         	 weights=wgt,start=list(Linf=L1,ls=Ld,K=K1,ks=Kd,t0=t01,ts=td),
-             control=list(maxiter = 1000000))
+             control=control)
              resid0<-residuals(Ho)
  	 H1<-nls(len~Linf*(1-exp(-(K+ks*cat)*(age-(t0+ts*cat)))),data=x,        
 		weights=wgt,start=list(Linf=Lboth,K=K1,ks=Kd,t0=t01,ts=td),
-            control=list(maxiter = 1000000))
+            control=control)
 	    resid1<-residuals(H1)  
  	 H2<-nls(len~(Linf+ls*cat)*(1-exp(-K*(age-(t0+ts*cat)))),data=x,       
 		weights=wgt,start=list(Linf=L1,ls=Ld,K=Kboth,t0=t01,ts=td),
-             control=list(maxiter = 1000000))
+             control=control)
          resid2<-residuals(H2)
     	 H3<-nls(len~(Linf+ls*cat)*(1-exp(-(K+ks*cat)*(age-t0))),data=x,       
          	weights=wgt,start=list(Linf=L1,ls=Ld,K=K1,ks=Kd,t0=t0b),
-             control=list(maxiter = 1000000))
+             control=control)
          resid3<-residuals(H3)
   	 H4<-nls(len~Linf*(1-exp(-K*(age-t0))),data=x ,      
        	  weights=wgt,start=list(Linf=Lboth,K=Kboth,t0=t0b),
-              control=list(maxiter = 1000000))
+              control=control)
          resid4<-residuals(H4)
   	 RSS<-c(sum(residuals(Ho)^2),sum(residuals(H1)^2),sum(residuals(H2)^2),
              sum(residuals(H3)^2),sum(residuals(H4)^2))
@@ -101,5 +101,4 @@ vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t
       names(nlsout)<-c("results",c(paste("model",labs)),"rss","residuals")
       return(nlsout)
 }
-
 

@@ -29,8 +29,9 @@ generate the probability distribution that the abundance index value for a given
 lower quantile (reference point).  The procedure is : 1) add to the original fitted time series residuals randomly selected
  with replacement from the Pennington model fit, 2) repeat this \code{nboot} times to create new time series, 
 3) fit the Pennington model to each new time series using the original theta estimate to get \code{nboot} replicates
- of new fitted time series, 4) determine the lower quantile for each new fitted time 
-series and 5) calculate and integrate the joint probability density between the selected index year and lower quantile.
+ of new fitted time series, and 4) determine the lower quantile for each new fitted time 
+series.  A probability profile specifying the probability that the selected index value is less than the quantile reference
+ point for various decision confidence levels is calculated following Helser et al. (2002).
 
 If comparisons between the current year's index and the reference point will be made year-after-year, Helser and Hayes
  (1995) recommend using a fixed set of years to select the lower quantile.  This procedure will avoid a change in 
@@ -40,12 +41,15 @@ accomplish this.
 \value{list containing the lower quantile of the original fitted time series and the mean quantile of the
 fitted bootstrap replicates (\code{comp_refpt}),  the original fitted time series values versus the mean of the fitted
  bootstrap time series values(\code{comp_fitted}), the empirical distribution of the selected index (\code{emp_dist_index}),
- the empirical distribution of the lower quantile (\code{emp_dist_refpt}), the probability distribution that the index
- value lies below the reference point (\code{prob_index}), and, if argument \code{allboots} is TRUE, the fitted values
+ the empirical distribution of the lower quantile (\code{emp_dist_refpt}), the probability that the index
+ value lies below the reference point for a given decision confidence level (\code{prob_index}), and, if argument \code{allboots} is TRUE, the fitted values
  of the bootstrap replicates (\code{boot_runs}).
 }
 \references{Helser, T. E. and D. B. Hayes. 1995.  Providing quantitative management advice from stock abundance 
-indices based on research surveys. Fishery Bulletin 93: 290-298.}
+indices based on research surveys. Fishery Bulletin 93: 290-298.
+
+Hesler, T. E., A. Sharov, and D. M. Kahn. 2002. A stochastic decision-based approach to assessing the status of the 
+  Delaware Bay blue crab stock. American Fisheries Society Symposium 27: 63-82.}
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \seealso{\code{\link{surveyfit}}} 
 \examples{
