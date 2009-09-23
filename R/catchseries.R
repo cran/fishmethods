@@ -18,6 +18,8 @@ mode=NULL, bymode=0, area=NULL, byarea=0, styr=NULL, endyr=NULL){
         dest<-ifelse(substr(estdir,nchar(estdir),nchar(estdir)) %in% c("\\"),
           c(paste(estdir,"est",sep="")),c(paste(estdir,"\\est",sep="")))
      }
+if(!all(mode %in% c(3,4,5,6,7))) stop ("Mode not valid.")
+ if(!all(wave %in% c(1:6))) stop ("Wave not valid.")
 if(styr>=1982 & endyr<=2004){
         if(!all(mode %in% c(3,6,7))) stop("Mode not valid for years selected.")
         }
@@ -29,16 +31,19 @@ if(styr>=1982 & endyr>2004){
         }
 if(any(state==121) & any(state==122)) stop("Use state 12 to combine Florida coasts.")
 if(any(state==12) & any(state %in% c(121,122))) stop("You are mixing codes for Florida.")
-stcnt<-0;spcnt<-0;modecnt<-0;areacnt<-0
-outresults<-NULL
+if(!all(state %in% c(1,2,4,5,6,8,9,10,11,12,13,15:42,44:51,53:56,90,121,122))) stop ("Invalid state code.")
+outresults<-NULL;ST<-NULL;YEAR<-NULL;WAVE<-NULL;
+MODE_FX<-NULL;AREA_X<-NULL;SUB_REG<-NULL;TYPEA<-NULL;TYPEA.VAR<-NULL;
+TYPEB1<-NULL;TYPEB1.VAR<-NULL;HARVEST<-NULL;HARV.VAR<-NULL;RELEASED<-NULL;
+REL.VAR<-NULL;HARWGT<-NULL;HARWGT.VAR<-NULL;TOTAL<-NULL;TOT.VAR<-NULL;
   species<-as.character(species)
 	flag<-0
 	for(yr in styr:endyr){
  	   for (j in 1:as.numeric(length(wave))){ 
       	  wv<-wave[j]     
          	ests<-read.csv(paste(dest,yr,"/","AG_",yr,wv,".csv",sep="")) 
+          
           if(length(ests$SUB_REG)>0){
-            flag<-flag+1
          	ests$SPCODE<-as.character(ests$SP_CODE)
             if(any(state %in% c(121,122))){
                       d3<-ests[ests$ST!=12,]
@@ -49,13 +54,14 @@ outresults<-NULL
                       state1<-c(state1,12)
                   }
             if(!any(state %in% c(121,122))) state1<-state
-            if(any(ests$SP_CODE==species)) spcnt<-spcnt+1
-            if(any(ests$ST %in% c(state1))) stcnt<-stcnt+1
-            if(any(ests$MODE_FX %in% c(mode))) modecnt<-modecnt+1
-            if(any(ests$AREA_X %in% c(area))) areacnt<-areacnt+1
-                
+    
 	   	ests<-ests[ests$SP_CODE==species & ests$ST %in% c(state1) & ests$MODE_FX %in% c(mode) &
                       ests$AREA_X %in% c(area),]
+            if(length(ests$ST)>0){
+                 flag<-flag+1
+             }
+           if(length(ests$ST)==0|is.na(ests$ST[1])) next
+
             ests$TYPEA<-ests$ESTCLAIM
             ests$TYPEA.VAR<-ests$ESTCLVAR
             ests$TYPEB1<-ests$ESTHARV
@@ -77,10 +83,6 @@ outresults<-NULL
         }
      }
    }  
-if(spcnt==0) stop("Species not found")       
-if(stcnt==0) stop("State not found.")
-if(areacnt==0) stop("Area not found.")
-if(modecnt==0) stop("Mode not found.")
  
  if(flag>0){
    outresults<-outresults[!is.na(outresults$ST),]
@@ -132,7 +134,7 @@ if(modecnt==0) stop("Mode not found.")
           if(flag==0) return("No Data")
 }
 #dodo<-catchseries(estdir="C:/Temp",species=8835250101,
-#state=c(12,12),byst=0,mode=c(3,4,5,7),bymode=0,wave=c(1:6),bywave=0,area=c(1:7),byarea=0, styr=2007,endyr=2007)
+#state=c(25,36),byst=1,mode=c(3,4,5,7),bymode=1,wave=c(1:6),bywave=1,area=c(1:7),byarea=1, styr=2007,endyr=2007)
 
 
 

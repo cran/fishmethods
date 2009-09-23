@@ -65,9 +65,10 @@ for (i in 1:length(SPR$F))
    F<-F+incrF
   }
   SPR$PSPR<-SPR$SPR/SPR$SPR[1]*100
-
+   sss<-NULL
 ###Calculate F for percent MSP
    getF<-function(x){
+
    data$SB<-exp(-(data$partial*data$pF*x+data$pM*data$M))
    data$S<-cumprod(exp(-(data$partial*x+data$M)))
    data$psb[1]<-1

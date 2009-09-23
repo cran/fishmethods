@@ -15,7 +15,7 @@
 #############################################################################
 
 extractMRFSS<-function(indir=NULL,outdir=NULL,type=NULL,state=NULL,styr=NULL,endyr=NULL){
-    library(foreign)
+    require(foreign)
     if(is.null(indir)) stop("Need directory location for .xpt files.")
     if(is.null(styr)) stop("Starting year is missing.")
     if(is.null(endyr)) stop("Ending year is missing.")

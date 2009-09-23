@@ -10,6 +10,7 @@
 #
 #############################################################################
 
+
 catchpertrip<-function(intdir=NULL, estdir=NULL,species=NULL, state=NULL, mode=NULL, wave=NULL, styr=NULL, endyr=NULL){
     if(is.null(intdir)) stop("Need main directory location of intercept files.")
     if(is.null(estdir)) stop("Need main directory location of catch and effort files.")
@@ -38,10 +39,10 @@ catchpertrip<-function(intdir=NULL, estdir=NULL,species=NULL, state=NULL, mode=N
           c(paste(estdir,"est",sep="")),c(paste(estdir,"\\est",sep="")))
      }
  if(!all(mode %in% c(3,4,5,6,7))) stop ("Mode not valid.")
-
+ if(!all(wave %in% c(1:6))) stop ("Wave not valid.")
 if(any(state==121) & any(state==122)) stop("Use state 12 to combine Florida coasts.")
 if(any(state==12) & any(state %in% c(121,122))) stop("You are mixing codes for Florida.")
-
+if(!all(state %in% c(1,2,4,5,6,8,9,10,11,12,13,15:42,44:51,53:56,90,121,122))) stop ("Invalid state code.")
 if(styr>=1982 & endyr<=2004){
    if(!any(state %in% c(1,12,13,22,28,37,45,121,122)) & any(mode %in% c(4,5)))
        warning("Mode codes 4 or 5 not available for a state during the selected years.")
@@ -50,7 +51,8 @@ if(styr>=2005 | endyr>=2005){
    if(any(mode %in% c(6)))
      warning ("Mode code 6 for combined party/charter boats not available after 2005.")
   }
-
+ID_CODE<-NULL;FSHINSP<-NULL;ST<-NULL;LEADER<-NULL;NUM_FISH<-NULL;
+MODE_FX<-NULL;NUMRTRIP<-NULL
   species<-as.character(species)
 	flag<-0
 	for(yr in styr:endyr){
@@ -59,10 +61,11 @@ if(styr>=2005 | endyr>=2005){
               t3<-read.csv(paste(din,yr,"/","I3_",yr,wv,".csv",sep=""))
               t3$ID_CODE<-as.character(t3$ID_CODE) 
               t3$SP_CODE<-as.character(t3$SP_CODE) 
-if(yr==1992 & wv==1){
+     
+   if(yr==1992 & wv==1){
           t3$WAVE<-ifelse(t3$SUB_REG>=6 & t3$MONTH==1,1.1,
 	          ifelse(t3$SUB_REG>=6 & t3$MONTH==2,1.2,t3$WAVE))
-          t2$del<-ifelse(t3$SUB_REG>=6 & t3$MONTH>2,1,0)
+          t3$del<-ifelse(t3$SUB_REG>=6 & t3$MONTH>2,1,0)
           t3<-t3[t3$del==0,]
         }
        if(yr==1988){
@@ -108,7 +111,7 @@ if(yr==1992 & wv==1){
                       state1<-c(state1,12)
                   }
             if(!any(state %in% c(121,122))) state1<-state
-        	   t3<-t3[t3$SP_CODE==species & t3$ST %in% c(state1) & 
+        	  t3<-t3[t3$SP_CODE==species & t3$ST %in% c(state1) & 
               t3$MODE_FX %in% c(mode) & t3$AREA_X %in% c(1:5),]
               t3$cnt<-ifelse(is.na(t3$LNGTH),NA,1)
               if(length(t3$ID_CODE>0)){	
@@ -119,12 +122,19 @@ if(yr==1992 & wv==1){
               names(t3)<-c("ID_CODE","FSHINSP")
               }
         	  t3<-t3[duplicated(t3$ID_CODE)==FALSE,]
-              t3<-subset(t3,select=c(ID_CODE,FSHINSP))
-
-
-  t2<-read.csv(paste(din,yr,"/","I2_",yr,wv,".csv",sep=""))
+              t3<-subset(t3,select=c(ID_CODE,FSHINSP)) 
+       	 if(length(t3$ID_CODE)==0 | is.na(t3$ID_CODE[1])){
+               warning(paste("Species not found in wave ",wv))  
+               next
+              }
+              
+        t2<-read.csv(paste(din,yr,"/","I2_",yr,wv,".csv",sep=""))
 	  	  t2$ID_CODE<-as.character(t2$ID_CODE) 
         	  t2$SP_CODE<-as.character(t2$SP_CODE)
+         if(length(t2$ID_CODE)==0|is.na(t2$ID_CODE[1])){
+               warning(paste("Species not found in wave ",wv))  
+               next
+              }
 
      t4<-read.csv(paste(din,yr,"/","I4_",yr,wv,".csv",sep=""))
            t4$ID_CODE<-as.character(t4$ID_CODE) 
@@ -140,7 +150,8 @@ if(yr==1992 & wv==1){
                adj_t2$LEADER,adj_t2$ID_CODE)
            rm(t2,t4)
            t2<-adj_t2[order(adj_t2$ID_CODE),]
-
+         
+        
              if(yr==1992 & wv==1){
                  t2$WAVE<-ifelse(t2$SUB_REG>=6 & t2$MONTH==1,1.1,
 	                ifelse(t2$SUB_REG>=6 & t2$MONTH==2,1.2,t2$WAVE))
@@ -195,6 +206,10 @@ if(yr==1992 & wv==1){
                   t2$DISPO %in% c(1:7) &  t2$AREA_X %in% c(1:5),]
          t2<-t2[t2$CNTRBTRS!=0,]
           t2<-t2[duplicated(t2$ID_CODE,t2$DISPO)==FALSE,]
+             if(length(t2$ID_CODE)==0|is.na(t2$ID_CODE[1])){
+               warning(paste("Species not found in wave ",wv))  
+               next
+              }
            if(length(t2$ID_CODE)>0){
               t2<-aggregate(t2$NUM_FISH,list(t2$ID_CODE),sum,na.rm=T)
                names(t2)<-c("ID_CODE","NUM_FISH")
@@ -209,7 +224,7 @@ if(yr==1992 & wv==1){
                next
             }
       	
-        	    t1<-read.csv(paste(din,yr,"/","I1_",yr,wv,".csv",sep=""))
+        	t1<-read.csv(paste(din,yr,"/","I1_",yr,wv,".csv",sep=""))
             t1$ID_CODE<-as.character(t1$ID_CODE)
        if(yr==1992 & wv==1){
           t1$WAVE<-ifelse(t1$SUB_REG>=6 & t1$MONTH==1,1.1,
@@ -268,14 +283,14 @@ if(yr==1992 & wv==1){
               t1<-t1[duplicated(t1$ID_CODE)==FALSE,]
 
        if(length(m1$ID_CODE)>0){
-             alldata<-merge(m1,t1,by.x="ID_CODE",by.y="ID_CODE",all.x=T,all.y=T)
+          alldata<-merge(m1,t1,by.x="ID_CODE",by.y="ID_CODE",all.x=T,all.y=T)
           alldata<-alldata[duplicated(t1$ID_CODE)==FALSE,]
           alldata<-alldata[alldata$CNTRBTRS==1,]
 
             for(k in 1:ncol(alldata)){
                if(is.numeric(alldata[,k])) alldata[is.na(alldata[,k]),k] <- 0
               } 
-            alldata$CATCH<-alldata$SUM_FISH+alldata$FSHINSP
+            alldata$CATCH<-alldata$NUM_FISH+alldata$FSHINSP
             flag<-flag+1 
         	ti<-as.data.frame(table(alldata$ST,alldata$MODE_FX))
         	  names(ti)<-c("ST","MODE_FX","IF")     
@@ -329,9 +344,7 @@ if(is.null(outresults)) stop ("No data found.")
      return(outpt)
 }
 #dodo<-catchpertrip(intdir="C:/Temp",estdir="C:/Temp",species=8835250101,
-#state=c(122),mode=c(3),wave=c(1:6),styr=1992,endyr=1992)
-
-
+#state=c(36),mode=c(3,6,7),wave=c(1:6),styr=1992,endyr=1992)
 
 
 

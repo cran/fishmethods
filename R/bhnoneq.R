@@ -37,7 +37,7 @@ bhnoneq<-function(year=NULL,mlen=NULL,ss=NULL,K=NULL,Linf=NULL,Lc=NULL,nbreaks=N
   if(length(stZ)<nbreaks+1)  stop("The number of stZ values does not equal nbreak+1")
   if(length(stZ)>nbreaks+1)  stop("Too many stZ values for match to nbreak+1")
 
-
+  Lpred<-NULL;results<-NULL
  Zest<-function(y){
        Z<-y[1:as.numeric(nbreaks+1)]
        sigma<-y[length(y)]
@@ -87,7 +87,7 @@ bhnoneq<-function(year=NULL,mlen=NULL,ss=NULL,K=NULL,Linf=NULL,Lc=NULL,nbreaks=N
     LL<--nyr*log(sigma)-sum((mdata[,3]/(2*sigma^2))*(mdata[,2]-Lpred)^2,na.rm=T)
     LL*-1
  }
-   results<<-optim(parms, Zest, gr = NULL,control=list(maxit=1000000,abstol=0.0000001),hessian=TRUE)
+   results<-optim(parms, Zest, gr = NULL,control=list(maxit=1000000,abstol=0.0000001),hessian=TRUE)
    npar<-length(parms)
    AIC<-2*results$value+2*npar
    cov<-solve(results$hessian) 
@@ -109,3 +109,5 @@ bhnoneq<-function(year=NULL,mlen=NULL,ss=NULL,K=NULL,Linf=NULL,Lc=NULL,nbreaks=N
                "obs","pred")
    return(output)
 }
+
+

@@ -41,6 +41,12 @@ pstrat<-function(intdir=NULL, estdir=NULL,pstdir=NULL, state=NULL,year=NULL, stw
         all3<-NULL
         incadd<-NULL 
 if(!all(state %in% c(1,2,4,5,6,8,9,10,11,12,13,15:42,44:51,53:56,90))) stop ("Invalid state code.")
+ID_CODE<-NULL;FSHINSP<-NULL;ST<-NULL;YEAR<-NULL;NUM_FISH<-NULL;
+MODE_FX<-NULL;CNTRBTRS<-NULL;WAVE<-NULL;SUB_REG<-NULL;
+AREA_S<-NULL;AREA_X<-NULL;AREA<-NULL;NUM_TYP4<-NULL;HRSF<-NULL;ADD_HRS<-NULL;
+MONTH<-NULL;INT_NUM<-NULL;DIST<-NULL;SP_CODE<-NULL;DISPO<-NULL;WGT<-NULL;LNGTH<-NULL;
+
+
 #### Code equivalent to trpstrat.sas
        trp<-read.csv(paste(dest,year,"/","AG",year,".csv",sep="")) 
      trp<-trp[trp$POOL_FLG==1 & trp$OUTFLG==1 & trp$EX_FLG==1,] 
@@ -73,7 +79,7 @@ if(!all(state %in% c(1,2,4,5,6,8,9,10,11,12,13,15:42,44:51,53:56,90))) stop ("In
        t1$MONTH<-as.numeric(substr(t1$ID_CODE,start=10,stop=11))
        t1$INT_NUM<-as.numeric(substr(t1$ID_CODE,start=14,stop=16))
        t1$YEAR<-as.numeric(substr(t1$ID_CODE,start=6,stop=9))
-       if(nrow(t1)==0) next
+       if(nrow(t1)==0|is.na(t1$ID_CODE[1])) next
        #REDUCE
         
         t1<-merge(t1,psfactor,by.x=namep,by.y=namep,all.x=T,all.y=T)
@@ -262,7 +268,7 @@ if(!all(state %in% c(1,2,4,5,6,8,9,10,11,12,13,15:42,44:51,53:56,90))) stop ("In
        if(year==1992 & j==1){
           t3$WAVE<-ifelse(t3$SUB_REG>=6 & t3$MONTH==1,1.1,
 	          ifelse(t3$SUB_REG>=6 & t3$MONTH==2,1.2,t3$WAVE))
-          t2$del<-ifelse(t3$SUB_REG>=6 & t3$MONTH>2,1,0)
+          t3$del<-ifelse(t3$SUB_REG>=6 & t3$MONTH>2,1,0)
           t3<-t3[t3$del==0,]
         }
        if(year==1988){

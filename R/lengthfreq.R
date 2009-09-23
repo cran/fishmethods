@@ -27,6 +27,7 @@ lengthfreq<-function(intdir=NULL, estdir=NULL,species=NULL, state=NULL, wave=NUL
           c(paste(estdir,"est",sep="")),c(paste(estdir,"\\est",sep="")))
      }
  if(!all(mode %in% c(3,4,5,6,7))) stop ("Mode not valid.")
+ if(!all(wave %in% c(1:6))) stop ("Wave not valid.")
  if(!all(area %in% c(1,2,3,4,5,6,7))) stop ("Area not valid.")
  
 if(any(state==121) & any(state==122)) stop("Use state 12 to combine Florida coasts.")
@@ -40,9 +41,10 @@ if(styr>=2005 | endyr>=2005){
    if(any(mode %in% c(6)))
      warning ("Mode code 6 for combined party/charter boats not available after 2005.")
   }
-if(!all(state %in% c(1,2,4,5,6,8,9,10,11,12,13,15:42,44:51,53:56))) stop ("Invalid state code.")
+if(!all(state %in% c(1,2,4,5,6,8,9,10,11,12,13,15:42,44:51,53:56,90,121,122))) stop ("Invalid state code.")
 
-outresults<-NULL
+outresults<-NULL;ID_CODE<-NULL;LNGTH<-NULL;ST<-NULL;WAVE<-NULL;
+MODE_FX<-NULL;AREA_X<-NULL;SUB_REG<-NULL;ESTLAND<-NULL;
   species<-as.character(species)
 	flag<-0
 	for(yr in styr:endyr){
@@ -77,7 +79,7 @@ outresults<-NULL
           
               t3<-subset(t3,select=c(ID_CODE,LNGTH))	
 
-       	  if(length(t3$ID_CODE)==0){
+       	  if(length(t3$ID_CODE)==0|is.na(t3$ID_CODE[1])){
                warning(paste("Species not found in wave ",wv))  
                next
             }
@@ -140,7 +142,7 @@ outresults<-NULL
         	  t1<-t1[order(t1$ID_CODE),names(t1)!="NUM_FISH"]
               t1<-t1[duplicated(t1$ID_CODE)==FALSE,]
 
-             if(length(t1)==0) warning("State, mode or area not found." )
+             if(length(t1)==0|is.na(t1$ID_CODE[1])) warning("State, mode or area not found." )
    
        	  m1<-merge(t1,t3,by.x="ID_CODE",by.y="ID_CODE",sort=T,all.y=T)  
   
@@ -179,7 +181,6 @@ outresults<-NULL
                       ests$AREA_X %in% c(area),]
             ests$ESTLAND<-ests$ESTCLAIM+ests$ESTHARV
             ests<-subset(ests,select=c(ST,WAVE,MODE_FX,AREA_X,SUB_REG,ESTLAND))
-            totest<-sum(ests$ESTLAND)
             ffd<-merge(ests,lens,by.x=c("ST","MODE_FX","AREA_X","SUB_REG"),by.y=c("ST","MODE_FX","AREA_X","SUB_REG"),all.x=T,all.y=T)
             ffd<-ffd[!is.na(ffd$LNGTH),]
             ffd$NUMBER<-ifelse(is.nan(ffd$RELFREQ*ffd$ESTLAND)|is.na(ffd$RELFREQ*ffd$ESTLAND),0,ffd$RELFREQ*ffd$ESTLAND)
@@ -191,14 +192,12 @@ outresults<-NULL
   if(is.null(outresults)) stop ("No data found.")
             if(flag>0){
 		f1<-aggregate(outresults$NUMBER,list(outresults$LNGTH),sum)
-            f1$x<-(f1$x/sum(f1$x))*totest
-            f1$PERCENT<-round(f1$x/sum(f1$x)*100,2)
-		names(f1)<-c("INCH.GROUP","NUMBER","PERCENT") 
+            f1$x<-round(f1$x/sum(f1$x)*100,2)
+		names(f1)<-c("INCH.GROUP","PERCENT") 
             d1<-as.data.frame(as.factor(seq(min(as.numeric(as.character(f1$INCH.GROUP))),
                   max(as.numeric(as.character(f1$INCH.GROUP))),1)))
             names(d1)<-"INCH.GROUP"
             f1<-merge(f1,d1,by.x="INCH.GROUP",by.y="INCH.GROUP",all.x=T,all.y=T)
-            f1$NUMBER<-ifelse(is.na(f1$NUMBER),0,f1$NUMBER)
             f1$PERCENT<-ifelse(is.na(f1$PERCENT),0,f1$PERCENT)
             f1<-f1[order(as.numeric(as.character(f1$INCH.GROUP))),]
             details<-NULL
@@ -214,8 +213,8 @@ outresults<-NULL
           if(flag==0) return("No Data")
 }
 
-#dodo<-lengthfreq(intdir="C:/Temp",estdir="C:/Temp",species=8835430101,
-#state=c(25),mode=c(5),wave=c(4),area=c(1,2,3,4,5,7), styr=2007,
+#dodo<-lengthfreq(intdir="C:/Temp",estdir="C:/Temp",species=8835250101,
+#state=c(25),mode=c(3,4,5,7),wave=c(1:6),area=c(1:7), styr=2007,
 #endyr=2007,conveq=FALSE,parms=c(0,2))
 
 

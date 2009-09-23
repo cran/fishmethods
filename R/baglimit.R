@@ -27,7 +27,7 @@ baglimit<-function(intdir=NULL, estdir=NULL,species=NULL, state=NULL, mode=NULL,
           c(paste(estdir,"est",sep="")),c(paste(estdir,"\\est",sep="")))
      }
  if(!all(mode %in% c(3,4,5,6,7))) stop ("Mode not valid.")
-
+ if(!all(wave %in% c(1:6))) stop ("Wave not valid.")
 if(any(state==121) & any(state==122)) stop("Use state 12 to combine Florida coasts.")
 if(any(state==12) & any(state %in% c(121,122))) stop("You are mixing codes for Florida.")
 
@@ -39,8 +39,9 @@ if(styr>=2005 | endyr>=2005){
    if(any(mode %in% c(6)))
      warning ("Mode code 6 for combined party/charter boats not available after 2005.")
   }
-if(!all(state %in% c(1,2,4,5,6,8,9,10,11,12,13,15:42,44:51,53:56))) stop ("Invalid state code.")
-
+if(!all(state %in% c(1,2,4,5,6,8,9,10,11,12,13,15:42,44:51,53:56,90,121,122))) stop ("Invalid state code.")
+ID_CODE<-NULL;FSHINSP<-NULL;ST<-NULL;LEADER<-NULL;NUM_FISH<-NULL;
+MODE_FX<-NULL;CNTRBTRS<-NULL;CATCH<-NULL;NUMRTRIP<-NULL
 species<-as.character(species)
 	flag<-0;outresults<-NULL
 	for(yr in styr:endyr){
@@ -53,7 +54,7 @@ species<-as.character(species)
        if(yr==1992 & wv==1){
           t3$WAVE<-ifelse(t3$SUB_REG>=6 & t3$MONTH==1,1.1,
 	          ifelse(t3$SUB_REG>=6 & t3$MONTH==2,1.2,t3$WAVE))
-          t2$del<-ifelse(t3$SUB_REG>=6 & t3$MONTH>2,1,0)
+          t3$del<-ifelse(t3$SUB_REG>=6 & t3$MONTH>2,1,0)
           t3<-t3[t3$del==0,]
         }
        if(yr==1988){
@@ -109,12 +110,23 @@ species<-as.character(species)
               t3<-t3[,1:2]
               names(t3)<-c("ID_CODE","FSHINSP")
               }
-        	  t3<-t3[duplicated(t3$ID_CODE)==FALSE,]
+              t3<-t3[duplicated(t3$ID_CODE)==FALSE,]
               t3<-subset(t3,select=c(ID_CODE,FSHINSP))
+ 
+             if(length(t3$ID_CODE)==0|is.na(t3$ID_CODE[1])){
+               warning(paste("Species not found in wave ",wv))  
+               next
+            }
 
         	  t2<-read.csv(paste(din,yr,"/","I2_",yr,wv,".csv",sep=""))
 	  	  t2$ID_CODE<-as.character(t2$ID_CODE) 
         	  t2$SP_CODE<-as.character(t2$SP_CODE)
+ 
+            if(length(t2$ID_CODE)==0|is.na(t2$ID_CODE[1])){
+               warning(paste("Species not found in wave ",wv))  
+               next
+            }
+
 
      t4<-read.csv(paste(din,yr,"/","I4_",yr,wv,".csv",sep=""))
            t4$ID_CODE<-as.character(t4$ID_CODE) 
@@ -373,4 +385,6 @@ if(is.null(outresults)) stop ("No data found.")
              outpt$Details<-details
        return(outpt)
 }
+
+#baglimit(intdir="C:/Temp", estdir="C:/Temp",species=8835250101, state=36, mode=c(7), wave=c(8), styr=2007, endyr=2007,bag=c(5,10))
 

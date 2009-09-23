@@ -14,7 +14,7 @@ vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t
       cat<-as.integer(as.factor(group))-1 
      	x<-as.data.frame(cbind(len,age,cat))
       x<-x[!is.na(x$len) & !is.na(x$age) & !is.na(x$cat),]
-
+    wgt<-NULL
   if(select==1){ 
       m1xt<-NULL;m2xt<-NULL;mbxt<-NULL
       g1<-aggregate(x$len,list(x$cat,trunc(x$age)),mean)
