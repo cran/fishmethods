@@ -7,7 +7,7 @@
  to a survey series of catch per tow data 
 }
 \usage{
-surveyfit(year = NULL, index = NULL, logtrans = TRUE)
+surveyfit(year = NULL, index = NULL, logtrans = TRUE, graph = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -15,6 +15,9 @@ surveyfit(year = NULL, index = NULL, logtrans = TRUE)
   \item{index}{vector containing the time series of mean catch per tow data.}
   \item{logtrans}{a logical value indicating whether the natural log-transform should be applied to the mean catch per tow values.
        Default is TRUE.}
+ \item{graph}{a logical value indicating whether a graph of the observed and model fit
+             should be drawn. Default is TRUE.}
+
 }
 \details{
   Parameters for a first difference, moving average model of order 1 are estimated from the trawl time series using function \code{arima}.

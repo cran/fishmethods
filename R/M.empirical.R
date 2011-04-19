@@ -1,6 +1,6 @@
 
 M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,T=NULL,tmax=NULL,tm=NULL,GSI=NULL,
-      Wdry=NULL,Wwet=NULL, method=c(1,2,3,4,5,6,7,8)){
+      Wdry=NULL,Wwet=NULL,Bl=NULL, method=c(1,2,3,4,5,6,7,8,9)){
    if(any(method==1) & any(is.null(Linf),is.null(Kl),is.null(T)))
            stop("Method 1 requires Linf, Kl, and T")
     if(any(method==2) & any(is.null(Winf),is.null(Kw),is.null(T)))
@@ -17,7 +17,10 @@ M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,T=NULL,tmax=NULL,tm=NU
            stop("Method 7 requires Wdry")
     if(any(method==8) & is.null(Wwet))
            stop("Method 8 requires Wwet")
-     
+   if(any(method==9) & any(is.null(Linf),is.null(Kl),is.null(Bl)))
+           stop("Method 9 requires Linf, Kl, and Bl")
+
+
     n<-length(method)
     if(any(method==3)) n<-n+1
     out<-matrix(NA,n,1L)
@@ -71,9 +74,14 @@ M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,T=NULL,tmax=NULL,tm=NU
       out[cnt,1]<-round(3.0*(Wwet^-0.288),3)
       dimnames(out)[[1]][cnt]<-list("Lorenzen (1996)")
      }
+     if(any(method==9)){
+      cnt<-cnt+1
+      out[cnt,1]<-round(exp(0.55-1.61*log(Bl)+1.44*log(Linf)+log(Kl)),3)
+      dimnames(out)[[1]][cnt]<-list("Gislason et al. (2010)")
+     }
+
     return(out)
 }
-
 
    
 

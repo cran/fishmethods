@@ -1,4 +1,4 @@
-surveyfit<-function(year=NULL,index=NULL,logtrans=TRUE){
+surveyfit<-function(year=NULL,index=NULL,logtrans=TRUE,graph=TRUE){
 	if(length(year)!=length(index)) stop ("Lengths of year and index are different.")
 	if(any(is.na(index))) stop("Missing values are not allowed.")
 	if(logtrans==TRUE) logn<-log(index) else logn<-index
@@ -28,5 +28,11 @@ surveyfit<-function(year=NULL,index=NULL,logtrans=TRUE){
 	   ans$index<-as.data.frame(cbind(year,logn,pred))
 		names(ans$index)<-c("year","log_index","fitted")
          ans$ARIMA_output<-out
+    if(graph==TRUE){
+       plot(logn~year,ylab="loge(index): (o) observed, (-) predicted",xlab="Year")
+       lines(pred~year,col="black")
+
+     }
          return(ans)
 }#function end
+

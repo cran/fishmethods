@@ -1,10 +1,3 @@
-
-#age<-c(2,3,4,5,6,7)              
-#wgt<-c(0.0880,0.17,0.303,0.585,0.846,0.846)             #average catch weight at age
-#partial<-c(0.17,0.60,1,1,1,1)                                      #partial recruitment vector
-#M<-0.4                                             #natural mortality
-#maxF<-2							    #maximum F for analysis
-
 ypr<-function(age=NULL,wgt=NULL,partial=NULL,M=NULL,plus=FALSE,oldest=NULL,maxF=2,incrF=0.001){										          
 	if(is.null(age)) 
          stop ("age vectoris missing") 

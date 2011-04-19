@@ -6,7 +6,7 @@
 }
 \usage{
 powertrend(trend = 1, A1 = NULL, PSE = NULL, pserel = 1,
- maxyrs = 3, pR = 100, step = 5, alpha = 0.05, tail = 2)
+ maxyrs = 3, pR = 100, step = 5, alpha = 0.05, tail = 2, graph = TRUE)
 }
 
 \arguments{
@@ -20,6 +20,8 @@ powertrend(trend = 1, A1 = NULL, PSE = NULL, pserel = 1,
   \item{step}{the increment of the range of percent change to investigate. Default = 5.}
   \item{alpha}{the alpha level (Type I error) to use. Default = 0.05. }
   \item{tail}{type of tailed test: 1 = one-tailed, 2= two-tailed. Default = 2.}
+  \item{graph}{logical specifying whether a graph of power versus percent change
+               should be produced. Default is TRUE.}
 }
 
 \details{

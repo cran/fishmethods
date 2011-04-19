@@ -1,8 +1,9 @@
-powertrend<-function(trend=1,A1=NULL,PSE=NULL,pserel=1,maxyrs=3,pR=100,step=5,alpha=0.05,tail=2){
+powertrend<-function(trend=1,A1=NULL,PSE=NULL,pserel=1,maxyrs=3,pR=100,
+     step=5,alpha=0.05,tail=2,graph=TRUE){
     if(is.null(A1)) stop("Starting Abundance Required.")
     if(is.null(PSE)) stop("PSE Required.")
     if(pserel>3) stop("No such pserel.")
-    if(trend>2) stop("No such trend.")
+    if(trend>2|trend<1) stop("No such trend.")
     if(tail>2) stop("No such tailed test.")
 
    tlen<-length(seq(-100,pR,by=step))
@@ -50,6 +51,15 @@ powertrend<-function(trend=1,A1=NULL,PSE=NULL,pserel=1,maxyrs=3,pR=100,step=5,al
       results[place,5]<-tail;results[place,6]<-R;results[place,7]<-powert
       R<-R+step
    }
+  if(graph==TRUE){
+     labels<-paste("Trend: ",ifelse(trend==1,"Linear","Exponential"),
+                   " PSE: ",PSE," alpha: ",alpha," tail: ",tail,
+                   " pserel: ",pserel)
+     plot(results$power~results$R,ylim=c(0,1),type="l",main=labels,
+    xlim=c(min(results$R),max(results$R)),ylab="Power",
+     xlab=paste("Percent change over ",maxyrs," years"),cex.main=1)
+
+   }
    return(results)
-}
+} #end function
 
