@@ -17,7 +17,7 @@ lengths at age; 3=var of \emph{lij} varies with age. See methods a-c in Kimura (
      are calculated from the individual length-age observations.}
   \item{select}{the selection of starting values of \emph{L-infinity}, \emph{K}, and \emph{t0}. 1=automatic selection, 2=user-specified. If 
     \emph{select}=1, initial starting values of \emph{L-infinity}, \emph{K}, and \emph{t0} are calculated from Walford lines (Everhart et al. 1975), and ages represented as decimal values 
-    are truncated to the integer before linear regression is applied. If select=2, the user must specified the values of \emph{L-infinity}, \emph{K}, and \emph{t0}.  }
+    are truncated to the integer before linear regression is applied. If select=2, the user must specify the values of \emph{L-infinity}, \emph{K}, and \emph{t0}.  }
  \item{Linf}{if \emph{select}=2, the starting value for \emph{L-infinity} of the von Bertalanffy equation.}
  \item{K}{if \emph{select}=2, the starting value for \emph{K} of the von Bertalanffy equation.}
  \item{t0}{if \emph{select}=2, the starting value for \emph{t0} of the von Bertalanffy equation.}

@@ -3,7 +3,7 @@
 \title{Age-Independent Instantaneous Rates Model of Jiang et al. (2007) Incorporating Catch and Release Tag Returns }
 \description{
 The age-independent instantaneous rates model of Jiang et al. (2007) for estimating fishing and natural 
-mortality from catch-release tag returns is implemented assuming known values of initial tag loss (phi) and 
+mortality from catch-release tag returns is implemented assuming known values of initial tag survival (phi) and 
 reporting rate (lambda)
 }
 \usage{
@@ -22,8 +22,8 @@ upper=c(5,5,5),maxiter=10000)
 	The lower triangle (blank cells) may be filled with -1s as place holders.  Missing values in the upper triangle (release/recovery cells) are not allowed.}
   \item{hlambda}{vector of reporting rate estimates (lambda) for harvested fish. One value for each recovery year.}
   \item{rlambda}{vector of reporting rate estimates (lambda) for recaptured fish re-released with tag removed. One value for each recovery year.}
-  \item{hphi}{vector of initial tag loss estimates (phi) for harvested fish. One value for each recovery year.}
-  \item{rphi}{vector of initial tag loss estimates (phi) for recaptured fish re-released with tag removed 	fish. One value for each recovery year.}
+  \item{hphi}{vector of initial tag survival estimates (phi) for harvested fish. One value for each recovery year. 1 = no loss}
+  \item{rphi}{vector of initial tag survival estimates (phi) for recaptured fish re-released with tag removed fish. One value for each recovery year. 1 = no loss}
   \item{hmrate}{vector of hooking mortality rates. One value for each recovery year.}
   \item{Fyr}{vector of year values representing the beginning year of a period over which to estimate a constant fishing mortality rate
  (F). If estimation of F for each recovery year is desired, enter the year value for each year. The first year value must

@@ -8,7 +8,7 @@ irm_h<-function(relyrs=NULL,recapyrs=NULL,N=NULL,recapharv=NULL,lambda=NULL,phi=
     if(is.null(N)) stop("Ns are missing.")
     if(is.null(recapharv)) stop("Missing recovery matrix for harvested fish.")
     if(is.null(lambda)) stop("lambdas (reporting rates) for harvested fish) are missing.")
-    if(is.null(phi)) stop("hphi (initial tag loss rates) for harvested fish) are missing.")
+    if(is.null(phi)) stop("hphi (initial tag survival rates) for harvested fish) are missing.")
     if(is.null(Fyr)) stop("Year designations for fishing mortality estimates (Fyr) are missing.")
     if(is.null(Myr)) stop("Year designations for natural mortality estimates (Myr) are missing.")
     if(Myr[1]!=relyrs[1]|Myr[1]!=recapyrs[1]) stop("First year in Myr should be equal to the first year in relyrs and recapyrs.")

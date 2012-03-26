@@ -4,8 +4,6 @@
 #                           Fixed and Proportional Sampling
 #                 Quinn and Deriso (1999: pp. 308-309)
 ##############################################################################
-#allocate<-2					          # 1-proportional, 2-fixed
-#############################################################################
 
 alkss<-function(x,lss=NULL,cv=NULL,allocate=1){
       if(is.null(x)) 
@@ -21,7 +19,8 @@ alkss<-function(x,lss=NULL,cv=NULL,allocate=1){
 	thetala<-x                                     
 	for(i in 1:length(thetala[,1])){                                            
         for(j in 3:as.numeric(nages+2)){
-            thetala[i,j]<-thetala[i,j]/thetala$sumA[i]
+           if(thetala$sumA[i]>0) thetala[i,j]<-thetala[i,j]/thetala$sumA[i]
+           if(thetala$sumA[i]==0) thetala[i,j]<-0
         }
       }
 
@@ -39,6 +38,7 @@ alkss<-function(x,lss=NULL,cv=NULL,allocate=1){
         for(i in 1:length(var1[,1])){                                            
     		for(j in 3:as.numeric(nages+2)){
                 var1[i,j]<-var1[i,j]*(1-var1[i,j])*var1$alpha[i]
+
             }
         }
        Sa<-colSums(var1[,3:as.numeric(nages+2)])
@@ -69,6 +69,3 @@ alkss<-function(x,lss=NULL,cv=NULL,allocate=1){
 	names(SS)<-c("label","n")
       return(SS)
 }
-
-
-

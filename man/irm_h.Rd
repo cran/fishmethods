@@ -3,7 +3,7 @@
 \title{Age-Independent Instantaneous Rates Tag Return Model of Hoenig et al. (1998)}
 \description{
 The age-independent instantaneous rates model of Hoenig et al. (1998) for estimating fishing and natural 
-mortality from tag returns of harvested fish is implemented assuming known values of initial tag loss (phi) and 
+mortality from tag returns of harvested fish is implemented assuming known values of initial tag survival (phi) and 
 reporting rate (lambda)
 }
 \usage{
@@ -17,7 +17,7 @@ Fyr = NULL, Myr = NULL, initial = NULL, lower = c(0.0001,0.0001),upper = c(5,5),
   \item{recapharv}{matrix of the number of tag recoveries of harvested fish by release year (row) and recovery year (column). 
 	The lower triangle (blank cells) may be filled with -1s as place holders.  Missing values in the upper triangle (release/recovery cells) are not allowed.}
   \item{lambda}{vector of reporting rate estimates for harvested fish. One value for each recovery year.}
-  \item{phi}{vector of initial tag loss estimates (phi) for harvested fish. One value for each recovery year.}
+  \item{phi}{vector of initial tag survival estimates (phi) for harvested fish. One value for each recovery year. 1=no loss}
   \item{Fyr}{vector of year values representing the beginning year of a period over which to estimate a constant fishing mortality rate
  (F). If estimation of F for each recovery year is desired, enter the year value for each year. The first year value must
  be the start year for the recovery period.}

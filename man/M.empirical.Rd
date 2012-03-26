@@ -9,7 +9,7 @@ estimation of natural mortality (M).
 \usage{
 M.empirical(Linf = NULL, Winf = NULL, Kl = NULL, Kw = NULL,
  T = NULL, tmax = NULL, tm = NULL, GSI = NULL, Wdry = NULL,
- Wwet = NULL, Bl = NULL,method = c(1, 2, 3, 4, 5, 6, 7, 8, 9))
+ Wwet = NULL, Bl = NULL, method = c(1, 2, 3, 4, 5, 6, 7, 8, 9))
 }
 \arguments{
   \item{Linf}{Length-infinity value from a von Bertalanffy growth curve (total length-cm).}

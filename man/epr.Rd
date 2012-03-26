@@ -2,7 +2,7 @@
 \alias{epr}
 \title{Eggs-Per-Recruit Analysis}
 \description{
-  Eggs-per-recruit(SBPR) analysis is conducted following Gabriel et al. (1989) except fecundity-at-age is substituted for weight-at-age.  Reference points
+  Eggs-per-recruit(EPR) analysis is conducted following Gabriel et al. (1989) except fecundity-at-age is substituted for weight-at-age.  Reference points
 of F and EPR for percentage of maximum spawning potential are calculated.}
 \usage{
 epr(age = NULL, fecund = NULL, partial = NULL, pmat = pmat,

@@ -18,7 +18,9 @@ alkD<-function(x,lss=NULL, minss=NULL,maxss=NULL,sampint=NULL,allocate=1){
 	thetala<-x                                     
 	for(i in 1:length(thetala[,1])){                                            
         for(j in 3:as.numeric(nages+2)){
-            thetala[i,j]<-thetala[i,j]/thetala$sumA[i]
+           if(thetala$sumA[i]>0) thetala[i,j]<-thetala[i,j]/thetala$sumA[i]
+           if(thetala$sumA[i]==0) thetala[i,j]<-0
+
         }
       }
 
