@@ -114,7 +114,6 @@ deplet<-function(catch=NULL,effort=NULL,method=c("l","d","ml","hosc","hesc","hem
         Bout<-data.frame(k=NULL,N=NULL)
         mlb<-function(y){
           k<-y[1]  
-         
           Bdata$p<-1-exp(-k*Bdata$effort)
           Bdata$q<-1-Bdata$p
             for(i in 1:as.numeric(length(Bdata$catch))){
@@ -132,10 +131,15 @@ deplet<-function(catch=NULL,effort=NULL,method=c("l","d","ml","hosc","hesc","hem
        for(i in 1:nboot){
        newc<-rmultinom(1, Norig, c(dd$catch/Norig,1-(sum(dd$catch)/Norig)))
        Bdata<-data.frame(catch=newc[-length(newc)],effort=dd$effort)
-       upper<--log(0.0005)/max(Bdata$effort)
-       Kb<-optimize(mlb,lower=0,upper=upper,tol=0.0000000001)$minimum
-       Nb<-sum(Bdata$catch)/(1-Qb)
-       Bout[i,1]<-Kb;Bout[i,2]<-Nb
+       if(sum(Bdata$catch)>0){
+           upper<--log(0.0005)/max(Bdata$effort)
+           Kb<-optimize(mlb,lower=0,upper=upper,tol=0.0000000001)$minimum
+           Nb<-sum(Bdata$catch)/(1-Qb)
+           Bout[i,1]<-Kb;Bout[i,2]<-Nb
+        }
+         if(sum(Bdata$catch)==0){
+           Bout[i,1]<-0;Bout[i,2]<-0
+        }
        }
          sek<-sd(Bout[,1]);seN<-sd(Bout[,2])
          t<-qt(0.975,length(dd$catch)-2)
@@ -155,7 +159,6 @@ deplet<-function(catch=NULL,effort=NULL,method=c("l","d","ml","hosc","hesc","hem
               if(i>1)  dd$qp[i]<-dd$p[i]*prod(dd$q[1:i-1])
             }
           dd$pred<-Norig*dd$qp
-         
          ans$gof<-matrix(NA,2L,1L)
          ans$gof<-rbind(round(sum((dd$catch-dd$pred)^2/dd$pred),1), 
                    length(dd$catch)-2)
@@ -393,10 +396,12 @@ if(any(method=="wh")){
       resids<-NULL
       preds<-NULL
       lls<-NULL
+
       for(k in 1:endk){# limited to n-p 
             	if(k==1) ps<-T[nsam]/(nsam*N-sum(T[1:nsam-1]))  
             	if(k>=2) ps<-rep(T[nsam]/(nsam*N-sum(T[1:nsam-1])),k)
-			parms<-c(N,ps)              
+			parms<-c(N,ps) 
+           
       		model<-function(y){					
    			  N<-y[1]
   			  ps<-y[2:length(y)] 
@@ -408,11 +413,11 @@ if(any(method=="wh")){
 				      if(nc<k){
 					   if(nr==nc) pp[nr,nc]<-ps[nc]
 					   if(nr>nc) pp[nr,nc]<-1-ps[nc]
-             			}	
-          			   }
+             			 }	
+          	        }
        			}
 		pps<-apply(pp,1,prod,na.rm=T)
-            pcatch1<-N*pps
+          pcatch1<-N*pps
  		pT<-sum(pcatch1)
   		L1<-sum(log((seq(1,T[nsam],1)+N-T[nsam])/seq(1,T[nsam],1)))
              ratio<-NULL
@@ -428,9 +433,10 @@ if(any(method=="wh")){
   		G<-N*log(N)-T[nsam]*log(T[nsam])-(N-T[nsam])*dNTP-L1
 		G+H
 	   }   
-           	 lower<-c(sum(catch),rep(1e-15,k))                  
+           lower<-c(sum(catch),rep(1e-15,k))                  
 		 upper<-c(sum(catch)*20,rep(1,k))                 #upper limits of N and q
       		 j<-0
+            # try different starting value if model doesn't fit at first
       		 repeat{
           	  		results<-try(optim(parms, model, gr = NULL,lower=lower,upper=upper,method=c("L-BFGS-B"), 
           			control=list(maxit=100000),hessian=TRUE),TRUE)   
@@ -444,9 +450,9 @@ if(any(method=="wh")){
 
         if(class(results)!="try-error"){
             cov1<-solve(results$hessian)
-            if(any(diag(cov1)<0)) cov1<-array(NA,dim=c(length(results$par),
-                       length(results$par)))
-                SEs<-sqrt(diag(cov1))
+            # in case SE is estimated inadequately
+                var<-ifelse(diag(cov1)<0,NA,diag(cov1))
+                SEs<-sqrt(var)
                 ps<-results$par[2:length(results$par)]
                 pp<-NULL
                     pp<-array(NA,dim=c(nsam,length(ps)))
@@ -457,27 +463,29 @@ if(any(method=="wh")){
 					   if(nr==nc) pp[nr,nc]<-ps[nc]
 					   if(nr>nc) pp[nr,nc]<-1-ps[nc]
              			}	
-          			   }
+          		  }
        			}
 			pps<-apply(pp,1,prod,na.rm=T)
             	pcatch1<-results$par[1]*pps
-           		resid<-catch-pcatch1
-            	chi<-sum(((catch-pcatch1)^2)/pcatch1)
+           	resid<-catch-pcatch1
+			chi<-ifelse(is.nan(((catch-pcatch1)^2)/pcatch1),0,((catch-pcatch1)^2)/pcatch1)
+            	chi<-sum(chi)
             	df<-nsam-length(results$par)
             	prob<-1-pchisq(chi,df)
-                  aic<-2*results$value+2*length(results$par)
+              aic<-2*results$value+2*length(results$par)
           }
            if(class(results)=="try-error"){
-                  pcatch1<-rep(NA,1:nsam)
-           		resid<-rep(NA,1:nsam)
-            	chi<-NA
+              pcatch1<-rep(NA,nsam)
+           	resid<-rep(NA,nsam)
+            	 chi<-NA
             	df<-NA
             	prob<-NA
 			SEs<-rep(NA,length(parms))
            }
        # Create CAPTURE TABLE  
                    plabs<-paste("p",seq(1,length(ps),1),sep="")
-                   comb<-cbind(round(results$par,4),round(SEs,4))
+                   if(class(results)!="try-error") comb<-cbind(round(results$par,4),round(SEs,4))
+                   if(class(results)=="try-error") comb<-cbind(rep(NA,length(parms)),round(SEs,4))
                    	rownames(comb)<-c("N",plabs)
                    	comb<-as.data.frame(comb)
                   	names(comb)<-c("Estimate","SE")
@@ -490,7 +498,6 @@ if(any(method=="wh")){
              lls<-rbind(lls,aic)
           	 ans[[k]]<-comb  
       }#Kloop
-           
             prc<-as.matrix(cbind(catch,preds))
              klabs<-paste("k=",seq(1,endk,1),sep="")         
               colnames(prc)<-c("catch",klabs)
@@ -503,8 +510,7 @@ if(any(method=="wh")){
                 rownames(aicout)<-c(seq(1,endk,1))
             ans$aic<-aicout
             ans$predicted<-prc
-		ans$residuals<-res
-                  
+		ans$residuals<-res     
         }   
          wh.out<<-ans
   }

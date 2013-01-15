@@ -6,7 +6,7 @@
 }
 \usage{
 vblrt(len = NULL, age = NULL, group = NULL, error = 1,
- select = 1, Linf = NULL, K = NULL, t0 = NULL,control=list(maxiter=10000,minFactor=1/1024,tol=1e-5))
+ select = 1, Linf = NULL, K = NULL, t0 = NULL,plottype=0,control=list(maxiter=10000,minFactor=1/1024,tol=1e-5))
 }
 \arguments{
   \item{len}{the vector of lengths of individual fish.}
@@ -21,6 +21,7 @@ lengths at age; 3=var of \emph{lij} varies with age. See methods a-c in Kimura (
  \item{Linf}{if \emph{select}=2, the starting value for \emph{L-infinity} of the von Bertalanffy equation.}
  \item{K}{if \emph{select}=2, the starting value for \emph{K} of the von Bertalanffy equation.}
  \item{t0}{if \emph{select}=2, the starting value for \emph{t0} of the von Bertalanffy equation.}
+ \item{plottype}{the type of plot for each model. 1= observed versus predicted, 2= residuals. Default= 0 (no plot).}
  \item{control}{see function \emph{nls}.}
 }
 \details{
@@ -29,7 +30,18 @@ lengths at age; 3=var of \emph{lij} varies with age. See methods a-c in Kimura (
   likelihood ratios are calculated by using the residual sum-of-squares and are tested against chi-square statistics with 
   the appropriate degrees of freedom. Individual observations of lengths-at-age are required. If error variance assumptions 2 or 3, mean lengths
   and required statistics are calculated. A dummy vector called \emph{cat}, containing 0s for the first group with lower alpha-numeric order and 1s 
-  for the second group, is used in the estimation of group parameters.
+  for the second group, is used in the estimation of group parameters. To extract the VB parameters for each group from the Ho model:
+            # Group 1
+            Linf1<-outpt$'model Ho'$coefficients[1]
+		K1<-outpt$'model Ho'$coefficients[3]
+		t01<-outpt$'model Ho'$coefficients[5]
+
+            # Group 2
+		Linf2<-Linf1+outpt$'model Ho'$coefficients[2]
+		K2<-K1+outpt$'model Ho'$coefficients[4]
+		t02<-t01+outpt$'model Ho'$coefficients[6]
+	
+where \emph{outpt} is the output object. For models H1, H2, H3 and H4, the shared VB parameter for the second group will be the same as the first group. 
 }
 \value{
   \item{results }{list element with the likelihood ratio tests comparing von Bertalanffy models.}
@@ -53,7 +65,7 @@ Kimura, D. K. 1980. Likelihood methods for the von Bertalanffy growth curve. U. 
 ## one value is present for each age,the mean length will be calculated
 ## as the same value.
 data(Kimura)
-vblrt(len=Kimura$length,age=Kimura$age,group=Kimura$sex,error=2,select=1)
+vblrt(len=Kimura$length,age=Kimura$age,group=Kimura$sex,error=2,select=1,plottype=2)
 }
 \keyword{misc}
 \keyword{htest}

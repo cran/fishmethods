@@ -7,7 +7,7 @@ Fmax and F0.1 are calculated.
 }
 \usage{
 ypr(age = NULL, wgt = NULL, partial = NULL, M = NULL,
- plus = FALSE, oldest = NULL, maxF = 2, incrF = 0.001)
+ plus = FALSE, oldest = NULL, maxF = 2, incrF = 0.001, graph = TRUE)
 }
 \arguments{
   \item{age}{the vector of cohort ages, e.g. c(1,2,3,4,5). If the last age is a plus group, 
@@ -21,6 +21,7 @@ must correspond to the length of the age vector. }
   \item{oldest}{if plus=TRUE, a numeric value indicating the oldest age in the plus group. }
   \item{maxF}{the maximum value of F range over which YPR will be calculated. YPR is calculated for F = 0 to maxF.}
   \item{incrF}{ F increment for YPR calculation.}
+  \item{graph}{ logical indicating whether YPR versus F should be plotted. Default=TRUE.}
 }
 \details{
   Yield-per-recruit analysis is conducted following the modified Thompson-Bell algorithm.  Reference points
@@ -38,6 +39,6 @@ an example for Georges Bank haddock. North American Journal of Fisheries Managem
 \examples{
 data(haddock)
 ypr(age=haddock$age,wgt=haddock$ssbwgt,partial=haddock$partial,M=0.4,
-plus=TRUE,oldest=100,maxF=2,incrF=0.001)
+plus=TRUE,oldest=100,maxF=2,incrF=0.01)
 }
 \keyword{misc}

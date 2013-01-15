@@ -105,11 +105,14 @@ management impacts on striped bass fishing and natural mortality rates.  North A
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \seealso{\code{\link{irm_h}} \code{\link{tag_model_avg}}}
 \examples{
-# Data come from Appendix Table A2 and model structure from model (a) in Table 3.2 of Jiang (2005) 
-data(Jiang)
-model1<-irm_cr(relyrs = Jiang$relyrs, recapyrs = Jiang$recapyrs, N = Jiang$N, recapharv = Jiang$recapharv,
+## Data come from Appendix Table A2 and model structure from model (a) in Table 3.2 of Jiang (2005) 
+## Example takes a bit of time to run
+  \dontrun{
+  data(Jiang)
+   model1<-irm_cr(relyrs = Jiang$relyrs, recapyrs = Jiang$recapyrs, N = Jiang$N, recapharv = Jiang$recapharv,
      recaprel = Jiang$recaprel,hlambda = Jiang$hlambda, rlambda = Jiang$rlambda, hphi = Jiang$hphi, rphi = Jiang$rphi,
      hmrate = Jiang$hmrate, Fyr = Jiang$Fyr,FAyr = Jiang$FAyr, Myr = Jiang$Myr, initial = c(0.1,0.05,0.1), 
-	lower = c(0.0001,0.0001,0.0001), upper=c(5,5,5),maxiter=10000)
+     lower = c(0.0001,0.0001,0.0001), upper=c(5,5,5),maxiter=10000)
+  }
 }            
 \keyword{misc}

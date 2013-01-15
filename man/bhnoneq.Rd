@@ -8,7 +8,7 @@
 \usage{
 bhnoneq(year=NULL,mlen=NULL, ss=NULL, K = NULL, Linf = NULL, 
 Lc = NULL, nbreaks = NULL, styrs = NULL, stZ = NULL, 
-stsigma = NULL)
+stsigma = NULL, graph = TRUE)
 }
 \arguments{
  \item{year}{the vector of year values associated with mean length data. The number 
@@ -28,6 +28,7 @@ stsigma = NULL)
   \item{stZ}{the starting guesses of Z values enclosed within the concatentation function. There should be \emph{nbreaks+1} values provided. 
         }
 \item{stsigma}{the starting guess of sigma.} 
+\item{graph}{logical indicating whether the observed vs predicted and residual plots should be drawn. Default=TRUE.}
 }
 \details{
   The mean lengths for each year for lengths>=Lc. Following Gedamke and Hoening(2006), the model estimates \code{nbreaks+1} Z values, the year(s) in which the

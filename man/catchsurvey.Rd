@@ -7,7 +7,8 @@
  from catch and survey indices of relative abundance 
 }
 \usage{
-catchsurvey(year=NULL, catch=NULL, recr=NULL, post=NULL, M=NULL, T=NULL, phi=NULL, w=1, initial=c(NA,NA,NA), uprn=NA)}
+catchsurvey(year = NULL, catch = NULL, recr = NULL, post = NULL, M = NULL,
+ T = NULL, phi = NULL, w = 1, initial = c(NA,NA,NA),uprn = NA, graph = TRUE)}
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{year}{vector containing the time series of numeric year labels.}
@@ -21,6 +22,8 @@ catchsurvey(year=NULL, catch=NULL, recr=NULL, post=NULL, M=NULL, T=NULL, phi=NUL
   \item{initial}{initial recruit estimate,initial postrecruit estimate in year 1, and
          initial catchability estimate.}
   \item{uprn}{the upper bound for the recruit and postrecruit estimates.}
+  \item{graph}{logical indicating whether observed versus predicted recruit and post-recruit indices,
+    total abundance and fishing mortality should be plotted. Default=TRUE.}
 }
 \details{
  Details of the model are given in Collie and Kruse (1998).    
@@ -37,7 +40,11 @@ measured with error. Can J Fish Aquat Sci. 40:1871-1879.
 }
 \author{ Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \examples{
-data(nshrimp)
-catchsurvey(year=nshrimp$year,catch=nshrimp$C,recr=nshrimp$r,post=nshrimp$n,M=0.25,T=0.5,phi=0.9,w=1,initial=c(500,500,0.7),uprn=10000)}
+ ## Example take a bit of time to run
+  \dontrun{
+   data(nshrimp)
+   catchsurvey(year=nshrimp$year,catch=nshrimp$C,recr=nshrimp$r,post=nshrimp$n,M=0.25,T=0.5,phi=0.9,w=1,
+       initial=c(500,500,0.7),uprn=10000)}
+   }
 \keyword{misc}
 

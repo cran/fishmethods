@@ -8,7 +8,7 @@ abundance indices based on research surveys
 }
 \usage{
 surveyref(x = NULL, refpt = 25, compyear = NULL, reffix = FALSE,
- refrange = NULL, nboot = 1000, allboots = FALSE)
+ refrange = NULL, nboot = 500, allboots = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

@@ -1,4 +1,4 @@
-surveyref<-function(x=NULL,refpt=25,compyear=NULL,reffix=FALSE,refrange=NULL,nboot=1000,allboots=FALSE){
+surveyref<-function(x=NULL,refpt=25,compyear=NULL,reffix=FALSE,refrange=NULL,nboot=500,allboots=FALSE){
 	 if(is.null(x)) stop ("x must be specified.")
 	 if(is.null(x$ARIMA_output)) stop ("x is not a surveyfit output object.")
        if(is.null(refpt)) stop("refpt must be specified.")

@@ -1,5 +1,5 @@
 bhnoneq<-function(year=NULL,mlen=NULL,ss=NULL,K=NULL,Linf=NULL,Lc=NULL,nbreaks=NULL,styrs=NULL,
-    stZ=NULL, stsigma=NULL){
+    stZ=NULL, stsigma=NULL,graph=TRUE){
   if(is.null(mlen)) 
          stop ("mean length vector does not exist")
   if(is.null(year)) 
@@ -107,7 +107,16 @@ bhnoneq<-function(year=NULL,mlen=NULL,ss=NULL,K=NULL,Linf=NULL,Lc=NULL,nbreaks=N
    pred<-as.data.frame(cbind(x[,1],Lpred));names(pred)<-c("year","mlen")
    output<-list(output,x,pred);names(output)<-c("results",
                "obs","pred")
+   if(graph==TRUE){
+       par(mfrow=c(1,2))
+        plot(mdata[,2]~mdata[,1],xlab="Year",ylab="Mean Length")
+        lines(Lpred~mdata[,1],col="red")
+        plot(c(mdata[,2]-Lpred)~mdata[,1],xlab="Year",ylab="Residual")
+        abline(h=0)
+   }
    return(output)
 }
+
+
 
 

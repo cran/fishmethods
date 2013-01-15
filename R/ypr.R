@@ -1,4 +1,4 @@
-ypr<-function(age=NULL,wgt=NULL,partial=NULL,M=NULL,plus=FALSE,oldest=NULL,maxF=2,incrF=0.001){										          
+ypr<-function(age=NULL,wgt=NULL,partial=NULL,M=NULL,plus=FALSE,oldest=NULL,maxF=2,incrF=0.001,graph=TRUE){										          
 	if(is.null(age)) 
          stop ("age vectoris missing") 
   	if(is.null(age)) 
@@ -72,6 +72,8 @@ ypr<-function(age=NULL,wgt=NULL,partial=NULL,M=NULL,plus=FALSE,oldest=NULL,maxF=
          ans<-rbind(cbind(F10,Y10),cbind(Fmax,Ymax))   
          dimnames(ans)<-list(cbind("F0.10","Fmax"),c("F","Yield_Per_Recruit"))  
      outpt<-list(ans,YPR);names(outpt)<-c("Reference_Points","F_vs_YPR")
+    if(graph==TRUE) plot(YPR[,2]~YPR[,1],ylab="Yield-Per-Recruit",xlab="F",type="l")
     return(outpt)
 }
+
 

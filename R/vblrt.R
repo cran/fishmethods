@@ -1,5 +1,5 @@
 
-vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t0=NULL,
+vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t0=NULL,plottype=0,
                 control=list(maxiter=10000,minFactor=1/1024,tol=1e-5)){
    if(is.null(len)) 
          stop ("len is missing") 
@@ -10,7 +10,8 @@ vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t
    if(length(age)!=length(len)) stop ("Vectors of different lengths")
    if(nlevels(as.factor(group))>2) stop("Only two groups allowed in data")
    if(select==2 & (is.null(Linf)|is.null(K)|is.null(t0))) stop("User-specified values of Linf, K, and t0 are required")
-      cat<-as.integer(as.factor(group))-1 
+   
+   cat<-as.integer(as.factor(group))-1 
      	x<-as.data.frame(cbind(len,age,cat))
       x<-x[!is.na(x$len) & !is.na(x$age) & !is.na(x$cat),]
     wgt<-NULL
@@ -99,6 +100,143 @@ vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t
       nlsout<-list(compout,summary(Ho),summary(H1),summary(H2),summary(H3), summary(H4),
              rss,residuals_all)
       names(nlsout)<-c("results",c(paste("model",labs)),"rss","residuals")
-      return(nlsout)
+    # Plot observed versus predicted
+    if (plottype>0){
+      if (plottype==1){
+ 		par(mfrow=c(3,2))
+		plotages<-seq(min(x$age),max(x$age)+1,1)
+          # Ho model
+	     Linf1<-nlsout$'model Ho'$coefficients[1]
+		K1<-nlsout$'model Ho'$coefficients[3]
+		t01<-nlsout$'model Ho'$coefficients[5]
+		Linf2<-Linf1+nlsout$'model Ho'$coefficients[2]
+		K2<-K1+nlsout$'model Ho'$coefficients[4]
+		t02<-t01+nlsout$'model Ho'$coefficients[6]
+		plot(len~age,data=x[x$cat==0,],main=paste("Ho Model ",levels(group)[1],"=black ", levels(group)[2],"=red"),xlab="Age",ylab="Length",ylim=c(0,max(x$len)))
+		points(len~age,data=x[x$cat==1,],col="red")
+		lines(Linf1*(1-exp(-K1*(plotages-t01)))~plotages)
+		lines(Linf2*(1-exp(-K2*(plotages-t02)))~plotages,col="red")
+
+        # H1 model
+	     Linf1<-nlsout$'model H1'$coefficients[1]
+		K1<-nlsout$'model H1'$coefficients[2]
+		t01<-nlsout$'model H1'$coefficients[4]
+		Linf2<-Linf1
+		K2<-K1+nlsout$'model H1'$coefficients[3]
+		t02<-t01+nlsout$'model H1'$coefficients[5]
+		plot(len~age,data=x[x$cat==0,],main=paste("H1 Model ",levels(group)[1],"=black ", levels(group)[2],"=red"),xlab="Age",ylab="Length",ylim=c(0,max(x$len)))
+		points(len~age,data=x[x$cat==1,],col="red",xlab="Age",ylab="Length")
+		lines(Linf1*(1-exp(-K1*(plotages-t01)))~plotages)
+		lines(Linf2*(1-exp(-K2*(plotages-t02)))~plotages,col="red")
+    # H2 model
+	     Linf1<-nlsout$'model H2'$coefficients[1]
+		K1<-nlsout$'model H2'$coefficients[3]
+		t01<-nlsout$'model H2'$coefficients[4]
+		Linf2<-Linf1+nlsout$'model H2'$coefficients[2]
+		K2<-K1
+		t02<-t01+nlsout$'model H2'$coefficients[5]
+		plot(len~age,data=x[x$cat==0,],main=paste("H2 Model ",levels(group)[1],"=black ", levels(group)[2],"=red"),xlab="Age",ylab="Length",ylim=c(0,max(x$len)))
+		points(len~age,data=x[x$cat==1,],col="red")
+		lines(Linf1*(1-exp(-K1*(plotages-t01)))~plotages)
+		lines(Linf2*(1-exp(-K2*(plotages-t02)))~plotages,col="red")
+ # H3 model
+	     Linf1<-nlsout$'model H3'$coefficients[1]
+		K1<-nlsout$'model H3'$coefficients[3]
+		t01<-nlsout$'model H3'$coefficients[5]
+		Linf2<-Linf1+nlsout$'model H3'$coefficients[2]
+		K2<-K1+nlsout$'model H3'$coefficients[4]
+		t02<-t01
+	     plot(len~age,data=x[x$cat==0,],main=paste("H3 Model ",levels(group)[1],"=black ", levels(group)[2],"=red"),xlab="Age",ylab="Length",ylim=c(0,max(x$len)))
+		points(len~age,data=x[x$cat==1,],col="red")
+		lines(Linf1*(1-exp(-K1*(plotages-t01)))~plotages)
+		lines(Linf2*(1-exp(-K2*(plotages-t02)))~plotages,col="red")
+ # H4 model
+	     Linf1<-nlsout$'model H4'$coefficients[1]
+		K1<-nlsout$'model H4'$coefficients[2]
+		t01<-nlsout$'model H4'$coefficients[3]
+		Linf2<-Linf1
+		K2<-K1
+		t02<-t01
+	    plot(len~age,data=x[x$cat==0,],main=paste("H4 Model ",levels(group)[1],"=black ", levels(group)[2],"=red"),xlab="Age",ylab="Length",ylim=c(0,max(x$len)))
+	    points(len~age,data=x[x$cat==1,],col="red")
+		lines(Linf1*(1-exp(-K1*(plotages-t01)))~plotages)
+		lines(Linf2*(1-exp(-K2*(plotages-t02)))~plotages,col="red")
+      }
+   if (plottype==2){
+ 		par(mfrow=c(3,2))
+		plotages<-seq(min(x$age),max(x$age)+1,1)
+          # Ho model
+	     Linf1<-nlsout$'model Ho'$coefficients[1]
+		K1<-nlsout$'model Ho'$coefficients[3]
+		t01<-nlsout$'model Ho'$coefficients[5]
+		Linf2<-Linf1+nlsout$'model Ho'$coefficients[2]
+		K2<-K1+nlsout$'model Ho'$coefficients[4]
+		t02<-t01+nlsout$'model Ho'$coefficients[6]
+          obs1<-x[x$cat==0,]
+          obs2<-x[x$cat==1,]
+          res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
+          res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
+         	plot(res1~age,data=x[x$cat==0,],main=paste("Ho Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
+		points(res2~age,data=x[x$cat==1,],col="red")
+          abline(h=0)
+   # H1 model
+	     Linf1<-nlsout$'model H1'$coefficients[1]
+		K1<-nlsout$'model H1'$coefficients[2]
+		t01<-nlsout$'model H1'$coefficients[4]
+		Linf2<-Linf1
+		K2<-K1+nlsout$'model H1'$coefficients[3]
+		t02<-t01+nlsout$'model H1'$coefficients[5]
+		  obs1<-x[x$cat==0,]
+          obs2<-x[x$cat==1,]
+          res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
+          res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
+         	plot(res1~age,data=x[x$cat==0,],main=paste("H1 Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
+		points(res2~age,data=x[x$cat==1,],col="red")
+          abline(h=0)
+    # H2 model
+	     Linf1<-nlsout$'model H2'$coefficients[1]
+		K1<-nlsout$'model H2'$coefficients[3]
+		t01<-nlsout$'model H2'$coefficients[4]
+		Linf2<-Linf1+nlsout$'model H2'$coefficients[2]
+		K2<-K1
+		t02<-t01+nlsout$'model H2'$coefficients[5]
+		  obs1<-x[x$cat==0,]
+          obs2<-x[x$cat==1,]
+          res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
+          res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
+       	plot(res1~age,data=x[x$cat==0,],main=paste("H2 Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
+		points(res2~age,data=x[x$cat==1,],col="red")
+          abline(h=0)
+ # H3 model
+	     Linf1<-nlsout$'model H3'$coefficients[1]
+		K1<-nlsout$'model H3'$coefficients[3]
+		t01<-nlsout$'model H3'$coefficients[5]
+		Linf2<-Linf1+nlsout$'model H3'$coefficients[2]
+		K2<-K1+nlsout$'model H3'$coefficients[4]
+		t02<-t01
+		  obs1<-x[x$cat==0,]
+          obs2<-x[x$cat==1,]
+          res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
+          res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
+        	plot(res1~age,data=x[x$cat==0,],main=paste("H3 Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
+		points(res2~age,data=x[x$cat==1,],col="red")
+          abline(h=0)
+ # H4 model
+	     Linf1<-nlsout$'model H4'$coefficients[1]
+		K1<-nlsout$'model H4'$coefficients[2]
+		t01<-nlsout$'model H4'$coefficients[3]
+		Linf2<-Linf1
+		K2<-K1
+		t02<-t01
+		obs1<-x[x$cat==0,]
+          obs2<-x[x$cat==1,]
+          res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
+          res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
+        	plot(res1~age,data=x[x$cat==0,],main=paste("H4 Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
+		points(res2~age,data=x[x$cat==1,],col="red")
+          abline(h=0)
+      }
+   }
+  return(nlsout)
 }
 

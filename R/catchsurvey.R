@@ -1,5 +1,5 @@
 catchsurvey<-function(year=NULL, catch=NULL, recr=NULL, post=NULL, M=NULL,T=NULL,
-        phi=NULL, w=1, initial=c(NA,NA,NA),uprn=NA){
+        phi=NULL, w=1, initial=c(NA,NA,NA),uprn=NA,graph=TRUE){
       if(is.null(year)) stop("Missing year vector")
   	if(is.null(catch)) stop("Missing catch vector")
 	if(is.null(recr)) stop("Missing recruits vector")
@@ -48,5 +48,26 @@ catchsurvey<-function(year=NULL, catch=NULL, recr=NULL, post=NULL, M=NULL,T=NULL
       out3<-cbind(nest,N)
       output<-list(q,out2,out3)
       names(output)<-c("q","Estimates 1","Estimates 2")
+     if(graph==TRUE){
+       par(mfrow=c(2,2))
+       #Plot Observed versus Predicted Recruit Indices
+       plot(x=year,y=recr,col="black",ylab="Survey Index", xlab="Year",
+        main="Recruit (O=black, P=red)",ylim=c(0,max(recr,out2[,1])))
+        lines(x=year[1:yrs-1],y=out2[,1],col="red")
+
+		#Plot Observed versus Predicted Post-Recruit Indices
+		plot(x=year,y=post,col="black",ylab="Survey Index", xlab="Year",
+         main="Post-Recruit (O=black, P=red)",ylim=c(0,max(post,out3[,1])))
+		lines(x=year,y=out3[,1],col="red")
+
+		#Plot Total Abundance
+		plot(x=year[1:yrs-1],y=out2[,3],type="l",col="black",ylab="Numbers", xlab="Year",
+     	main="Stock Abundance",xlim=c(min(year),max(year)))
+
+		#Plot Fishing Mortality
+		plot(x=year[1:yrs-1],y=out2[,5],type="l",col="black",ylab="F", xlab="Year",
+           main="Fishing Mortality",xlim=c(min(year),max(year[1:yrs-1])))
+     }
+    
 return(output)
 }
