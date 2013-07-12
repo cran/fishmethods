@@ -6,7 +6,7 @@
 #                    Data on rock bass (C&R 1961)
 ###############################################################################
 
-agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc","he","cr")){
+agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc","he","cr","crcb")){
      if(is.null(age)) 
          stop ("vector does not exist")
       if(!is.numeric(age)) 
@@ -17,7 +17,7 @@ agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc"
       st_obj<-as.data.frame(table(age))
       st_obj[,1]<-as.numeric(levels(st_obj[,1])[as.integer(st_obj[,1])])
       if(is.null(last)) last<-max(age) else last<-last 
-      d<-subset(st_obj,st_obj[,1]>=full & st_obj[,1]<=last)
+      d<<-subset(st_obj,st_obj[,1]>=full & st_obj[,1]<=last)
         names(d)<-c("age","number")
       if(d[1,1]!=full) 
          stop ("Age specified as fully-recruited does not exist.")
@@ -84,8 +84,8 @@ agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc"
        Scr<-sum(j*d[,2])/(sum(d[,2])+sum(j*d[,2])-1)
        SEScr<-sqrt(Scr*(Scr-(sum(j*d[,2])-1)/(sum(d[,2])+
                  sum(j*d[,2])-2)))
- 	 Zcr<-round(-log(Scr),2)
-	 SEZcr<-round(sqrt(((1-Scr)^2)/(sum(d[,2])*Scr)),3)            
+ 	      Zcr<--log(Scr)
+	      SEZcr<-sqrt(((1-Scr)^2)/(sum(d[,2])*Scr))          
        if(any(estimate=="s")){
           results[cnt,1]<-"Chapman-Robson"
           results[cnt,2]<-"S"
@@ -101,8 +101,34 @@ agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc"
           cnt<-cnt+1
         }
     }
+     if(any(method=="crcb")){
+       j<-seq(0,length(d[,1])-1,1)
+       Scr<-sum(j*d[,2])/(sum(d[,2])+sum(j*d[,2])-1)
+       SEScr<-sqrt(Scr*(Scr-(sum(j*d[,2])-1)/(sum(d[,2])+
+            sum(j*d[,2])-2)))
+       X<-sum(j*d[,2])
+       n<-sum(d[,2])
+       bc<-((n-1)*(n-2))/(n*(n+X-1)*(X+1))
+       Zcr<--log(Scr)
+       pN<-d[1,2]*Scr^j
+       chi<-sum((d[,2]-pN)^2/pN)
+       chat<-sqrt(chi/(length(d[,2])-1))
+       SEZcr<-sqrt(((1-Scr)^2)/(sum(d[,2])*Scr))          
+       if(any(estimate=="s")){
+         results[cnt,1]<-"Chapman-Robson CB"
+         results[cnt,2]<-"S"
+         results[cnt,3]<-round(Scr,2)
+         results[cnt,4]<-round(SEScr,3)
+         cnt<-cnt+1
+       }
+       if(any(estimate=="z")){
+         results[cnt,1]<-"Chapman-Robson CB"
+         results[cnt,2]<-"Z"
+         results[cnt,3]<-round(-log(Scr)-bc,2)
+         results[cnt,4]<-round(SEZcr*chat,3)
+         cnt<-cnt+1
+       }
+     }
    out<-list(results,d);names(out)<-c("results","data")
    return(out)
 }
-
-

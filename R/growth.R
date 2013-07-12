@@ -268,6 +268,7 @@ if(unit==2){
       return(nlsout)
  }
 }# end of function
-#  growth(intype=1,unit=2,size=dd$size,age=dd$age,calctype=1,wgtby=1,s2=NULL,error=1,
+#  outs<-growth(intype=1,unit=2,size=dd$size,age=dd$age,calctype=1,wgtby=1,s2=NULL,error=1,
 #         Sinf=25,K=0.5,t0=0.1,B=3,graph=TRUE,
 #         control=list(maxiter=10000,minFactor=1/1024,tol=1e-5))
+# r-square 1-(deviance(outs$vout)/sum((rockfish$len-mean(rockfish$len))^2)) 

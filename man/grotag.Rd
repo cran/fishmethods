@@ -10,12 +10,12 @@ likelihood optimization performed by optim using the "L-BFGS-B" method.
 }
 \usage{
 grotag(L1 = NULL, L2 = NULL, T1 = NULL, T2 = NULL, alpha = NULL, beta = NULL, 
-       design = list(nu = 0, m = 0, p = 0, sea = 0), 
-       stvalue = list(sigma = 0.9, nu = 0.4, m = -1, p = 0.01, u = 0.4, w = 0.4), 
-       upper = list(sigma = 5, nu = 1, m = 2, p = 1, u = 1, w = 1), 
-       lower = list(sigma = 0, nu = 0, m = -2, p = 0, u = 0, w = 0), gestimate = TRUE, 
-       st.ga = NULL, st.gb = NULL, st.galow = NULL, st.gaup = NULL, st.gblow = NULL,
-       st.gbup = NULL, control = list(maxit = 10000))
+ design = list(nu = 0, m = 0, p = 0, sea = 0), 
+ stvalue = list(sigma = 0.9, nu = 0.4, m = -1, p = 0.01, u = 0.4, w = 0.4), 
+ upper = list(sigma = 5, nu = 1, m = 2, p = 1, u = 1, w = 1), 
+ lower = list(sigma = 0, nu = 0, m = -2, p = 0, u = 0, w = 0), gestimate = TRUE, 
+ st.ga = NULL, st.gb = NULL, st.galow = NULL, st.gaup = NULL, st.gblow = NULL,
+ st.gbup = NULL, control = list(maxit = 10000))
 }
 \arguments{
   \item{L1}{Vector of length at release of tagged fish}

@@ -39,8 +39,8 @@ an example for Georges Bank haddock. North American Journal of Fisheries Managem
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \seealso{\code{\link{ypr}} \code{\link{sbpr}}}
 \examples{
-data(menhaden)
+    data(menhaden)
 	epr(age=menhaden$age,fecund=menhaden$fecundity,partial=menhaden$partial,
-	pmat=menhaden$pmat,M=menhaden$M,pF=0,pM=0,MSP=40,plus=TRUE,maxF=4,incrF=0.001,oldest=10)
+	pmat=menhaden$pmat,M=menhaden$M,pF=0,pM=0,MSP=40,plus=TRUE,maxF=4,incrF=0.01,oldest=10)
 }
 \keyword{misc}

@@ -25,7 +25,9 @@ alk(age=NULL,size=NULL,binsize=NULL,type=1)
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \seealso{\code{\link{alkD}} \code{\link{alkss}} \code{\link{alkprop}}}
 \examples{
-data(striper) 
-alk(age=striper$age,size=striper$tl,binsize=50)
+ \dontrun{
+  data(striper) 
+  alk(age=striper$age,size=striper$tl,binsize=50)
+ }
 }
 \keyword{misc}

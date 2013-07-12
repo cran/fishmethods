@@ -6,9 +6,9 @@
   tests of symmetry.
 }
 \usage{
- compare2(readings, usecols = c(1,2), twovsone = TRUE, plot.summary = TRUE, barplot = TRUE, chi = TRUE,
-                    pool.criterion = 1, cont.cor = TRUE, correct = "Yates", first.name = "Reader A",
-                    second.name = "Reader B")
+ compare2(readings, usecols = c(1,2), twovsone = TRUE, plot.summary = TRUE, 
+  barplot = TRUE, chi = TRUE, pool.criterion = 1, cont.cor = TRUE, 
+  correct = "Yates", first.name = "Reader A",second.name = "Reader B")
 }
 \arguments{
   \item{readings}{dataframe or matrix containing the readings by Reader 1 and those by Reader 2.}
@@ -45,8 +45,8 @@
 \author{John Hoenig, Virginia Institute of Marine Science, 18 December 2012. \email{hoenig@vims.edu}}
 \examples{
  data(sbotos)
- compare2(readings=sbotos,usecols=c(1,2),twovsone=TRUE,plot.summary=TRUE,barplot=FALSE,chi=TRUE,
-                    pool.criterion=1,cont.cor=TRUE,correct="Yates",first.name="Reader A",
-                    second.name="Reader B")
+ compare2(readings=sbotos,usecols=c(1,2),twovsone=TRUE,plot.summary=TRUE,
+ barplot=FALSE,chi=TRUE,pool.criterion=1,cont.cor=TRUE,correct="Yates",
+ first.name="Reader A",second.name="Reader B")
 }
 \keyword{misc}

@@ -367,7 +367,7 @@ irm_h<-function(relyrs=NULL,recapyrs=NULL,N=NULL,recapharv=NULL,lambda=NULL,phi=
          	}
          	cnt<-cnt+1
      }
-   	p_df<-up_count*2-hless-K 
+   	p_df<-up_df
 ####Pooled Chi-square
    	p_chi_h<-array(NA,dim=c(endyrR,endyr))
    	cnt<-0

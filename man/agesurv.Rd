@@ -7,7 +7,7 @@ catch curve (ln(numbers) versus age in linear regression), Heincke, and Chapman-
 }
 \usage{
 agesurv(age = NULL, full = NULL, last = NULL, 
-estimate = c("s", "z"), method = c("cc", "he", "cr"))
+estimate = c("s", "z"), method = c("cc", "he", "cr", "crcb"))
 }
 \arguments{
   \item{age}{ the vector of ages.  Each row represents the age of an individual.}
@@ -15,20 +15,25 @@ estimate = c("s", "z"), method = c("cc", "he", "cr"))
   \item{last}{the maximum age to include in the calculation. If not specified, the oldest age is used.}
   \item{estimate}{argument to select estimate type: "s" for annual survival, "z" for instantaneous total mortality.
 	Default is both.}
-  \item{method}{argument to select the estimation method: "cc" for catch curve, "he" for Heincke, and "cr" for Chapman-Robson.
-	Default is all.}
+  \item{method}{argument to select the estimation method: "cc" for catch curve, "he" for Heincke,
+       "cr" for Chapman-Robson and "crcb" for Chapman-Robson Z estimate bias-correction (Seber p. 418) and 
+       SEZ corrected for over-dispersion (Smith et al., 2012).  Default is all.}
 }
-\details{The individual age data are tabulated and subsetted based on the \code{full} and \code{last} arguments.  Most calculations follow
-descriptions in Seber(1982), pages 414-418. If only two ages are present, a warning message is generated and
-the catch curve method is not calculated. Plus groups are not allowed.
+\details{The individual age data are tabulated and subsetted based on the \code{full} and \code{last} arguments.  
+  Most calculations follow descriptions in Seber(1982), pages 414-418. If only two ages are present, a warning message 
+  is generated and the catch curve method is not calculated. Plus groups are not allowed.
 }
 \value{
-  \item{results }{list element containing table of parameters and standard errors.}
+  \item{results}{list element containing table of parameters and standard errors.}
   \item{data}{list element containing the age frequency data used in the analysis.}
 }
-\references{Seber, G. A. F. 1982. The Estimation of Animal Abundance and Related Parameters, Second Edition. The Blackburn Press,
+\references{
+Seber, G. A. F. 1982. The Estimation of Animal Abundance and Related Parameters, Second Edition. The Blackburn Press,
 Caldwell, New Jersey. 654 pages. 
+
 Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford University Press, New York, New York. 542 pages.
+
+Smith, M. W. and 5 others. 2012. Recommendations for catch-curve analysis. N. Am. J. Fish. Manage. 32: 956-967.
 }
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \examples{data(rockbass)
