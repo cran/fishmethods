@@ -3,7 +3,6 @@ pgen<-function(est=NULL,limit=NULL,estSD=0,limSD=0,corr=0,dist=1,comp=1,nreps=10
   if(is.null(limit)) stop ("limit is missing.")
   if(!is.numeric(est)) stop ("est is not numeric.")
   if(!is.numeric(limit)) stop ("limit is not numeric.")
-  require(MASS)
   dtype<-NULL;ltype<-NULL
   if(length(est)==1){
     dtype<-1

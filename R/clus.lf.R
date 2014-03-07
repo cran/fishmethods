@@ -1,4 +1,4 @@
-lfclus<-function(group=NULL,haul=NULL,len=NULL, number=NULL, binsize=NULL, resamples=100){
+clus.lf<-function(group=NULL,haul=NULL,len=NULL, number=NULL, binsize=NULL, resamples=100){
      if(is.null(group)) stop("Comparison vector not specified.")
      if(is.null(haul)) stop("Haul vector not specified.")
      if(is.null(len)) stop("Length vector not specified.")

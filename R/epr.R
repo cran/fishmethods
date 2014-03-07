@@ -1,18 +1,3 @@
-###############################################################################
-#											            #
-#                  Eggs Per Recruit Analysis                                  #
-#					                                                #          
-###############################################################################
-#age<-c(0,1,2,3,4,5,6,7,8)               #ages
-#eggs<-c(11349,23146,67846,122239,181247,236365,288478,337147,389654) #average catch weight at age
-#prec<-c(0.01,0.05,0.36,0.87,0.99,1,1,1,1)                         
-#pmat<-c(0,0,0.118,0.864,1,1,1,1,1)                          #partial recruitment vector
-#NM<-c(1.17,0.888,0.648,0.558,0.522,0.491,0.465,0.465,0.465)                                             #natural mortality
-#maxF<-5							    #maximum F for analysis
-#pF<-00                                           #prop. F before spawning
-#pM<-00                                           #prop. M before spawning
-
-
 epr<-function(age=NULL,fecund=NULL,partial=NULL,pmat=pmat,M=NULL,pF=NULL, pM=NULL,MSP=40,plus=FALSE,oldest=NULL,maxF=2,incrF=0.0001){				
 	if(is.null(age)) 
          stop ("age vector is missing") 
@@ -90,8 +75,4 @@ for (i in 1:length(SPR$F))
   outpt<-list(ans,EPR);names(outpt)<-c("Reference_Point","F_vs_EPR")
   return(outpt)
 }
-#epr(age=age,fecund=eggs,partial=prec,
-#pmat=pmat,M=NM,pF=0,pM=0,MSP=40,plus=T,maxF=4,incrF=0.001,oldest=10)
-
-
 		

@@ -59,8 +59,8 @@ Can. J. Fish. Aquat. Sci. 45: 936-942.
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
 }
 \examples{
-data(striper)
-with(striper,vbfr(age=age,L=tl,agephi=6,agepsi=13))
+data(pinfish)
+with(pinfish,vbfr(age=age,L=sl,agephi=3,agepsi=6))
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

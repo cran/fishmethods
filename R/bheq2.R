@@ -26,8 +26,6 @@ bheq2<-function(len=NULL,Linf=NULL,K=NULL,Lc=NULL,La=NULL, nboot=100){
          stop ("Linf not specified") 
       if(is.null(Lc)) 
          stop ("Lc not specified") 
-
- require(boot)
       len<-len[!is.na(len)] 
       lengths<-len[len>=Lc]
       

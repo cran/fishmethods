@@ -26,7 +26,7 @@ bheq1(len, K = NULL, Linf = NULL, Lc = NULL, nboot = 100)
 \references{Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford University Press, New York, New York. 542 pages}
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \seealso{\code{\link{bheq2}} \code{\link{bhnoneq}}}
-\examples{data(herring)
-bheq1(herring[,1],K=0.54,Linf=339,Lc=240,nboot=200)
+\examples{data(pinfish)
+bheq1(pinfish$sl,K=0.33,Linf=219.9,Lc=120,nboot=200)
 }
 \keyword{misc}

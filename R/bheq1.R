@@ -19,7 +19,6 @@ bheq1<-function(len=NULL,K=NULL,Linf=NULL,Lc=NULL,nboot=100){
                 }
                f(lengths[i])
               }
-  require(boot)
   dd<-boot(lengths,mean.boot1,R=nboot)
   mL<-mean(lengths)
   ee<-data.frame(meanlen=mL,n=length(lengths),Z=dd[[1]],SE=apply(dd$t,2,sd))

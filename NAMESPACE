@@ -1,1 +1,4 @@
+import(boot)
+import(bootstrap)
+import(MASS)
 exportPattern("^[[:alpha:]]+")

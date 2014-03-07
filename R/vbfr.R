@@ -58,9 +58,3 @@ if(gestimate==TRUE){
     return("Fit Failed.")
    }
 }#end function
-
-#data(striper)
-#with(striper,vbfr(age=age,L=tl,agephi=5,agepsi=13,gestimate=TRUE,
-#     Lphiparms = c(400,0,1000), Lchiparms = c(600,0,1000), 
-#     Lpsiparms = c(900,0,2000),control = list(maxiter = 10000)))
-

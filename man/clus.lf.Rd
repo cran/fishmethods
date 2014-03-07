@@ -1,12 +1,12 @@
-\name{lfclus}
-\alias{lfclus}
+\name{clus.lf}
+\alias{clus.lf}
 \title{Statistical Comparison of Length Frequencies from Simple Random Cluster Sampling}
 \description{Statistical comparison of length frequencies is performed using the two-sample
  Kolmogorov & Smirnov test. Randomization procedures are used to derive the null probability
  distribution. 
 }
 \usage{
-lfclus(group = NULL, haul = NULL, len = NULL, number= NULL,
+clus.lf(group = NULL, haul = NULL, len = NULL, number= NULL,
  binsize = NULL, resamples = 100)
 }
 \arguments{
@@ -75,10 +75,10 @@ Chapman and Hall, New York, NY, 399 pp.
 Seigel, S. 1956. Nonparametric Statistics for Behavioral Sciences. McGraw-Hill, New York, NY. 312 p.
 }
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
-\seealso{\code{\link{lfstrclus}}}
+\seealso{\code{\link{clus.str.lf}}}
 \examples{
 data(codcluslen)
-lfclus(group=codcluslen$region,haul=codcluslen$tow,len=codcluslen$length,
+clus.lf(group=codcluslen$region,haul=c(paste("ST-",codcluslen$tow,sep="")),len=codcluslen$length,
 number=codcluslen$number,binsize=5,resamples=100)
 }
 \keyword{misc}

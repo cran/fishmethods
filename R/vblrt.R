@@ -229,9 +229,9 @@ vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t
 		K2<-K1
 		t02<-t01
 		obs1<-x[x$cat==0,]
-          obs2<-x[x$cat==1,]
-          res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
-          res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
+            obs2<-x[x$cat==1,]
+            res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
+            res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
         	plot(res1~age,data=x[x$cat==0,],main=paste("H4 Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
 		points(res2~age,data=x[x$cat==1,],col="red")
           abline(h=0)

@@ -26,8 +26,8 @@ alk(age=NULL,size=NULL,binsize=NULL,type=1)
 \seealso{\code{\link{alkD}} \code{\link{alkss}} \code{\link{alkprop}}}
 \examples{
  \dontrun{
-  data(striper) 
-  alk(age=striper$age,size=striper$tl,binsize=50)
+  data(pinfish) 
+  with(pinfish,alk(age=round(age,0),size=sl,binsize=10))
  }
 }
 \keyword{misc}

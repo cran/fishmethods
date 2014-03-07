@@ -263,7 +263,7 @@ grotag<-function(L1=NULL,L2=NULL,T1=NULL,T2=NULL,alpha=NULL,beta=NULL,
       names(result1)<-"Estimate"
       result1$Estimate[2]<-Linf
       result1$Estimate[3]<-K
-     dd<-list(result,result1,cov2cor(mod1$hessian),pred,resid)
+     dd<-list(result,result1,cov2cor(solve(mod1$hessian)),pred,resid)
      names(dd)<-c("table","VBparms","correlation","predicted","residuals")
      return(dd)
   }
@@ -272,16 +272,6 @@ grotag<-function(L1=NULL,L2=NULL,T1=NULL,T2=NULL,alpha=NULL,beta=NULL,
     return("Fit Failed.")
    }
 }#end function
-
-#load("P:/Rwork/fishmethods/data/bonito.Rda")
-#with(bonito,
-#grotag(L1=L1, L2=L2, T1=T1, T2=T2,alpha=35,beta=55,
-# 	design=list(nu=1,m=1,p=1,sea=1),
-# 	stvalue=list(sigma=0.9,nu=0.4,m=-1,p=0.01,u=0.4,w=0.4),
- #	 upper=list(sigma=5,nu=1,m=2,p=0.5,u=1,w=1),
- #	lower=list(sigma=0,nu=0,m=-2,p=0,u=0,w=0),
- #     gestimate=FALSE,st.ga=10,st.gb=8,st.galow=0,st.gaup=20,
- #     st.gblow=0,st.gbup=30))
 
 
 

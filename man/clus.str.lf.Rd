@@ -1,12 +1,12 @@
-\name{lfstrclus}
-\alias{lfstrclus}
+\name{clus.str.lf}
+\alias{clus.str.lf}
 \title{Statistical Comparison of Length Frequencies from Stratified Random Cluster Sampling}
 \description{Statistical comparison of length frequencies is performed using the two-sample
  Kolmogorov & Smirnov test. Randomization procedures are used to derive the null probability
  distribution. 
 }
 \usage{
-lfstrclus(group = NULL, strata = NULL, weights = NULL,
+clus.str.lf(group = NULL, strata = NULL, weights = NULL,
  haul = NULL, len = NULL, number = NULL, binsize = NULL,
  resamples = 100)
 }
@@ -105,10 +105,10 @@ Chapman and Hall, New York, NY, 399 pp.
 Seigel, S. 1956. Nonparametric Statistics for Behavioral Sciences. McGraw-Hill, New York, NY. 312 p.
 }
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
-\seealso{\code{\link{lfclus}}}
+\seealso{\code{\link{clus.lf}}}
 \examples{
 data(codstrcluslen)
-lfstrclus(
+clus.str.lf(
 group=codstrcluslen$region,strata=codstrcluslen$stratum,
  weights=codstrcluslen$weights,haul=codstrcluslen$tow,
  len=codstrcluslen$length,number=codstrcluslen$number,

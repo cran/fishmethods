@@ -48,9 +48,9 @@ growth(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,error=1,
 }
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \examples{
-data(rockfish)
-growth(intype=1,unit=1,size=rockfish$len,age=rockfish$age,
-        calctype=1,wgtby=1,error=1,Sinf=50,K=0.2,t0=0.1)
+data(pinfish)
+growth(intype=1,unit=1,size=pinfish$sl,age=pinfish$age,
+        calctype=1,wgtby=1,error=1,Sinf=200,K=0.3,t0=-1)
 }
 \keyword{misc}
 

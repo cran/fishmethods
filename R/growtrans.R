@@ -19,7 +19,7 @@ growtrans<-function(Lmin=NULL, Lmax=NULL, Linc=NULL,
    DL<-DL[1:(length(which(DL>=0))+1)]
    Ln<-Ln[1:(length(which(DL>=0))+1)]
    DL<-ifelse(DL<0,0,DL)
-   VL<-SELinf^2*(1-exp(-K))^2+(Linf-Ln)^2*SEK^2*exp(-2*K)-2*COV*(1-exp(-K))*(Linf-Ln)*exp(-K)
+   VL<-SELinf^2*(1-exp(-K))^2+(Linf-Ln)^2*SEK^2*exp(-2*K)+2*COV*(1-exp(-K))*(Linf-Ln)*exp(-K)
    growmat<-matrix(0,nrow=length(Ln)-1,ncol=length(Ln)-1)
    for(L in 1:as.numeric(length(Ln)-1)){
      for(m in L:as.numeric(length(Ln)-1)){
@@ -31,8 +31,5 @@ growtrans<-function(Lmin=NULL, Lmax=NULL, Linc=NULL,
   dimnames(growmat)[[2]]<-Ln[1:as.numeric(length(Ln)-1)]
   return(growmat)
 }
-
-growtrans(Lmin=40, Lmax=101, Linc=1,Linf=100,SELinf=15,
-         K=0.100588,SEK=0.04255,rhoLinfK=0.94)
 
 

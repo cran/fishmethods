@@ -30,8 +30,8 @@ Ehrhardt, N. M. and J. S. Ault. 1992. Analysis of two length-based mortality mod
 catch length frequencies. Trans. Am. Fish. Soc. 121:115-122.}
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \seealso{\code{\link{bheq1}} \code{\link{bhnoneq}}}
-\examples{data(herring)
-bheq2(herring[,1],K=0.54,Linf=339,Lc=240,La=314,nboot=200)
+\examples{data(pinfish)
+bheq2(pinfish$sl,K=0.33,Linf=219.9,Lc=120,La=255,nboot=200)
 }
 \keyword{misc}
 

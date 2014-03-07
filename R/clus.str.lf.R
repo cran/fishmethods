@@ -1,4 +1,4 @@
-lfstrclus<-function(group=NULL,strata=NULL, weights=NULL, haul=NULL,len=NULL, number=NULL, binsize=NULL, resamples=100){
+clus.str.lf<-function(group=NULL,strata=NULL, weights=NULL, haul=NULL,len=NULL, number=NULL, binsize=NULL, resamples=100){
      if(is.null(group)) stop("group vector not specified.")
      if(is.null(strata)) stop("strata vector not specified.")
      if(is.null(weights)) stop("weight vector not specified.")
