@@ -21,7 +21,10 @@ metrics for each model (see page 69 in Burnham and Anderson(2002)). QAICc differ
 subtracting the QAICc of each model from the model with the smallest QAICc value. These differences are used to calculate 
 the Akaike weights for each model following the formula on page 75 of Burnham and Anderson (2002). The Akaike weights are
 used to calculate the weighted average and standard error of parameter estimates by summing the product of the model-specific Akaike weight and parameter estimate 
-across all models.  An unconditional standard error is also calculated by \code{sqrt(sum(QAICc wgt of model i * (var of estimate of model i +(estimate of model i - avg of all estimates)^2)))}.
+across all models.  An unconditional standard error is also calculated by 
+\code{sqrt(sum(QAICc wgt of model i 
+* (var of est of model i 
++ (est of model i - avg of all est)^2)))}.
 }
 \value{List containing model summary statistics, model-averaged estimates of fishing, natural, tag, and total mortality, and 
 survival and their weighted and uncondtional standard errors . 

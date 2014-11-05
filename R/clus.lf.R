@@ -28,6 +28,14 @@ clus.lf<-function(group=NULL,haul=NULL,len=NULL, number=NULL, binsize=NULL, resa
   B<-as.data.frame(array(rep(NA,resamples),dim=c(resamples,numcol)))
   Ds<-as.data.frame(rep(NA,numcol))
   names(Ds)[1]<-c("Ds")
+  #Create length frequency master
+    l1<-sort(unique(dater$len))
+    l2<-min(abs(l1[1:length(l1)-1]-l1[2:length(l1)]))
+    l2<-ifelse(l2==0,1,l2)
+    lendist<-as.data.frame(seq(min(as.numeric(as.character(dater$len))),
+              max(as.numeric(as.character(dater$len))),l2))
+    names(lendist)<-c("len")
+  
 compcount<-0;r<-1;rr<-2
 for (r in 1:rloop)
   {
@@ -48,13 +56,7 @@ for (r in 1:rloop)
       }
 
 #Calculate observed cumulative frequency distributons and KS
-    # Create length dist based on binsize or original binsize
-    l1<-sort(unique(reg$len))
-    l2<-min(abs(l1[1:length(l1)-1]-l1[2:length(l1)]))
-    l2<-ifelse(l2==0,1,l2)
-    lendist<-as.data.frame(seq(min(as.numeric(as.character(reg$len))),
-              max(as.numeric(as.character(reg$len))),l2))
-    names(lendist)<-c("len")
+  
     obf1<-subset(reg,reg$region==r)
     obf1<-aggregate(obf1$number,list(obf1$len),sum)
     obf1$prop1<-(obf1$x/sum(obf1$x))
@@ -123,7 +125,7 @@ p<-as.data.frame(rep(NA,compcount))
 names(p)[1]<-c("p")
 for (j in 1:compcount){
    stat<-(B[,j])
-    p[j,1]<-round((length(stat[stat>=Ds[j,1]])+1)/(resamples+1),2)
+    p[j,1]<-round(length(stat[stat>=Ds[j,1]])/resamples,2)
   }
 ans<-NULL;ans$results<-matrix(NA,length(Ds[,1]),2L)
 ans$results<-rbind(cbind(Ds,p)) 

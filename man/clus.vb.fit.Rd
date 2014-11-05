@@ -2,7 +2,7 @@
 \alias{clus.vb.fit}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Fit a Von Bertalanffy growth equation to clustered data vis bootstrapping }
+Fit a Von Bertalanffy growth equation to clustered data via bootstrapping }
 \description{
 Fits the von Bertalanffy growth equation to clustered length and age  
 by using nonlinear least-squares and by bootstrapping clusters}
@@ -24,8 +24,8 @@ A standard von Bertalanffy growth curve is fitted to length-at-age data of each 
 from all bootstrap fits is provided as well.
 }
 \value{
- List containing a summary of successful model fits and parameter estimates, standard deviation and 95% confidence intervals,
-  and the average correlation matrix.
+ List containing a summary of successful model fits and parameter estimates, standard deviation and 
+  95 percent confidence intervals, and the average correlation matrix.
 }
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
 }

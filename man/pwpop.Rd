@@ -53,6 +53,9 @@ pwpop(abund = NULL, year = NULL, periods = NULL, Cs = NULL,
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \examples{
 data(counts)
-pwpop(abund=counts$number,year=counts$year,periods=3,Cs=c(2000,2005),startR=c(0.5,0.5,0.5),
-upperR=c(10,10,10),lowerR=c(-10,-10,-10))}
+pwpop(abund = counts$number, year = counts$year,periods = 3, Cs = c(2000,2005), 
+startR = c(0.5,0.5,0.5), 
+upperR = c(10,10,10), 
+lowerR = c(-10,-10,-10))
+}
 \keyword{misc}

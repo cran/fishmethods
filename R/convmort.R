@@ -24,7 +24,7 @@ convmort<-function(value=NULL,fromto=1,type=2,M=NULL){
               d<-(x*(1-exp(-x-M)))/(x+M)
               return(abs(value-d))
              } 
-         F<-optimize(f,c(0,1),tol=0.0000001,value=value,M=M)[[1]]
+         F<-optimize(f,c(0,100),tol=0.0000001,value=value,M=M)[[1]]
          return(F)
        }
    }

@@ -43,8 +43,7 @@ To generate the empirical probability density function (pdf), haul data are rand
 The K-S statistic is calculated from the cumulative length frequency distributions of the two groups 
 of randomized data.  The randomization procedure is repeated \code{resamples} times to 
 obtain the pdf of D.  To estimate the significance of Ds, the proportion of all randomized D values
-that were greater than or equal to Ds, including the occurrence of Ds in the numerator and denominator, is calculated
-(Manly, 1997).
+that were greater than or equal to Ds is calculated.
   
 It is assumed all fish caught are measured. If subsampling occurs, the number at length (measured) must be expanded to the total caught.
  

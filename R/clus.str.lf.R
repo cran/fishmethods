@@ -35,6 +35,12 @@ clus.str.lf<-function(group=NULL,strata=NULL, weights=NULL, haul=NULL,len=NULL, 
   B<-as.data.frame(array(rep(NA,resamples),dim=c(resamples,numcol)))
   Ds<-as.data.frame(rep(NA,numcol))
   names(Ds)[1]<-c("Ds")
+  l1<-sort(unique(dater$len))
+    l2<-min(abs(l1[1:length(l1)-1]-l1[2:length(l1)]))
+    l2<-ifelse(l2==0,1,l2)
+    lendist<-as.data.frame(seq(min(as.numeric(as.character(dater$len))),
+              max(as.numeric(as.character(dater$len))),l2))
+    names(lendist)<-c("len")
 compcount<-0
 for (r in 1:rloop){
   for (rr in (r+1):rrloop){
@@ -71,12 +77,7 @@ for (r in 1:rloop){
     obf1<-subset(both,both$region==r)
     obf2<-subset(both,both$region==rr)
      # Create length dist based on binsize or original binsize
-    l1<-sort(unique(both$len))
-    l2<-min(abs(l1[1:length(l1)-1]-l1[2:length(l1)]))
-    l2<-ifelse(l2==0,1,l2)
-    lendist<-as.data.frame(seq(min(as.numeric(as.character(both$len))),
-              max(as.numeric(as.character(both$len))),l2))
-    names(lendist)<-c("len")
+   
     obf1<-merge(obf1,lendist,by.x="len",by.y="len",all.x=T,all.y=T)
     obf2<-merge(obf2,lendist,by.x="len",by.y="len",all.x=T,all.y=T)
     obf1$prop<-ifelse(is.na(obf1$prop),0,obf1$prop)
@@ -154,7 +155,7 @@ p<-as.data.frame(rep(NA,compcount))
 names(p)[1]<-c("p")
 for (j in 1:compcount){
    stat<-B[,j]
-    p[j,1]<-round((length(stat[stat>=Ds[j,1]])+1)/(resamples+1),3)
+    p[j,1]<-round((length(stat[stat>=Ds[j,1]]))/(resamples),3)
   }
 ans<-NULL;ans$results<-matrix(NA,length(Ds[,1]),2L)
 ans$results<-rbind(cbind(Ds,p)) 

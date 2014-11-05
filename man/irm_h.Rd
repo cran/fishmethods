@@ -13,8 +13,8 @@ lower = c(0.0001,0.0001),upper = c(5,5), maxiter = 10000)
 }
 \arguments{
   \item{relyrs}{vector containing the start and end year of the entire release period 
-  (e.g., c(1992,2006)).}
-  \item{recapyrs}{vector containing the start year and end year of entire recapture period (e.g., c(1992,2008)).}
+  (e.g., c(1992, 2006)).}
+  \item{recapyrs}{vector containing the start year and end year of entire recapture period (e.g., c(1992, 2008)).}
   \item{N}{vector of total number of tagged fish released in each release year (one value per year).}
   \item{recapharv}{matrix of the number of tag recoveries of harvested fish by release year (row) and recovery year
   (column). The lower triangle (blank cells) may be filled with -1s as place holders.  Missing values in the upper 

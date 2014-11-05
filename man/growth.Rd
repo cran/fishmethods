@@ -22,7 +22,7 @@ growth(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,error=1,
  \item{K}{the starting value for \emph{K} of the growth models.}
  \item{t0}{the starting value for \emph{t0} of the growth models.}
  \item{B}{the length-weight equation exponent used in the von Bertalanffy growth model for weight. Default B=3.}
- \item{graph}{logical value specifying if fit and residual plots should be drawn. Default graph=TRUE.}
+ \item{graph}{logical value specifying if fit and residual plots should be drawn. Default graph = TRUE.}
  \item{control}{see function \emph{nls}.}
 }
 \details{

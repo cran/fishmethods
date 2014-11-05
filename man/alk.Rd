@@ -18,7 +18,8 @@ alk(age=NULL,size=NULL,binsize=NULL,type=1)
     proportions-at-age per size are produced.}
 }
 \details{
- Create age-length keys with either numbers-at-age per size class. Records with NA are deleted prior to calculation.
+ Create age-length keys with either numbers-at-age per size class. Records with missing size values are deleted prior to calculation.
+     Missing ages are allowed.
   }
 \value{A table of size, total numbers at size, and numbers (or proportions)-at-age per size class.}
 \references{Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford University Press, New York, New York. 542 pages}

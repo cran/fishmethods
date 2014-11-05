@@ -57,8 +57,7 @@ to each stratum with haul sizes equal to the original number of stratum hauls.  
 then calculated as described above. The K-S statistic is calculated from the cumulative length frequency distributions of the two groups 
 of randomized data.  The randomization procedure is repeated \code{resamples} times to 
 obtain the pdf of D.  To estimate the significance of Ds, the proportion of all randomized D values
-that were greater than or equal to Ds, including the occurrence of Ds in the numerator and denominator, is calculated
-(Manly, 1997).
+that were greater than or equal to Ds is calculated (Manly, 1997).
   
 Data vectors described in \code{arguments} should be aggregated so that each record contains the number of fish in each length class by group, strata, weights, and haul identifier. For example,
 
