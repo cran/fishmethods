@@ -7,7 +7,8 @@ Calculates mean attribute, variance, effective sample size, and degrees of freed
  by simple random cluster sampling.
 }
 \usage{
-clus.mean(popchar = NULL, cluster = NULL, clustotal = NULL, rho = NULL, nboot = 1000)
+clus.mean(popchar = NULL, cluster = NULL, clustotal = NULL, rho = NULL,
+ nboot = 1000)
 }
 \arguments{
   \item{popchar}{vector of population characteristic measurements (e.g., length, weight, etc.). 

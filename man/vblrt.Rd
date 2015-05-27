@@ -37,16 +37,16 @@ A dummy vector called \emph{cat}, containing 0s for the first group with lower a
   for the second group, is used in the estimation of group parameters. To extract the VB parameters for each group 
   from the Ho model:
             # Group 1
-            Linf1<-outpt$'model Ho'$coefficients[1]
-		K1<-outpt$'model Ho'$coefficients[3]
-		t01<-outpt$'model Ho'$coefficients[5]
+            Linf1<-x$'model Ho'$coefficients[1]
+		K1<-x$'model Ho'$coefficients[3]
+		t01<-x$'model Ho'$coefficients[5]
 
             # Group 2
-		Linf2<-Linf1+outpt$'model Ho'$coefficients[2]
-		K2<-K1+outpt$'model Ho'$coefficients[4]
-		t02<-t01+outpt$'model Ho'$coefficients[6]
+		Linf2<-Linf1+x$'model Ho'$coefficients[2]
+		K2<-K1+x$'model Ho'$coefficients[4]
+		t02<-t01+x$'model Ho'$coefficients[6]
 	
-where \emph{outpt} is the output object. For models H1, H2, H3 and H4, the shared VB parameter for the second group 
+where \emph{x} is the output object. For models H1, H2, H3 and H4, the shared VB parameter for the second group 
 will be the same as the first group. 
 }
 \value{

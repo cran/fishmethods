@@ -256,7 +256,7 @@ grotag<-function(L1=NULL,L2=NULL,T1=NULL,T2=NULL,alpha=NULL,beta=NULL,
       kk<-merge(allparms,ee,by.x="pars",by.y="pars",all.x=TRUE,all.y=TRUE) 
       kk$p<-ifelse(is.na(kk$p),0,kk$p)
       result = cbind(result, SE = c(NA,round(kk$p[1],2), round(kk$p[2],2),round(kk$p[7],3),round(kk$p[8],3),round(kk$p[4],3),round(kk$p[3],3),round(kk$p[5],3),round(kk$p[6],4),NA,NA,NA))
-	 Linf<-(beta*mod1$par[1]-alpha*mod1$par[2])/(mod1$par[1]-mod1$par[2])
+	Linf<-(beta*mod1$par[1]-alpha*mod1$par[2])/(mod1$par[1]-mod1$par[2])*-1
       K<--1*log(1+(mod1$par[1]-mod1$par[2])/(alpha-beta))
       result1 = as.data.frame(matrix(NA, ncol=1, nrow = 3))
       dimnames(result1)[[1]] = c("Parameters","Linf","K ")
