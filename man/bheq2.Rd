@@ -31,7 +31,7 @@ catch length frequencies. Trans. Am. Fish. Soc. 121:115-122.}
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
 \seealso{\code{\link{bheq1}} \code{\link{bhnoneq}}}
 \examples{data(pinfish)
-bheq2(pinfish$sl,K=0.33,Linf=219.9,Lc=120,La=255,nboot=200)
+bheq2(pinfish$sl,K=0.33,Linf=219.9,Lc=120,La=255,nboot=50)
 }
 \keyword{misc}
 

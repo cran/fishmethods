@@ -6,7 +6,7 @@
 #                    Data on rock bass (C&R 1961)
 ###############################################################################
 
-agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc","he","cr","crcb")){
+agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc","he","cr","crcb","mil")){
      if(is.null(age)) 
          stop ("vector does not exist")
       if(!is.numeric(age)) 
@@ -33,7 +33,7 @@ agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc"
                     Estimate=rep(as.numeric(NA),rown),
                     SE=rep(as.numeric(NA),rown),stringsAsFactors=F)
 
-   
+
     if(any(method=="cc")){ 
       if(length(d[,1])>2){   
 	   cc<-lm(log(d[,2])~d[,1])
@@ -129,6 +129,27 @@ agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc"
          cnt<-cnt+1
        }
      }
+  if(any(method=="mil")){
+      max.age<-max(d[,1])
+    extd<-rbind(d,cbind(age=(max.age+1):(2*max.age),number=rep(0,max.age)))
+    wer<-glmer(number~age+(1|age),family=poisson,data=extd)
+    if(any(estimate=="s")){
+      results[cnt,1]<-"Millar glmer"
+      results[cnt,2]<-"S"
+      tf<-bt.log(summary(wer)$coefficients[2,1],summary(wer)$coefficients[2,2],sum(d[,2]))
+      results[cnt,3]<-round(as.numeric(tf[1]),2)
+      results[cnt,4]<-round(as.numeric(tf[4]),3)
+      cnt<-cnt+1
+    }
+    if(any(estimate=="z")){
+     results[cnt,1]<-"Millar glmer"
+     results[cnt,2]<-"Z"
+     results[cnt,3]<-round(abs(summary(wer)$coefficients[2,1]),2)
+     results[cnt,4]<-round(summary(wer)$coefficients[2,2],3) 
+    }
+  
+  }
    out<-list(results,d);names(out)<-c("results","data")
    return(out)
 }
+
