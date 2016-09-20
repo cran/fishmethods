@@ -1,12 +1,10 @@
 ###############################################################################
 #
 #                  Survival Rate Estimators
-#        Catch Curve, Chapman-Robson, and Heinecke Methods
-#        No plus groups; see Chapman and Robson (1961) for plus-groups
-#                    Data on rock bass (C&R 1961)
+#
 ###############################################################################
 
-agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc","he","cr","crcb","mil")){
+agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc","he","cr","crcb","mil","mb")){
      if(is.null(age)) 
          stop ("vector does not exist")
       if(!is.numeric(age)) 
@@ -35,8 +33,9 @@ agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc"
 
 
     if(any(method=="cc")){ 
-      if(length(d[,1])>2){   
-	   cc<-lm(log(d[,2])~d[,1])
+      if(length(d[,1])>2){ 
+        extd1<-d[d[,2]>0,]
+	       cc<-lm(log(extd1[,2])~extd1[,1])
          Zcc<-coef(summary(cc))[2,1]*-1
          SEZcc<-round(coef(summary(cc))[2,2],3)
          Scc<-exp(coef(summary(cc))[2,1])
@@ -131,8 +130,9 @@ agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc"
      }
   if(any(method=="mil")){
       max.age<-max(d[,1])
-    extd<-rbind(d,cbind(age=(max.age+1):(2*max.age),number=rep(0,max.age)))
-    wer<-glmer(number~age+(1|age),family=poisson,data=extd)
+      my.control<-glmerControl(optCtrl=list(maxfun=10000),optimizer="bobyqa")
+    extd<-rbind(d,cbind(age=(max.age+1):(3*max.age),number=rep(0,max.age)))
+    wer<-glmer(number~age+(1|age),family=poisson,data=extd,control=my.control)
     if(any(estimate=="s")){
       results[cnt,1]<-"Millar glmer"
       results[cnt,2]<-"S"
@@ -146,10 +146,47 @@ agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("cc"
      results[cnt,2]<-"Z"
      results[cnt,3]<-round(abs(summary(wer)$coefficients[2,1]),2)
      results[cnt,4]<-round(summary(wer)$coefficients[2,2],3) 
+     cnt<-cnt+1
     }
   
   }
+  if(any(method=="mb")){ 
+     if(length(d[,1])>2){   
+       extd1<-d[d[,2]>0,] 
+         LRglm_out1<-try(lm(log(extd1[,2])~extd1[,1]),silent=TRUE)
+         if(!any(class(LRglm_out1)=="try-error")){
+           preds<-predict(LRglm_out1)
+           preds[preds<0]<-0
+           preds<-preds/sum(preds)
+           LRglm_out2<-try(lm(log(extd1[,2])~extd1[,1],weights=preds),silent=TRUE)
+           if(!any(class(LRglm_out2)=="try-error")){
+             Zmb<-round(abs(summary(LRglm_out2)$coefficients[2,1]),4)
+             SEZmb<-round(summary(LRglm_out2)$coefficients[2,2],4)
+             Smb<-exp(-Zmb)
+             SESmb<-Smb*SEZmb
+             
+            }
+         }  
+         if(any(class(LRglm_out1)=="try-error")) {Zmb<-NA;SEZmb<-NA;Smb<-NA;SESmb<-NA}
+         if(any(class(LRglm_out2)=="try-error")) {Zmb<-NA;SEZmb<-NA;Smb<-NA;SESmb<-NA}
+         if(any(estimate=="s")){
+           results[cnt,1]<-"Maceina-Bettoli"
+           results[cnt,2]<-"S"
+           results[cnt,3]<-round(Smb,2)
+           results[cnt,4]<-round(SESmb,3)
+           cnt<-cnt+1
+         }
+         if(any(estimate=="z")){
+           results[cnt,1]<-"Maceina-Bettoli"
+           results[cnt,2]<-"Z"
+           results[cnt,3]<-round(Zmb,2)
+           results[cnt,4]<-round(SEZmb,3)
+           cnt<-cnt+1
+         }
+       }
+     }
    out<-list(results,d);names(out)<-c("results","data")
    return(out)
 }
+
 

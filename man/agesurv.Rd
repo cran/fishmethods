@@ -7,7 +7,7 @@ catch curve (ln(numbers) versus age in linear regression), Heincke, Chapman-Robs
 }
 \usage{
 agesurv(age = NULL, full = NULL, last = NULL, 
-estimate = c("s", "z"), method = c("cc", "he", "cr", "crcb","mil"))
+estimate = c("s", "z"), method = c("cc", "he", "cr", "crcb","mil","mb"))
 }
 \arguments{
   \item{age}{ the vector of ages.  Each row represents the age of an individual.}
@@ -18,7 +18,7 @@ estimate = c("s", "z"), method = c("cc", "he", "cr", "crcb","mil"))
   \item{method}{argument to select the estimation method: "cc" for catch curve, "he" for Heincke,
        "cr" for Chapman-Robson, "crcb" for Chapman-Robson Z estimate bias-correction (Seber p. 418) and 
        SEZ corrected for over-dispersion (Smith et al., 2012), "mil" for Millar (2015) random-intercept
-	poisson log-linear mixed model estimator.  Default is all.}
+	poisson log-linear mixed model estimator, "mb" for Maceine-Bettoli weighted regression.  Default is all.}
 }
 \details{The individual age data are tabulated and subsetted based on the \code{full} and \code{last} arguments.  
   Most calculations follow descriptions in Seber(1982), pages 414-418. If only two ages are present, a warning message 
@@ -31,6 +31,8 @@ estimate = c("s", "z"), method = c("cc", "he", "cr", "crcb","mil"))
 \references{
 Seber, G. A. F. 1982. The Estimation of Animal Abundance and Related Parameters, Second Edition. The Blackburn Press,
 Caldwell, New Jersey. 654 pages. 
+
+Maceina, M. J. and P. W. Bettoli. 1998. Variation in largemouth bass recruitment in four mainstream impoundments of the Tennessee River. N. Am. J. Fish. Manage. 18: 990-1003.
 
 Millar, R. B. 2015. A better estimator of mortality rate from age-frequency data. Can. J. Fish. Aquat.
 Sci. 72: 364-375.

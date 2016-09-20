@@ -20,8 +20,8 @@ grotag(L1 = NULL, L2 = NULL, T1 = NULL, T2 = NULL, alpha = NULL, beta = NULL,
 \arguments{
   \item{L1}{Vector of length at release of tagged fish}
   \item{L2}{Vector of length at recovery of tagged fish}
-  \item{T1}{Vector of time at release of tagged fish}
-  \item{T2}{Vector of time at recovery of tagged fish}
+  \item{T1}{Vector of julian time at release of tagged fish}
+  \item{T2}{Vector of julian time at recovery of tagged fish}
   \item{alpha}{Numeric value giving an arbitrary length alpha}
   \item{beta}{Numeric value giving an arbitrary length beta (\code{beta} > \code{alpha})}
   \item{design}{List specifying the design of the model to estimate. Use 1 to designate whether 
@@ -77,7 +77,4 @@ with(bonito,
  	upper=list(sigma=5,nu=1,m=2,p=0.5,u=1,w=1),
  	lower=list(sigma=0,nu=0,m=-2,p=0,u=0,w=0),control=list(maxit=1e4)))
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{misc}

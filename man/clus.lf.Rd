@@ -77,7 +77,8 @@ Seigel, S. 1956. Nonparametric Statistics for Behavioral Sciences. McGraw-Hill, 
 \seealso{\code{\link{clus.str.lf}}}
 \examples{
 data(codcluslen)
-clus.lf(group=codcluslen$region,haul=c(paste("ST-",codcluslen$tow,sep="")),len=codcluslen$length,
-number=codcluslen$number,binsize=5,resamples=100)
+clus.lf(group=codcluslen$region,haul=c(paste("ST-",codcluslen$tow,sep="")),
+ len=codcluslen$length, number=codcluslen$number, 
+ binsize=5,resamples=100)
 }
 \keyword{misc}

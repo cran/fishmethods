@@ -36,7 +36,13 @@ bhnoneq <- function(year = NULL, mlen = NULL, ss = NULL, K = NULL, Linf = NULL,
       dy[i, j] <- ifelse(ggyr[i] >= j, 0, j - ggyr[i])
     }
   }
-  
+#Quang correction 1/12/2016  
+if(nbreaks > 1) {
+    for(i in 1:(nbreaks - 1)) {
+      for(j in 1:count) dy[i, j] <- dy[i, j] - dy[i + 1, j]
+    }
+  }
+
   a <- array(0, dim = c(nbreaks + 1, count))
   s <- array(0, dim = c(nbreaks + 1, count))
   r <- array(0, dim = c(nbreaks + 1, count))

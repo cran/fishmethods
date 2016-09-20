@@ -61,7 +61,7 @@ alkD<-function(x,lss=NULL, minss=NULL,maxss=NULL,sampint=NULL,allocate=1){
 
       }
 	ageSS<-seq(minss,maxss,sampint)               
-	D<-round(sqrt(sum(Va)/ageSS+sum(Ba)/lss),3)	
+	D<-round(sqrt(sum(Va)/ageSS+sum(Ba)/lss),4)	
       dd<-as.data.frame(cbind(ageSS,D))
       names(dd)<-c("age sample size","D")
       SS<-c(paste("D statistic for L=",lss,ifelse(allocate==1,

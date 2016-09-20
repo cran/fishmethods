@@ -52,7 +52,7 @@ graph = TRUE)
 Quang C. Huynh of Virginia Institute of Marine Science}
 \note{ Todd Gedamke provided the predicted mean length code in C++.
 }
-\seealso{\code{\link{bheq1}} \code{\link{bheq2}}}
+\seealso{\code{\link{bheq}}}
 \examples{data(goosefish)
 bhnoneq(year=goosefish$year,mlen=goosefish$mlen, ss=goosefish$ss,
 K=0.108,Linf=126,Lc=30,nbreaks=1,styrs=c(1982),stZ=c(0.1,0.3))

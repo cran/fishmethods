@@ -62,14 +62,14 @@ known.  This model assumes that tagged fish are fully-recruited to the fishery a
 the year.  Similar to Hoenig et al. (1998), observed recovery matrices from the harvest and catch/release fish with 
 removed tags are compared to expected recovery matrices to estimate model parameters. Asymmetric recovery matrices 
 are allowed (recovery years > release years). All summary statistics follow Burnham and Anderson (2002).  Model 
-degrees of freedom are calculated as the number of non-zero cells from the harvested and released recovery matrices 
-minus the number of estimated parameters. Total chi-square is calculated by summing cell chi-square values for all 
-non-zero observed cells of the harvest, released, and not seen matrices. C-hat, a measure of overdispersion, is 
-estimated by dividing the total chi-square value by the model degrees of freedom. Pooling of cells to achieve an 
-expected cell value of 1 is performed and pooled chi-square and c-hat metrics are additionally calculated.
-Pearson residuals are calculated by subtracting the observed numbers of recoveries in each cell from the predicted 
-numbers of recoveries and dividing each cell by the square-root of the predicted cell value. The variance of 
-instantaneous total mortality (Z) is calculated by \code{varF + hmrate^2*varFA + varM + 2*sum(cov(F,M)+
+degrees of freedom are calculated as the number of cells from the harvested and released recapture matrices 
+and not-seen vector minus the number of estimated parameters. Total chi-square is calculated by summing cell 
+chi-square values for all cells of the harvest, released, and not seen matrices. C-hat, a measure 
+of overdispersion, is estimated by dividing the total chi-square value by the model degrees of freedom. Pooling 
+of cells to achieve an expected cell value of 1 is performed and pooled chi-square and c-hat metrics are 
+additionally calculated.Pearson residuals are calculated by subtracting the observed numbers of recoveries in each 
+cell from the predicted numbers of recoveries and dividing each cell by the square-root of the predicted cell value. 
+The variance of instantaneous total mortality (Z) is calculated by \code{varF + hmrate^2*varFA + varM + 2*sum(cov(F,M)+
 hmrate^2*cov(F,FA)+hmrate^2*cov(FA,M))}, and the variance of survival (S) is calculated from Z using the delta method.  
 The \code{optim} routine is used to find the parameters that minimize the -1*negative log-likelihood.
 

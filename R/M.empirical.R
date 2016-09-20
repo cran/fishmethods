@@ -1,6 +1,6 @@
 
 M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,T=NULL,tmax=NULL,tm=NULL,GSI=NULL,
-      Wdry=NULL,Wwet=NULL,Bl=NULL, method=c(1,2,3,4,5,6,7,8,9)){
+      Wdry=NULL,Wwet=NULL,Bl=NULL, method=c(1,2,3,4,5,6,7,8,9,10,11)){
    if(any(method==1) & any(is.null(Linf),is.null(Kl),is.null(T)))
            stop("Method 1 requires Linf, Kl, and T")
     if(any(method==2) & any(is.null(Winf),is.null(Kw),is.null(T)))
@@ -19,6 +19,10 @@ M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,T=NULL,tmax=NULL,tm=NU
            stop("Method 8 requires Wwet")
    if(any(method==9) & any(is.null(Linf),is.null(Kl),is.null(Bl)))
            stop("Method 9 requires Linf, Kl, and Bl")
+   if(any(method==10) & is.null(tmax))
+           stop("Method 10 requires tmax")
+   if(any(method==11) & any(is.null(Linf),is.null(Kl)))
+           stop("Method 11 requires Linf and Kl")
 
 
     n<-length(method)
@@ -78,6 +82,16 @@ M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,T=NULL,tmax=NULL,tm=NU
       cnt<-cnt+1
       out[cnt,1]<-round(exp(0.55-1.61*log(Bl)+1.44*log(Linf)+log(Kl)),3)
       dimnames(out)[[1]][cnt]<-list("Gislason et al. (2010)")
+     }
+     if(any(method==10)){
+      cnt<-cnt+1
+      out[cnt,1]<-round(4.899*tmax^-0.916,3)
+      dimnames(out)[[1]][cnt]<-list("Then et al. (2015)-tmax")
+     }
+     if(any(method==11)){
+      cnt<-cnt+1
+      out[cnt,1]<-round(4.118*(Kl^0.73)*(Linf^-0.33),3)
+      dimnames(out)[[1]][cnt]<-list("Then et al. (2015)-growth")
      }
 
     return(out)

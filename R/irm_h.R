@@ -286,102 +286,104 @@ irm_h<-function(relyrs=NULL,recapyrs=NULL,N=NULL,recapharv=NULL,lambda=NULL,phi=
    	} 
 ############DIAGNOSTICS#####################################
 ####calc_Chisquare
-   	styrR<-1;endyrR<-relyrs[2]-relyrs[1]+1
-      styr<-1;endyr<-recapyrs[2]-recapyrs[1]+1
-	exp_r_h<-array(NA,dim=c(endyrR,endyr))
- 	cnt<-0;up_count<-0
- 	for (t in styrR:endyrR){
-    		for (y in as.numeric(styr+cnt):endyr) {
-       		up_count<-up_count+1 
-      	}	
-      	cnt<-cnt+1
-   	}
- 	cnt<-0
- 	for (t in styrR:endyrR){
-    		for (y in as.numeric(styr+cnt):endyr){
-       		exp_r_h[t,y]<-exp_prob_h[t,y]*N[t]
-      	}	
-    		cnt<-cnt+1
-   	}
-  	cnt<-0
-    	chi_h<-array(NA,dim=c(endyrR,endyr))
-  	chi_ns<-NULL
-  	pear_h<-array(NA,dim=c(endyrR,endyr))
-  	pear_ns<-NULL
-  	exp_ns<-NULL
-  	for (t in styrR:endyrR){
-    		for (y in as.numeric(styr+cnt):endyr){
-        		chi_h[t,y]<-(recapharv[t,y]-exp_r_h[t,y])^2/exp_r_h[t,y]
-        		pear_h[t,y]<-(recapharv[t,y]-exp_r_h[t,y])/sqrt(exp_r_h[t,y])
-      	}	
-     		cnt<-cnt+1
-   	}
-  	for (t in styrR:endyrR){
-      	exp_ns[t]<-N[t]*(1-sum_prob_h[t])
-   	}
-  #Not seen chi
-  	for (t in styrR:endyrR){
-        chi_ns[t]<-0
-        chi_ns[t]<-((N[t]-tags[t])-exp_ns[t])^2/exp_ns[t]
-        pear_ns[t]<-((N[t]-tags[t])-exp_ns[t])/sqrt(exp_ns[t])
-   	}
+styrR<-1;endyrR<-relyrs[2]-relyrs[1]+1
+styr<-1;endyr<-recapyrs[2]-recapyrs[1]+1
+exp_r_r<-array(NA,dim=c(endyrR,endyr))
+exp_r_h<-array(NA,dim=c(endyrR,endyr))
+cnt<-0;up_count<-0
+cnt<-0
+for (t in styrR:endyrR){
+  for (y in as.numeric(styr+cnt):endyr){
+    exp_r_h[t,y]<-exp_prob_h[t,y]*N[t]
+  }	
+  cnt<-cnt+1
+}
+cnt<-0
+chi_h<-array(0,dim=c(endyrR,endyr))
+chi_ns<-NULL
+pear_h<-array(0,dim=c(endyrR,endyr))
+pear_ns<-NULL
+exp_ns<-NULL
+for (t in styrR:endyrR){
+  for (y in as.numeric(styr+cnt):endyr){
+    if(exp_r_h[t,y]>0){
+      pear_h[t,y]<-(recapharv[t,y]-exp_r_h[t,y])/sqrt(exp_r_h[t,y])
+      chi_h[t,y]<-(recapharv[t,y]-exp_r_h[t,y])^2/exp_r_h[t,y]
+      up_count<-up_count+1
+    }
+  }	
+  cnt<-cnt+1
+}
+for (t in styrR:endyrR){
+  exp_ns[t]<-N[t]*(1-(sum_prob_h[t]))
+}
+#Not seen chi
+ns_count<-0
+for (t in styrR:endyrR){
+    ns_count<-ns_count+1
+    chi_ns[t]<-0
+    chi_ns[t]<-((N[t]-tags[t])-exp_ns[t])^2/exp_ns[t]
+    pear_ns[t]<-((N[t]-tags[t])-exp_ns[t])/sqrt(exp_ns[t])
+}
 ####total chi square
- 	up_chi<-sum(chi_h,na.rm=T)+sum(chi_ns,na.rm=T)
- 	K<-length(Fyr)+length(Myr)
- 	up_df<-up_count*2-K;
- 	up_chat<-up_chi/up_df
- 	AIC<-2*results$value+2*K
- 	AICc<-AIC+(2*K*(K+1))/(sum(N)-K-1)
+up_chi<-sum(chi_h,na.rm=T)+sum(chi_ns,na.rm=T)
+K<-length(Fyr)+length(Myr)
+up_df<-up_count+ns_count-K;
+up_chat<-up_chi/up_df
+AIC<-2*results$value+2*K
+AICc<-AIC+(2*K*(K+1))/(sum(N)-K-1)
 #####calc_pooled_cells
 # Pool harvested cells
-   	pool_h_e<-array(NA,dim=c(endyrR,endyr))
-   	pool_h<-array(NA,dim=c(endyrR,endyr))
-  	cnt<-0
-  	for (t in styrR:endyrR){ 
-      	for(y in as.numeric(styr+cnt):endyr){
-            	pool_h_e[t,y]<-0
-            	pool_h[t,y]<-0
-            	pool_h_e[t,y]<-exp_r_h[t,y]
-            	pool_h[t,y]<-recapharv[t,y]   
-        	}
-      	cnt<-cnt+1
-   	}
-  	cnt<-0
-  	hless<-0
-  	for(t in styrR:endyrR){    
-    		for(y in endyr:as.numeric(styr+cnt)){
-          		if(pool_h_e[t,y]>=1){
-             		pool_h[t,y]<-pool_h[t,y]
-             		pool_h_e[t,y]<-pool_h_e[t,y]
-            	}
-          		if(pool_h_e[t,y]>=0 & pool_h_e[t,y]<1){ 
- 		  		if (y!=as.numeric(styr+cnt)){
-               		 	hless<-hless+1
-                			pool_h_e[t,y-1]<-pool_h_e[t,y-1]+pool_h_e[t,y]
-                			pool_h[t,y-1]<-pool_h[t,y-1]+pool_h[t,y]
-                			pool_h[t,y]<-0
-                			pool_h_e[t,y]<-0
-               		}
-               	if (y==as.numeric(styr+cnt)) next #change from break
-            	}
-         	}
-         	cnt<-cnt+1
-     }
-   	p_df<-up_df
+pool_h_e<-array(0,dim=c(endyrR,endyr))
+pool_h<-array(0,dim=c(endyrR,endyr))
+cnt<-0
+for (t in styrR:endyrR){ 
+  for(y in as.numeric(styr+cnt):endyr){
+    pool_h_e[t,y]<-0
+    pool_h[t,y]<-0
+    pool_h_e[t,y]<-exp_r_h[t,y]
+    pool_h[t,y]<-recapharv[t,y]   
+  }
+  cnt<-cnt+1
+}
+cnt<-0
+hess<-0
+for(t in styrR:endyrR){    
+  for(y in endyr:as.numeric(styr+cnt)){
+    if(pool_h_e[t,y]>=2){
+      pool_h[t,y]<-pool_h[t,y]
+      pool_h_e[t,y]<-pool_h_e[t,y]
+    }
+    if(pool_h_e[t,y]>=0 & pool_h_e[t,y]<2){ 
+      if (y!=as.numeric(styr+cnt)){
+        hess<-hess+1
+        pool_h_e[t,y-1]<-pool_h_e[t,y-1]+pool_h_e[t,y]
+        pool_h[t,y-1]<-pool_h[t,y-1]+pool_h[t,y]
+        pool_h[t,y]<-0
+        pool_h_e[t,y]<-0
+      }
+      if (y==as.numeric(styr+cnt)) next #change from break
+    }
+  }
+  cnt<-cnt+1
+}
+p_df<-up_count+ns_count-hess-K
 ####Pooled Chi-square
-   	p_chi_h<-array(NA,dim=c(endyrR,endyr))
-   	cnt<-0
-   	for (t in styrR:endyrR) {
-    		for (y in as.numeric(styr+cnt):endyr){
-        		p_chi_h[t,y]<-0
-        		if(pool_h_e[t,y]!=0){
-          			p_chi_h[t,y]<-(pool_h[t,y]-pool_h_e[t,y])^2/pool_h_e[t,y]
-         		}
-	     	}	
-      	cnt<-cnt+1
-	}
-  	p_chi<-sum(p_chi_h,na.rm=T)+sum(chi_ns,na.rm=T)
-  	p_chat<-p_chi/p_df
+p_chi_h<-array(0,dim=c(endyrR,endyr))
+p_chi_r<-array(0,dim=c(endyrR,endyr))
+cnt<-0
+for (t in styrR:endyrR) {
+  for (y in as.numeric(styr+cnt):endyr){
+    p_chi_h[t,y]<-0
+    p_chi_r[t,y]<-0
+    if(pool_h[t,y]>0){
+      p_chi_h[t,y]<-(pool_h[t,y]-pool_h_e[t,y])^2/pool_h_e[t,y]
+    }
+  }	
+  cnt<-cnt+1
+}
+p_chi<-sum(p_chi_h,na.rm=T)+sum(chi_ns,na.rm=T)
+p_chat<-p_chi/p_df
 ###########################Output##################################
      if(results$convergence==0) mess<-"Successful."
      if(results$convergence==1) mess<-"Maximum Iterations Reached."
@@ -392,7 +394,7 @@ irm_h<-function(relyrs=NULL,recapyrs=NULL,N=NULL,recapharv=NULL,lambda=NULL,phi=
 	ans$statistics<-rbind(round(results$value*-1,3),round(K,0),round(AIC,2),round(AICc,2)
                   ,round(sum(N,0)),round(up_chi,2),round(up_df,0),round(up_chat,3),round(p_chi,2)
                   ,round(p_df,0),round(p_chat,3))   
-	dimnames(ans$statistics)<-list(c("Neg. Log-Likelihood","K","AIC","AICc","Eff. Sample Size","Unpooled Chi-square",
+	dimnames(ans$statistics)<-list(c("Log-Likelihood","K","AIC","AICc","Eff. Sample Size","Unpooled Chi-square",
               "Unpooled df","Unpooled c-hat","Pooled Chi-square","Pooled df","Pooled c-hat"))
 	dimnames(ans$statistics)[[2]][1]<-list(c("Value"))
       ans$model_convergence<-mess
@@ -421,4 +423,3 @@ irm_h<-function(relyrs=NULL,recapyrs=NULL,N=NULL,recapharv=NULL,lambda=NULL,phi=
   }#calc.outpt
  	calc.outpt()
 }
-

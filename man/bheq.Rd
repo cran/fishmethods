@@ -1,18 +1,19 @@
-\name{bheq1}
-\alias{bheq1}
+\name{bheq}
+\alias{bheq}
 \title{Length-based Beverton-Holt Equilibrium Total Instantaneous Mortality Estimator}
 \description{
-  The equilibrium Beverton-Holt estimator of instantaneous total mortality (Z) from 
-  length data with bootstrapped standard errors
+  Calculate the equilibrium Beverton-Holt estimator of instantaneous total mortality (Z) from length data with bootstrapped standard errors or the same using the Ehrhardt and Ault(1992) bias-correction 
 }
 \usage{
-bheq1(len, K = NULL, Linf = NULL, Lc = NULL, nboot = 100)
+bheq(len, type = c(1,2), K = NULL, Linf = NULL, Lc = NULL, La = NULL, nboot = 100)
 }
 \arguments{
   \item{len}{the vector of length data. Each row represents one record per individual fish.}
+  \item{type}{numeric indicate which estimation method to use. 1 = Beverton-Holt, 2 = Beverton-Holt with bias correction. Default is both, c(1,2).}
   \item{K}{the growth coefficient from a von Bertalanffy growth model.}
   \item{Linf}{the L-infinity coefficient from a von Bertalanffy growth model.}
   \item{Lc}{the length at first capture.}
+ \item{La}{the largest length of the largest size class.}
   \item{nboot}{the number of bootstrap runs. Default=100.}
 }
 \details{
@@ -23,10 +24,15 @@ bheq1(len, K = NULL, Linf = NULL, Lc = NULL, nboot = 100)
 }
 \value{Dataframe of length 1 containing mean length>=Lc, sample size>=Lc, Z estimate and standard error.
 }
-\references{Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford University Press, New York, New York. 542 pages}
+\references{Ehrhardt, N. M. and J. S. Ault. 1992. Analysis of two length-based mortality models applied to bounded
+catch length frequencies. Trans. Am. Fish. Soc. 121:115-122.
+
+Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford University Press, New York, New York. 542 pages.
+
+}
 \author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
-\seealso{\code{\link{bheq2}} \code{\link{bhnoneq}}}
+\seealso{\code{\link{bhnoneq}}}
 \examples{data(pinfish)
-bheq1(pinfish$sl,K=0.33,Linf=219.9,Lc=120,nboot=200)
+bheq(pinfish$sl,type=1,K=0.33,Linf=219.9,Lc=120,nboot=200)
 }
 \keyword{misc}
