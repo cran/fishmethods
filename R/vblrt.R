@@ -1,5 +1,4 @@
-
-vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t0=NULL,plottype=0,
+vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=c(NULL),K=c(NULL),t0=c(NULL),plottype=0,
                 control=list(maxiter=10000,minFactor=1/1024,tol=1e-5)){
    if(is.null(len)) 
          stop ("len is missing") 
@@ -8,235 +7,263 @@ vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=NULL,K=NULL,t
    if(is.null(group)) 
          stop ("group is missing.") 
    if(length(age)!=length(len)) stop ("Vectors of different lengths")
-   if(nlevels(as.factor(group))>2) stop("Only two groups allowed in data")
+    ngroups<-nlevels(as.factor(group)) 
+    if(nlevels(as.factor(group))<2) stop("Only two or more groups are allowed.")
    if(select==2 & (is.null(Linf)|is.null(K)|is.null(t0))) stop("User-specified values of Linf, K, and t0 are required")
-   
-   cat<-as.integer(as.factor(group))-1 
+   cat<-as.data.frame(model.matrix(lm(age~as.factor(group))))
+x2<-NULL;wgt<-NULL  
+ names(cat)<-levels(group)
      	x<-as.data.frame(cbind(len,age,cat))
-      x<-x[!is.na(x$len) & !is.na(x$age) & !is.na(x$cat),]
-    wgt<-NULL
-  if(select==1){ 
-      m1xt<-NULL;m2xt<-NULL;mbxt<-NULL
-      g1<-aggregate(x$len,list(x$cat,trunc(x$age)),mean)
-      m1<-g1[g1[,1]==0,];m2<-g1[g1[,1]==1,]
-      m1t<-m1[,c(2:3)];m1t[,1]<-m1t[,1]-1; m2t<-m2[,c(2:3)];m2t[,1]<-m2t[,1]-1
-      m1xt<-merge(m1,m1t,by.x=c("Group.2"),by.y=c("Group.2"))
-      out1<-lm(m1xt[,4]~m1xt[,3])
-      K1<-abs(log(coef(out1)[2]));L1<--coef(out1)[1]/(coef(out1)[2]-1)
-      dx1<-as.data.frame(cbind(L1-m1$x,m1[,2]));dx1<-dx1[dx1[,1]>0,]
-      t01<-(coef(lm(log(dx1[,1])~dx1[,2]))[1]-log(L1))/K1
-
-      m2xt<-merge(m2,m2t,by.x=c("Group.2"),by.y=c("Group.2"))
-      out2<-lm(m2xt[,4]~m2xt[,3])
- 	K2<-abs(log(coef(out2)[2]));L2<--coef(out2)[1]/(coef(out2)[2]-1)
-      dx2<-as.data.frame(cbind(L2-m2$x,m2[,2]));dx2<-dx2[dx2[,1]>0,]
-      t02<-(coef(lm(log(dx2[,1])~dx2[,2]))[1]-log(L2))/K2
-
-      g2<-aggregate(x$len,list(round(x$age,0)),mean)
-      mbt<-g2;mbt[,1]<-mbt[,1]-1
-      mbxt<-merge(g2,mbt,by.x=c("Group.1"),by.y=c("Group.1"))
-      outboth<-lm(mbxt[,3]~mbxt[,2])
-      Kboth<-abs(log(coef(outboth)[2]));Lboth<--coef(outboth)[1]/(coef(outboth)[2]-1)
- 	dxb<-as.data.frame(cbind(Lboth-g2$x,g2[,1]));dxb<-dxb[dxb[,1]>0,]
-      t0b<-(coef(lm(log(dxb[,1])~dxb[,2]))[1]-log(Lboth))/Kboth
-      Ld<-L2-L1;Kd<-K2-K1;td<-t02-t01
-    }
-    if(select==2){
-         L1<-L2<-Lboth<-Linf; K1<-K2<-Kboth<-K;t01<-t02<-t0b<-t0
-         Ld<-L2-L1;Kd<-K2-K1;td<-t02-t01
+      index<-as.numeric(which(is.na(x),arr.ind=TRUE))[1]
+     	if(!is.na(index)) x<-x[-index,]
+          storeLinf<-NULL; storeK<-NULL;storet0<-NULL
+           subcats<-sapply(2:ncol(x),function(y) list(x[,y]))
+           subcats<-subcats[c(2:length(subcats),1)]
+           subcats[[ngroups+1]]<-trunc(subcats[[ngroups+1]])
+           g1<-aggregate(x[,1],subcats,mean)
+           names(g1)[ngroups+1]<-"age"
+           for(t in 2:ngroups){
+             m1<-g1[g1[,t]==1,]
+             m1$x2<-NA
+             m1$x2[1:c(length(m1$x)-1)]<-m1$x[2:c(length(m1$x))]   
+             out1<-lm(x~x2,data=m1,subset=(!is.na(x2)))
+             KK<-abs(log(coef(out1)[2]))
+             LI<--coef(out1)[1]/(coef(out1)[2]-1)
+             dx1<-as.data.frame(cbind(LI-m1$x,m1$age));dx1<-dx1[dx1[,1]>0,]
+             t0d<-(coef(lm(log(dx1[,1])~dx1[,2]))[1]-log(LI))/KK
+             storeLinf<-c(storeLinf,as.numeric(LI))
+             storeK<-c(storeK,as.numeric(KK))
+             storet0<-c(storet0,as.numeric(t0d))
+           }
+      if(select==1){ 
+        Lparms<-c(max(storeLinf),-(max(storeLinf)-storeLinf))
+        Kparms<-c(max(storeK),max(storeK)-storeK)
+        indexs<-which(abs(storet0)==max(abs(storet0)))
+        t0parms<-c(storet0[indexs],storet0[indexs]-storet0)
       }
-      if(error==1) x$wgt<-1
- 	if(error==2){
-         x<-aggregate(x$len,list(x$cat,x$age),mean)
-         names(x)<-c("cat","age","len")
+    if(select==2){
+      if(length(Linf)!=ngroups) stop("Number of Linfs does not match number of groups")
+      if(length(K)!=ngroups) stop("Number of Ks does not match number of groups")
+      if(length(t0)!=ngroups) stop("Number of t0s does not match number of groups")
+      Lparms<-c(Linf[1],Linf[1]-Linf[2:ngroups])
+      Kparms<-c(K[1],K[1]-K[2:ngroups])
+      t0parms<-c(t0[1],t0[1]-t0[2:ngroups])
+  
+    }
+     
+    if(error==1) x$wgt<-1
+      if(error==2){
+ 	    subcats<-sapply(2:ncol(x),function(y) list(x[,y]))
+ 	    subcats<-subcats[c(2:length(subcats),1)]
+ 	       x<-aggregate(x$len,subcats,mean)
+         names(x)<-c(levels(group),"age","len")
+         x<-x[,c("len","age",levels(group))]
          x$wgt<-1
+         
         }
       if(error==3){
-         d4<-merge(aggregate(x$len,list(x$cat,x$age),mean),
-           aggregate(x$len,list(x$cat,x$age),var),by.y=c("Group.1","Group.2"),
-           by.x=c("Group.1","Group.2"))
-	   d4<-merge(d4,aggregate(x$len,list(x$cat,x$age),length),by.y=c("Group.1","Group.2"),by.x=c("Group.1","Group.2"))
-         names(d4)<-c("cat","age","len","s2","n")
-         x<-d4
-         x$wgt<-x$n/x$s2 
+        subcats<-sapply(2:ncol(x),function(y) list(x[,y]))
+        subcats<-subcats[c(2:length(subcats),1)]
+        d1<-aggregate(x$len,subcats,mean,na.rm=TRUE)
+        names(d1)<-c(levels(group),"age","len")
+        d2<-aggregate(x$len,subcats,var,na.rm=TRUE)
+        names(d2)<-c(levels(group),"age","s2")
+        
+        d3<-aggregate(x$len,subcats,length)
+        names(d3)<-c(levels(group),"age","n")
+        d4<-merge(d1,d2,by.x=c(levels(group),"age"),by.y=c(levels(group),"age"))
+        d4<-merge(d3,d4,by.x=c(levels(group),"age"),by.y=c(levels(group),"age"))
+        d4$wgt<-d4$n/d4$s2 
+        x<-d4[,c("len","age",levels(group),"wgt")]
          if(any(is.na(x$wgt))) stop("At least one age has a single length observation. Need at least two observations to calculate variance." )
+      }
+      Linfs<-NULL;Ks<-NULL;t0s<-NULL     
+      for(pp in 1:length(Lparms)){
+        if(pp<length(Lparms)){
+          Linfs<-c(Linfs,paste("Linf",pp,"=",round(Lparms[pp],3),",",sep="")) 
+          Ks<-c(Ks,paste("K",pp,"=",round(Kparms[pp],3),",",sep=""))
+          t0s<-c(t0s,paste("t0",pp,"=",round(t0parms[pp],3),",",sep=""))
         }
-  	 Ho<-nls(len~(Linf+ls*cat)*(1-exp(-(K+ks*cat)*(age-(t0+ts*cat)))),data=x,       
-        	 weights=wgt,start=list(Linf=L1,ls=Ld,K=K1,ks=Kd,t0=t01,ts=td),
-             control=control)
-             resid0<-residuals(Ho)
- 	 H1<-nls(len~Linf*(1-exp(-(K+ks*cat)*(age-(t0+ts*cat)))),data=x,        
-		weights=wgt,start=list(Linf=Lboth,K=K1,ks=Kd,t0=t01,ts=td),
-            control=control)
-	    resid1<-residuals(H1)  
- 	 H2<-nls(len~(Linf+ls*cat)*(1-exp(-K*(age-(t0+ts*cat)))),data=x,       
-		weights=wgt,start=list(Linf=L1,ls=Ld,K=Kboth,t0=t01,ts=td),
-             control=control)
-         resid2<-residuals(H2)
-    	 H3<-nls(len~(Linf+ls*cat)*(1-exp(-(K+ks*cat)*(age-t0))),data=x,       
-         	weights=wgt,start=list(Linf=L1,ls=Ld,K=K1,ks=Kd,t0=t0b),
-             control=control)
-         resid3<-residuals(H3)
-  	 H4<-nls(len~Linf*(1-exp(-K*(age-t0))),data=x ,      
-       	  weights=wgt,start=list(Linf=Lboth,K=Kboth,t0=t0b),
-              control=control)
+        if(pp==length(Lparms)){
+          Linfs<-c(Linfs,paste("Linf",pp,"=",round(Lparms[pp],3),sep="")) 
+          Ks<-c(Ks,paste("K",pp,"=",round(Kparms[pp],3),sep=""))
+          t0s<-c(t0s,paste("t0",pp,"=",round(t0parms[pp],3),sep=""))
+        }
+      }
+      Linfs<-paste(Linfs,collapse="")
+      Ks<-paste(Ks,collapse="")
+      t0s<-paste(t0s,collapse="")
+      pL<-paste("Linf",1:ngroups,"*",names(x)[3:c(ncol(x)-1)],sep="")
+      pL<-paste(c(paste(pL[1:c(ngroups-1)],"+",sep=""),pL[ngroups]),collapse="")
+      pK<-paste("K",1:ngroups,"*",names(x)[3:c(ncol(x)-1)],sep="")
+      pK<-paste(c(paste(pK[1:c(ngroups-1)],"+",sep=""),pK[ngroups]),collapse="")
+      pt0<-paste("t0",1:ngroups,"*",names(x)[3:c(ncol(x)-1)],sep="")
+      pt0<-paste(c(paste(pt0[1:c(ngroups-1)],"+",sep=""),pt0[ngroups]),collapse="")
+      
+      
+    # Full model
+      starts<-paste("list(",Linfs,",",Ks,",",t0s,")",sep="",collapse="")
+      equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+      Ho<-try(nls(eval(parse(text=equat)),data=x,       
+        	 weights=wgt,start=eval(parse(text=starts)),
+             control=control),silent=TRUE)
+      if(class(Ho)=="try-error") stop(paste("Ho: ",attributes(Ho)[2],sep=""))
+      resid0<-residuals(Ho)
+      AICo<-AIC(Ho)
+    # H1
+      Linf1<-substr(Linfs,1,c(gregexpr(pattern =',',Linfs)[[1]][1]-1))
+      pK<-paste("K",1:ngroups,"*",names(x)[3:c(ncol(x)-1)],sep="")
+      pK<-paste(c(paste(pK[1:c(ngroups-1)],"+",sep=""),pK[ngroups]),collapse="")
+      pt0<-paste("t0",1:ngroups,"*",names(x)[3:c(ncol(x)-1)],sep="")
+      pt0<-paste(c(paste(pt0[1:c(ngroups-1)],"+",sep=""),pt0[ngroups]),collapse="")
+      pL<-paste("Linf",1,"*",names(x)[3],sep="")
+      starts<-paste("list(",Linf1,",",Ks,",",t0s,")",sep="",collapse="")
+      equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+      H1<-try(nls(eval(parse(text=equat)),data=x,        
+		       weights=wgt,start=eval(parse(text=starts)),control=control),silent=TRUE)
+      if(class(H1)=="try-error") stop(paste("H1: ",attributes(H1)[2],sep=""))
+	    resid1<-residuals(H1)
+	    AIC1<-AIC(H1)
+	#H2
+	    K2<-substr(Ks,1,c(gregexpr(pattern =',',Ks)[[1]][1]-1))
+	    pK<-paste("K",1,"*",names(x)[3],sep="")
+	    pL<-paste("Linf",1:ngroups,"*",names(x)[3:c(ncol(x)-1)],sep="")
+	    pL<-paste(c(paste(pL[1:c(ngroups-1)],"+",sep=""),pL[ngroups]),collapse="")
+	    pt0<-paste("t0",1:ngroups,"*",names(x)[3:c(ncol(x)-1)],sep="")
+	    pt0<-paste(c(paste(pt0[1:c(ngroups-1)],"+",sep=""),pt0[ngroups]),collapse="")
+	    
+	    starts<-paste("list(",Linfs,",",K2,",",t0s,")",sep="",collapse="")
+	    equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+ 	    H2<-try(nls(eval(parse(text=equat)),data=x,       
+ 	         weights=wgt,start=eval(parse(text=starts)),
+ 	         control=control),silent=TRUE)
+ 	    if(class(H2)=="try-error") stop(paste("H2: ",attributes(H2)[2],sep=""))
+     resid2<-residuals(H2)
+     AIC2<-AIC(H2)
+               
+# H3      
+     pL<-paste("Linf",1:ngroups,"*",names(x)[3:c(ncol(x)-1)],sep="")
+     pL<-paste(c(paste(pL[1:c(ngroups-1)],"+",sep=""),pL[ngroups]),collapse="")
+     pK<-paste("K",1:ngroups,"*",names(x)[3:c(ncol(x)-1)],sep="")
+     pK<-paste(c(paste(pK[1:c(ngroups-1)],"+",sep=""),pK[ngroups]),collapse="")
+     t01<-substr(t0s,1,c(gregexpr(pattern =',',t0s)[[1]][1]-1))
+     pt0<-paste("t0",1,"*",names(x)[3],sep="")
+     starts<-paste("list(",Linfs,",",Ks,",",t01,")",sep="",collapse="")
+     equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+     H3<-try(nls(eval(parse(text=equat)),data=x,       
+    	         weights=wgt,start=eval(parse(text=starts)),
+    	         control=control),silent=TRUE)
+     if(class(H3)=="try-error") stop(paste("H3: ",attributes(H3)[2],sep=""))
+     resid3<-residuals(H3)
+     AIC3<-AIC(H3)
+     #H4
+     t01<-substr(t0s,1,c(gregexpr(pattern =',',t0s)[[1]][1]-1))
+     Linf1<-substr(Linfs,1,c(gregexpr(pattern =',',Linfs)[[1]][1]-1))
+     K1<-substr(Ks,1,c(gregexpr(pattern =',',Ks)[[1]][1]-1))
+     pL<-paste("Linf",1,"*",names(x)[3],sep="")
+     pK<-paste("K",1,"*",names(x)[3],sep="")
+     pt0<-paste("t0",1,"*",names(x)[3],sep="")
+     starts<-paste("list(",Linf1,",",K1,",",t01,")",sep="",collapse="")
+        equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+    H4<-try(nls(eval(parse(text=equat)),data=x,       
+                weights=wgt,start=eval(parse(text=starts)),
+                control=control),silent=TRUE)
+    if(class(H4)=="try-error") stop(paste("H4: ",attributes(H4)[2],sep=""))
          resid4<-residuals(H4)
+         AIC4<-AIC(H4)
   	 RSS<-c(sum(residuals(Ho)^2),sum(residuals(H1)^2),sum(residuals(H2)^2),
              sum(residuals(H3)^2),sum(residuals(H4)^2))
-
- 	 N<-length(residuals(Ho))
+ 	   N<-length(residuals(Ho))
   	 X<-round(c(-N*log(RSS[1]/RSS[2]),-N*log(RSS[1]/RSS[3]),-N*log(RSS[1]/RSS[4]),
              -N*log(RSS[1]/RSS[5])),2)
   	 df<-c(length(coef(Ho))-length(coef(H1)),length(coef(Ho))-length(coef(H2)),
        	length(coef(Ho))-length(coef(H3)),length(coef(Ho))-length(coef(H4)))
   	 p<-round(1-pchisq(X,df),3)
-
+     AICC<-c(round(AICo,2),round(AIC1,2),round(AIC2,2),round(AIC3,2),round(AIC4,3))
       labs<-c("Ho","H1","H2","H3","H4")
-      hyp<-c("Linf1=Linf2","K1=K2","t01=t02","Linf1=Linf2,K1=K2,t01=t02")
+      Llabs<-paste(c(paste("Linf",1:c(ngroups-1),"=",sep=""),paste("Linf",ngroups,sep="")),collapse="")
+      Klabs<-paste(c(paste("K",1:c(ngroups-1),"=",sep=""),paste("K",ngroups,sep="")),collapse="")
+      t0labs<-paste(c(paste("t0",1:c(ngroups-1),"=",sep=""),paste("t0",ngroups,sep="")),collapse="")
+      
+      hyp<-c(Llabs,Klabs,t0labs,paste(Llabs,",",Klabs,",",t0labs,sep=""))
       labels<-c("Ho vs H1","Ho vs H2","Ho vs H3","Ho vs H4")
       compout<-data.frame(tests=labels,hypothesis=hyp,chisq=X,df=df,p=p)
-      rss<-as.data.frame(cbind(labs,RSS));names(rss)<-c("model","rss")
+      rss<-as.data.frame(cbind(labs,RSS,AICC));names(rss)<-c("model","rss","AIC")
       residuals_all<-as.data.frame(cbind(resid0,resid1,resid2,resid3,resid4))
       nlsout<-list(compout,summary(Ho),summary(H1),summary(H2),summary(H3), summary(H4),
              rss,residuals_all)
       names(nlsout)<-c("results",c(paste("model",labs)),"rss","residuals")
     # Plot observed versus predicted
     if (plottype>0){
-      if (plottype==1){
- 		par(mfrow=c(3,2))
-		plotages<-seq(min(x$age),max(x$age)+1,1)
-          # Ho model
-	     Linf1<-nlsout$'model Ho'$coefficients[1]
-		K1<-nlsout$'model Ho'$coefficients[3]
-		t01<-nlsout$'model Ho'$coefficients[5]
-		Linf2<-Linf1+nlsout$'model Ho'$coefficients[2]
-		K2<-K1+nlsout$'model Ho'$coefficients[4]
-		t02<-t01+nlsout$'model Ho'$coefficients[6]
-		plot(len~age,data=x[x$cat==0,],main=paste("Ho Model ",levels(group)[1],"=black ", levels(group)[2],"=red"),xlab="Age",ylab="Length",ylim=c(0,max(x$len)))
-		points(len~age,data=x[x$cat==1,],col="red")
-		lines(Linf1*(1-exp(-K1*(plotages-t01)))~plotages)
-		lines(Linf2*(1-exp(-K2*(plotages-t02)))~plotages,col="red")
-
-        # H1 model
-	     Linf1<-nlsout$'model H1'$coefficients[1]
-		K1<-nlsout$'model H1'$coefficients[2]
-		t01<-nlsout$'model H1'$coefficients[4]
-		Linf2<-Linf1
-		K2<-K1+nlsout$'model H1'$coefficients[3]
-		t02<-t01+nlsout$'model H1'$coefficients[5]
-		plot(len~age,data=x[x$cat==0,],main=paste("H1 Model ",levels(group)[1],"=black ", levels(group)[2],"=red"),xlab="Age",ylab="Length",ylim=c(0,max(x$len)))
-		points(len~age,data=x[x$cat==1,],col="red",xlab="Age",ylab="Length")
-		lines(Linf1*(1-exp(-K1*(plotages-t01)))~plotages)
-		lines(Linf2*(1-exp(-K2*(plotages-t02)))~plotages,col="red")
-    # H2 model
-	     Linf1<-nlsout$'model H2'$coefficients[1]
-		K1<-nlsout$'model H2'$coefficients[3]
-		t01<-nlsout$'model H2'$coefficients[4]
-		Linf2<-Linf1+nlsout$'model H2'$coefficients[2]
-		K2<-K1
-		t02<-t01+nlsout$'model H2'$coefficients[5]
-		plot(len~age,data=x[x$cat==0,],main=paste("H2 Model ",levels(group)[1],"=black ", levels(group)[2],"=red"),xlab="Age",ylab="Length",ylim=c(0,max(x$len)))
-		points(len~age,data=x[x$cat==1,],col="red")
-		lines(Linf1*(1-exp(-K1*(plotages-t01)))~plotages)
-		lines(Linf2*(1-exp(-K2*(plotages-t02)))~plotages,col="red")
- # H3 model
-	     Linf1<-nlsout$'model H3'$coefficients[1]
-		K1<-nlsout$'model H3'$coefficients[3]
-		t01<-nlsout$'model H3'$coefficients[5]
-		Linf2<-Linf1+nlsout$'model H3'$coefficients[2]
-		K2<-K1+nlsout$'model H3'$coefficients[4]
-		t02<-t01
-	     plot(len~age,data=x[x$cat==0,],main=paste("H3 Model ",levels(group)[1],"=black ", levels(group)[2],"=red"),xlab="Age",ylab="Length",ylim=c(0,max(x$len)))
-		points(len~age,data=x[x$cat==1,],col="red")
-		lines(Linf1*(1-exp(-K1*(plotages-t01)))~plotages)
-		lines(Linf2*(1-exp(-K2*(plotages-t02)))~plotages,col="red")
- # H4 model
-	     Linf1<-nlsout$'model H4'$coefficients[1]
-		K1<-nlsout$'model H4'$coefficients[2]
-		t01<-nlsout$'model H4'$coefficients[3]
-		Linf2<-Linf1
-		K2<-K1
-		t02<-t01
-	    plot(len~age,data=x[x$cat==0,],main=paste("H4 Model ",levels(group)[1],"=black ", levels(group)[2],"=red"),xlab="Age",ylab="Length",ylim=c(0,max(x$len)))
-	    points(len~age,data=x[x$cat==1,],col="red")
-		lines(Linf1*(1-exp(-K1*(plotages-t01)))~plotages)
-		lines(Linf2*(1-exp(-K2*(plotages-t02)))~plotages,col="red")
-      }
+      if(plottype==1){
+ 	      	par(mfrow=c(3,2))
+          primcolors<-c("black","red","green3","salmon","blue","purple","orange","gray36","pink")
+          cols<-primcolors[1:ngroups]
+         for(plotter in 1:5){
+            if(plotter==1) lalab<-"Ho"
+            if(plotter>1) lalab<-paste("H",plotter-1,sep="",collapse="")
+            getpred<-paste("x$pred<-predict(",lalab,")",sep="",collapse="")
+            eval(parse(text=getpred))
+		       for(i in 1:ngroups){
+		        if(i==1){
+		        temp<-data.matrix(x[,4:c(4+ngroups-2)])
+		        keep <- apply(temp, 1, function (y){
+		        all(y==0)})
+		        temp1<-x[keep, ]
+		        temp1<-temp1[order(temp1$age),]
+		        plot(len~age,data=temp1,main=c(paste(lalab," Model",sep="")),lwd=1.5,xlab="Age",ylab="Length",ylim=c(0,max(x$len)),
+		           xlim=c(0,max(x$age)),pch=16)
+		       lines(temp1$pred~temp1$age,col=cols[i])
+		       }
+	    	 if(i>1){
+	    	  temp1<-x[x[,3+i-1]==1,]
+	    	  temp1<-temp1[order(temp1$age),]
+          points(temp1$len~temp1$age,col=cols[i],pch=16)
+	    	  lines(temp1$pred~temp1$age,col=cols[i],lwd=1.5)
+	    	 }
+		  }
+      
+                        
+     } #Plotter loop
+    plot(0,0, type = "n", bty = "n", xaxt = "n", yaxt = "n",col.lab="transparent")
+    legend("topleft", levels(group),bty="n", xpd = TRUE, title="Group",ncol=2, inset = c(0.1,0),x.intersp=0.65,
+    pch=16,cex = 1.5,col=primcolors[1:ngroups])
+      
+		}#plottype==1
    if (plottype==2){
- 		par(mfrow=c(3,2))
-		plotages<-seq(min(x$age),max(x$age)+1,1)
-          # Ho model
-	     Linf1<-nlsout$'model Ho'$coefficients[1]
-		K1<-nlsout$'model Ho'$coefficients[3]
-		t01<-nlsout$'model Ho'$coefficients[5]
-		Linf2<-Linf1+nlsout$'model Ho'$coefficients[2]
-		K2<-K1+nlsout$'model Ho'$coefficients[4]
-		t02<-t01+nlsout$'model Ho'$coefficients[6]
-          obs1<-x[x$cat==0,]
-          obs2<-x[x$cat==1,]
-          res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
-          res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
-         	plot(res1~age,data=x[x$cat==0,],main=paste("Ho Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
-		points(res2~age,data=x[x$cat==1,],col="red")
-          abline(h=0)
-   # H1 model
-	     Linf1<-nlsout$'model H1'$coefficients[1]
-		K1<-nlsout$'model H1'$coefficients[2]
-		t01<-nlsout$'model H1'$coefficients[4]
-		Linf2<-Linf1
-		K2<-K1+nlsout$'model H1'$coefficients[3]
-		t02<-t01+nlsout$'model H1'$coefficients[5]
-		  obs1<-x[x$cat==0,]
-          obs2<-x[x$cat==1,]
-          res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
-          res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
-         	plot(res1~age,data=x[x$cat==0,],main=paste("H1 Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
-		points(res2~age,data=x[x$cat==1,],col="red")
-          abline(h=0)
-    # H2 model
-	     Linf1<-nlsout$'model H2'$coefficients[1]
-		K1<-nlsout$'model H2'$coefficients[3]
-		t01<-nlsout$'model H2'$coefficients[4]
-		Linf2<-Linf1+nlsout$'model H2'$coefficients[2]
-		K2<-K1
-		t02<-t01+nlsout$'model H2'$coefficients[5]
-		  obs1<-x[x$cat==0,]
-          obs2<-x[x$cat==1,]
-          res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
-          res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
-       	plot(res1~age,data=x[x$cat==0,],main=paste("H2 Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
-		points(res2~age,data=x[x$cat==1,],col="red")
-          abline(h=0)
- # H3 model
-	     Linf1<-nlsout$'model H3'$coefficients[1]
-		K1<-nlsout$'model H3'$coefficients[3]
-		t01<-nlsout$'model H3'$coefficients[5]
-		Linf2<-Linf1+nlsout$'model H3'$coefficients[2]
-		K2<-K1+nlsout$'model H3'$coefficients[4]
-		t02<-t01
-		  obs1<-x[x$cat==0,]
-          obs2<-x[x$cat==1,]
-          res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
-          res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
-        	plot(res1~age,data=x[x$cat==0,],main=paste("H3 Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
-		points(res2~age,data=x[x$cat==1,],col="red")
-          abline(h=0)
- # H4 model
-	     Linf1<-nlsout$'model H4'$coefficients[1]
-		K1<-nlsout$'model H4'$coefficients[2]
-		t01<-nlsout$'model H4'$coefficients[3]
-		Linf2<-Linf1
-		K2<-K1
-		t02<-t01
-		obs1<-x[x$cat==0,]
-            obs2<-x[x$cat==1,]
-            res1<-obs1$len-Linf1*(1-exp(-K1*(x[x$cat==0,2]-t01)))
-            res2<-obs2$len-Linf2*(1-exp(-K2*(x[x$cat==1,2]-t02)))
-        	plot(res1~age,data=x[x$cat==0,],main=paste("H4 Model ",levels(group)[1],"=black ", levels(group)[2],"=red") ,xlab="Age",ylab="Residual",ylim=c(-max(abs(res1),abs(res2)),max(abs(res1),abs(res2))))
-		points(res2~age,data=x[x$cat==1,],col="red")
-          abline(h=0)
-      }
-   }
+     par(mfrow=c(3,2))
+     # Ho model
+     primcolors<-c("black","red","green3","salmon","blue","purple","orange","gray36","pink")
+     cols<-primcolors[1:ngroups]
+  for(plotter in 1:5){
+    if(plotter==1) lalab<-"Ho"
+    if(plotter>1) lalab<-paste("H",plotter-1,sep="",collapse="")
+     getpred<-paste("x$pred<-resid(",lalab,")",sep="",collapse="")
+     eval(parse(text=getpred))
+     if(plotter==1) maxres<-max(abs(x$pred))
+     if(plotter>1){
+       maxres<-max(maxres,max(abs(x$pred)))
+     }
+     for(i in 1:ngroups){
+       if(i==1){
+         temp<-data.matrix(x[,4:c(4+ngroups-2)])
+         keep <- apply(temp, 1, function (y){
+           all(y==0)})
+         temp1<-x[keep, ]
+         plot(pred~age,data=temp1,main=c(paste(lalab," Model",sep="")),xlab="Age",ylab="Residuals",ylim=c(-maxres,maxres),
+              xlim=c(0,max(x$age)),pch=16)
+         abline(h=0)
+       }
+       if(i>1){
+         temp1<-x[x[,3+i-1]==1,]
+         points(temp1$pred~temp1$age,col=cols[i],pch=16)
+       }
+     }
+     }#plotter loop
+     plot(0,0, type = "n", bty = "n", xaxt = "n", yaxt = "n",col.lab="transparent")
+     legend("topleft", levels(group),bty="n", xpd = TRUE, title="Group",ncol=2, inset = c(0.1,0),x.intersp=0.65,
+            pch=16,cex = 1.5,col=primcolors[1:ngroups])
+  }#plottype==2
+}#plottype>0
   return(nlsout)
 }
-

@@ -11,7 +11,6 @@ dlproj<-function(dlobj=NULL,projyears=NULL,
     if(projtype==2 & is.null(projcatch)) stop("For projtype=2, enter value for projcatch")
     if(is.null(projyears)) stop("projyears is missing")
   }
-  
   #gr def
   grdef=list(lwd=1,unit="MT",cex.axis=1,cex.lab=1,
         mains=" ",cex.main=1)
@@ -106,7 +105,7 @@ dlproj<-function(dlobj=NULL,projyears=NULL,
               if(pB[t-agemat,nn]>=bjoin) P<-parms$g[nn]*MSY*(pB[t-agemat,nn]/parms$K[nn])-parms$g[nn]*MSY*(pB[t-agemat,nn]/parms$K[nn])^parms$n[nn] 
            }
           P<-ifelse(P<0,0,P)
-          pB[t+1,nn]<-max(0,pB[t,nn]+P-catch1[t-(t-1)])
+          pB[t+1,nn]<-max(0,pB[t,nn]+P-catch1[t-(star-1)])
        } 
     }
   if(grout>=1){     

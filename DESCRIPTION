@@ -1,6 +1,6 @@
 Package: fishmethods
-Version: 1.10-0
-Date: 2016-9-8
+Version: 1.10-1
+Date: 2017-3-7
 Title: Fishery Science Methods and Models in R
 Author: Gary A. Nelson <gary.nelson@state.ma.us>
 Maintainer: Gary A. Nelson <gary.nelson@state.ma.us>
@@ -8,6 +8,6 @@ Depends: R (>= 2.7.0),MASS, boot, bootstrap, lme4
 Description: Fishery science methods and models from published literature and contributions from colleagues.
 License: GPL (>= 2)
 NeedsCompilation: no
-Packaged: 2016-09-19 15:16:49 UTC; GNelson
+Packaged: 2017-03-07 15:00:22 UTC; gnelson
 Repository: CRAN
-Date/Publication: 2016-09-20 02:54:05
+Date/Publication: 2017-03-07 16:55:06

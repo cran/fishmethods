@@ -5,14 +5,14 @@ importFrom("lme4","glmer","glmerControl")
 importFrom("grDevices", "dev.off", "rgb", "tiff")
 importFrom("graphics", "abline", "arrows", "axis", "barplot", "box",
              "curve", "hist", "lines", "matplot", "par", "plot",
-             "points", "text")
+             "points", "text","legend")
 importFrom("stats", "acf", "na.omit","aggregate", "anova", "aov", "arima",
              "bartlett.test", "coef", "cov2cor", "dlogis", "dnorm", "dt",
              "integrate", "lm", "median", "nls", "optim", "optimize",
              "pchisq", "pf", "plogis", "pnorm", "poisson", "predict",
              "pt", "qbinom", "qhyper", "qnorm", "qpois", "qt",
              "quantile", "rbinom", "residuals", "rexp", "rlnorm",
-             "rmultinom", "rnorm", "runif", "sd", "ts", "var")
+             "rmultinom", "rnorm", "runif", "sd", "ts", "var","glm","model.matrix","AIC")
 importFrom("utils", "read.csv", "stack", "write.table")
 
 exportPattern("^[[:alpha:]]+")

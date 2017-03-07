@@ -1,14 +1,15 @@
 \name{vblrt}
 \alias{vblrt}
-\title{Likelihood Ratio Tests for Comparing Two von Bertalanffy Growth Curves}
+\title{Likelihood Ratio Tests for Comparing Multiple von Bertalanffy Growth Curves}
 \description{
-  Likelihood ratio tests for comparison of two von Bertalanffy growth curves following Kimura (1980).
+  Likelihood ratio tests for comparison of two or more von Bertalanffy growth curves following Kimura (1980).
 }
 \usage{
 vblrt(len = NULL, age = NULL, group = NULL, error = 1,
- select = 1, Linf = NULL, K = NULL, t0 = NULL,plottype=0,
+ select = 1, Linf = c(NULL), K = c(NULL), t0 = c(NULL),plottype=0,
 control=list(maxiter=10000,minFactor=1/1024,tol=1e-5))
 }
+
 \arguments{
   \item{len}{the vector of lengths of individual fish.}
   \item{age}{the vector of ages associated with the length vector.}
@@ -21,41 +22,55 @@ for each type of error are calculated from the individual length-age observation
  calculated from Walford lines (Everhart et al. 1975), and ages represented as decimal values are truncated to the 
 integer before linear regression is applied. If select=2, the user must specify the values of \emph{L-infinity}, 
 \emph{K}, and \emph{t0}.}
- \item{Linf}{if \emph{select}=2, the starting value for \emph{L-infinity} of the von Bertalanffy equation.}
- \item{K}{if \emph{select}=2, the starting value for \emph{K} of the von Bertalanffy equation.}
- \item{t0}{if \emph{select}=2, the starting value for \emph{t0} of the von Bertalanffy equation.}
+ \item{Linf}{if \emph{select}=2, the starting values of \emph{L-infinity} of the von Bertalanffy equation for each group.}
+ \item{K}{if \emph{select}=2, the starting values of \emph{K} of the von Bertalanffy equation for each group.}
+ \item{t0}{if \emph{select}=2, the starting values of \emph{t0} of the von Bertalanffy equation for each group.}
  \item{plottype}{the type of plot for each model. 1= observed versus predicted, 2= residuals. Default= 0 (no plot).}
  \item{control}{see function \emph{nls}.}
 }
 \details{
-  Following Kimura (1980), the general model (6 parameters; one \emph{L-infinity}, \emph{K}, and \emph{t0} for each group) 
-  and four sub models are   fitted to the length and age data using function \emph{nls} (nonlinear least squares). For
+  Following Kimura (1980), the general model (one \emph{L-infinity}, \emph{K}, and \emph{t0} for each group) 
+  and four sub models are fitted to the length and age data using function \emph{nls} (nonlinear least squares). For
  each general model-sub model comparison,   likelihood ratios are calculated by using the residual sum-of-squares and 
 are tested against chi-square statistics with the appropriate degrees of freedom. Individual observations of 
 lengths-at-age are required. If error variance assumptions 2 or 3, mean lengths and required statistics are calculated. 
-A dummy vector called \emph{cat}, containing 0s for the first group with lower alpha-numeric order and 1s 
-  for the second group, is used in the estimation of group parameters. To extract the VB parameters for each group 
-  from the Ho model:
-            # Group 1
-            Linf1<-x$'model Ho'$coefficients[1]
-		K1<-x$'model Ho'$coefficients[3]
-		t01<-x$'model Ho'$coefficients[5]
+The parameters are fitted using a model.matrix where the 1st column is a row of 1s representing
+the parameter estimate of the reference group (lowest alpha-numeric order) and the remaining group columns
+have 1 if group identifier is the current group and 0 otherwise. The group number depends on the alph-numeric order.
+See function \emph{model.matrix}.  
 
-            # Group 2
-		Linf2<-Linf1+x$'model Ho'$coefficients[2]
-		K2<-K1+x$'model Ho'$coefficients[4]
-		t02<-t01+x$'model Ho'$coefficients[6]
-	
-where \emph{x} is the output object. For models H1, H2, H3 and H4, the shared VB parameter for the second group 
-will be the same as the first group. 
+ To extract the VB parameters for each group under an hypothesis: 
+   
+            x$'model Ho'$coefficients
+
+            x$'model H1'$coefficients
+
+            x$'model H2'$coefficients
+
+            x$'model H3'$coefficients
+
+            x$'model H4'$coefficients
+
+where \emph{x} is the output object. 
+
+As an example, let's say three groups were compared.To get the L-infinity estimates for each groups,
+
+Linf1<-x$'model Ho'$coefficients[1]
+
+Linf2<-Linf1+ x$'model Ho'$coefficients[2]
+
+Linf3<-Linf1+ x$'model Ho'$coefficients[3]
+
+For models H1, H2, H3 and H4, the parameter L1 or K1 or t01 will be
+shared across groups. 
 }
 \value{
   \item{results }{list element with the likelihood ratio tests comparing von Bertalanffy models.}
   \item{model Ho}{list element with the \code{nls} fit for the general model.}
-  \item{model H1}{list element with the \code{nls}  for model H1 (Linf1=Linf2).}
-  \item{model H2}{list element with the \code{nls} fit for model H2 (K1=K2).}
-  \item{model H3}{list element with the \code{nls} fit for model H3 (t01=t02).}
-  \item{model H4}{list element with the \code{nls} fit for model H4 (Linf1=Linf2, K1=K2, t01=t02).}
+  \item{model H1}{list element with the \code{nls}  for model H1 (Linf1=Linf2=..=Linfn) where n is the number of groups.}
+  \item{model H2}{list element with the \code{nls} fit for model H2 (K1=K2=..=Kn).}
+  \item{model H3}{list element with the \code{nls} fit for model H3 (t01=t02=...=t0n).}
+  \item{model H4}{list element with the \code{nls} fit for model H4 (Linf1=Linf2=..=Linfn, K1=K2=..=Kn, t01=t02=...=t0n).}
   \item{rss}{list element with the residual sum-of-squares from each model.}
   \item{residuals}{list element with the residuals from each model.}
 }
