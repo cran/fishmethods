@@ -12,7 +12,7 @@ vbmultifit(len=NULL,age=NULL,group=NULL,fixed=c(1,1,1),error=1,
 \arguments{
   \item{len}{the vector of lengths of individual fish.}
   \item{age}{the vector of ages associated with the length vector.}
-  \item{group}{the vector of character or numeric codes specifying group association.}
+  \item{group}{the vector of alphabetic characters specifying group association.}
   \item{fixed}{arguments specifying that Linf, K or t0 should be fitted as a constant 
   between groups or as separate parameters for each group. 1 = single parameter between 
   groups, 2 = separate parameters for each group. The order of \emph{fixed} is c(Linf,K,t0).} 

@@ -1,4 +1,4 @@
-f06317c6cd4906cef8e8d20ced864d6d *DESCRIPTION
+d11ea169f7a2c8e3269a953f97f3f586 *DESCRIPTION
 fc9d75cf2178accc081fff92cf77fe52 *NAMESPACE
 ab7d4456034424dd36b140a82b0315f9 *R/M.empirical.R
 af095abf3715630ec92dfc28702b714e *R/agesurv.R
@@ -36,13 +36,14 @@ af925a8cef7d0e52558bcb4d1dd4289c *R/fm_telemetry.R
 a7fd949ac6911ce6eaf577dd7b3a92b7 *R/gap.R
 494d8865d5650d30d042e496f8d2c083 *R/grotag.R
 ec33b1dc319660445368008a77c1c767 *R/growhamp.R
-599d62fa7a603659754acf2246ce7e7a *R/growth.R
+1462425bd82ee575cc0996302500daef *R/growth.R
 31b275610b1556ea3ecd0a36bcc8855e *R/growthResid.R
 18a29c9a651dd0dbe50339f2cef283ae *R/growthTraject.R
 f6635d88077640df4ba2a325008a84c9 *R/growtrans.R
 0376169f3a25df7e69ceed53fe04299e *R/irm_cr.R
 f11e0e9d8f26abe7f1faa7877f6c3d0f *R/irm_h.R
 9d577bc02ed2c4acfce8ef7952a728cf *R/lifetable.R
+f3d4b033cff15c163dc692bba20945db *R/mature.R
 7a11689a7c7bf32f2383373c9d8fa5d7 *R/mort.al.R
 d34c8ee629facaad2c9a58673938c2cf *R/mrN.single.R
 cccf3aa59e514ab2aeb15f73006edd62 *R/opt_slot.R
@@ -58,8 +59,8 @@ e559a9e26dc5c5e056a960214c0e2486 *R/slca.R
 1cf186c1feebda5b0cef4a1dcc5bd854 *R/surveyref.R
 acd67230e28601e2b6560264baaddfc3 *R/tag_model_avg.R
 e05839e1d73c3974c5e92cba3eb820dc *R/vbfr.R
-9ec8b7ab6cfac2d2d964cad852a24810 *R/vblrt.R
-5e5ad3b4acc5253d0539861fc9aeebe7 *R/vbmultifit.R
+58157abbd95ee6e1d5f541ec9ecb75f5 *R/vblrt.R
+96194cf1144293c5108bb37ff44d3b95 *R/vbmultifit.R
 7a2dad70acb1367c7028d112f5067dcd *R/ypr.R
 948795bbe7fb960470f1040162498a3d *R/zt.R
 e2f2f46700c4cd0db01e6bdae7bc04de *data/Gerking.rda
@@ -82,6 +83,7 @@ b4e18620d0f85a903d6fb28bba8d035d *data/darter.rda
 c3d17569fccf0a993cd6edbdf31b8487 *data/haddock.rda
 02fb5b60eda3ca391e0fac6ba8a1aae1 *data/kappenman.rda
 bec08b68c0295417d048d5cfeda7054d *data/lingcod.rda
+ed2adf01b5a8582582e1610c4f11baa2 *data/maki.rda
 a9dd7c7b001d7c4ae019b1c4392942f9 *data/menhaden.rda
 dd5488657d53ec3644bca331da84ac5d *data/nshrimp.rda
 b40b4e3b0c1b0e72091e1554ca44716b *data/pinfish.rda
@@ -155,6 +157,8 @@ a510d55a2b6f4f5221a8e5fb50801a06 *man/growth.Rd
 45049c4636f761dc535197f690211707 *man/kappenman.Rd
 e1d194ac964151ef80044aef2258ef14 *man/lifetable.Rd
 2bb5bb5b0ebc3198ef65255ebcd91472 *man/lingcod.Rd
+c8deaedfcf74f82e7796b5c6fffa13c3 *man/maki.Rd
+f260b6ac4312e8658957ce066201345d *man/mature.Rd
 ffc48ddbd6a7186f6be9ebba713b6c44 *man/menhaden.Rd
 4540787372ab407e749b5b5dfefa8d91 *man/mort.al.Rd
 63dac1ab8ca531283a899505719857e7 *man/mrN.single.Rd
@@ -178,8 +182,8 @@ e6635b4dda362068e5681de39782ac5f *man/surveyref.Rd
 c26551a0f425d5c6678224cab480e3b8 *man/tanaka.Rd
 fe8afcd415fb742aa1a53f91725ac613 *man/trout.Rd
 43f0f12bd2f26a2a2a10dd5e6ff424a0 *man/vbfr.Rd
-85abacb2828d6dbf1c274816f5d48a30 *man/vblrt.Rd
-57ee71f6ef66cf474f9bc9e8d2833b17 *man/vbmultifit.Rd
+5a81ef7ecb4d4f09f97c3f34b80908d3 *man/vblrt.Rd
+00d5f5a238e9bf7bbf5a90e55ef8ab4a *man/vbmultifit.Rd
 481d6cf883b2c8c63933123a52e002a3 *man/wolffish.Rd
 505be0ec64dde71fbca6e2fe5518c63d *man/yellowtail.Rd
 ba26bd9e8c656c1fccd2425b6a637171 *man/ypr.Rd

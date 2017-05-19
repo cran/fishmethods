@@ -13,7 +13,7 @@ control=list(maxiter=10000,minFactor=1/1024,tol=1e-5))
 \arguments{
   \item{len}{the vector of lengths of individual fish.}
   \item{age}{the vector of ages associated with the length vector.}
-  \item{group}{the vector of character or numeric codes specifying group association.}
+  \item{group}{the vector of non-numeric characters specifying group association.}
   \item{error}{the error variance assumption.  1= constant variance for all \emph{lij}s; 2= constant variance for all mean 
 lengths at age; 3=var of \emph{lij} varies with age. See methods a-c in Kimura (1980: pp. 766).  The required statistics 
 for each type of error are calculated from the individual length-age observations.}

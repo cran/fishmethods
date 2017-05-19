@@ -6,13 +6,14 @@ vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=c(NULL),K=c(N
          stop ("age is missing") 
    if(is.null(group)) 
          stop ("group is missing.") 
+   group<-as.factor(group)
    if(length(age)!=length(len)) stop ("Vectors of different lengths")
-    ngroups<-nlevels(as.factor(group)) 
-    if(nlevels(as.factor(group))<2) stop("Only two or more groups are allowed.")
+    ngroups<-nlevels(group) 
+    if(nlevels(group)<2) stop("Only two or more groups are allowed.")
    if(select==2 & (is.null(Linf)|is.null(K)|is.null(t0))) stop("User-specified values of Linf, K, and t0 are required")
-   cat<-as.data.frame(model.matrix(lm(age~as.factor(group))))
-x2<-NULL;wgt<-NULL  
- names(cat)<-levels(group)
+    cat<-as.data.frame(model.matrix(lm(age~as.factor(group))))
+    x2<-NULL;wgt<-NULL  
+     names(cat)<-levels(group)
      	x<-as.data.frame(cbind(len,age,cat))
       index<-as.numeric(which(is.na(x),arr.ind=TRUE))[1]
      	if(!is.na(index)) x<-x[-index,]
@@ -26,9 +27,9 @@ x2<-NULL;wgt<-NULL
              m1<-g1[g1[,t]==1,]
              m1$x2<-NA
              m1$x2[1:c(length(m1$x)-1)]<-m1$x[2:c(length(m1$x))]   
-             out1<-lm(x~x2,data=m1,subset=(!is.na(x2)))
+             out1<-lm(x2~x,data=m1,subset=(!is.na(x2)))
              KK<-abs(log(coef(out1)[2]))
-             LI<--coef(out1)[1]/(coef(out1)[2]-1)
+             LI<-coef(out1)[1]/(1-coef(out1)[2])
              dx1<-as.data.frame(cbind(LI-m1$x,m1$age));dx1<-dx1[dx1[,1]>0,]
              t0d<-(coef(lm(log(dx1[,1])~dx1[,2]))[1]-log(LI))/KK
              storeLinf<-c(storeLinf,as.numeric(LI))

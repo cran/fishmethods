@@ -13,7 +13,6 @@ growth<-function(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,e
    if(intype==1 & calctype==1 & wgtby==2) stop("wgtby: You can't weight an individual observation, only means")
    if(intype==2 & calctype==2) stop("calctype: Data already inputted as means")
    wgts<-NULL;d4<-NULL;x<-NULL;vbl<-NULL;gomp<-NULL;logist<-NULL;vpred<-NULL;tempred<-NULL
-  par(mfrow=c(1,1))
    if(intype==1){
 		if(calctype==1){
 			  x<-as.data.frame(cbind(size,age)) 
@@ -265,7 +264,9 @@ if(unit==2){
       if(class(logist)=="try-error") logist<-"Fit failed"
 	 nlsout<-list(c(lab1,lab),vbl,c(lab2,lab),gomp,c(lab3,lab),logist)
       names(nlsout)<-c("vonbert","vout","gompertz","gout","logistic","lout")
+par(mfrow=c(1,1))
       return(nlsout)
+
  }
 }# end of function
 #  outs<-growth(intype=1,unit=2,size=dd$size,age=dd$age,calctype=1,wgtby=1,s2=NULL,error=1,
