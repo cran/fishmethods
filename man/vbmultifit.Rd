@@ -6,13 +6,13 @@
 }
 \usage{
 vbmultifit(len=NULL,age=NULL,group=NULL,fixed=c(1,1,1),error=1,
-        select=1,Linf=c(NULL),K=c(NULL),t0=c(NULL),graph=0,
+        select=1,Linf=c(NULL),K=c(NULL),t0=c(NULL),plot=FALSE,
                 control=list(maxiter=10000,minFactor=1/1024,tol=1e-5))
 }
 \arguments{
   \item{len}{the vector of lengths of individual fish.}
   \item{age}{the vector of ages associated with the length vector.}
-  \item{group}{the vector of alphabetic characters specifying group association.}
+  \item{group}{the vector of character names specifying group association. The first character in the name must be a letter.}
   \item{fixed}{arguments specifying that Linf, K or t0 should be fitted as a constant 
   between groups or as separate parameters for each group. 1 = single parameter between 
   groups, 2 = separate parameters for each group. The order of \emph{fixed} is c(Linf,K,t0).} 
@@ -27,8 +27,7 @@ integer before linear regression is applied. If select=2, the user must specify 
  \item{Linf}{if \emph{select}=2, the starting values for \emph{L-infinity} of the von Bertalanffy equation, one for each group.}
  \item{K}{if \emph{select}=2, the starting values for \emph{K} of the von Bertalanffy equation, one for each group.}
  \item{t0}{if \emph{select}=2, the starting value for \emph{t0} of the von Bertalanffy equation, one for each group.}
- \item{graph}{argument specifying whether observed versus predicted and residuals graphs should be plotted. 0 = No, 1 = Yes 
- (Default=0).}
+ \item{plot}{logical argument specifying whether observed versus predicted and residuals graphs should be plotted. Default is FALSE.}
  \item{control}{see function \emph{nls}.}
 }
 \details{
@@ -51,7 +50,7 @@ Kimura, D. K. 1980. Likelihood methods for the von Bertalanffy growth curve. U. 
 \examples{
 data(Kimura)
 vbmultifit(len=Kimura$length,age=Kimura$age,group=Kimura$sex,fixed=c(2,1,1),
-error=1,select=1,Linf=NULL,K=NULL,t0=NULL,graph=0,control=list(maxiter=10000,
+error=1,select=1,Linf=NULL,K=NULL,t0=NULL,plot=FALSE,control=list(maxiter=10000,
 minFactor=1/1024,tol=1e-5))
 }
 \keyword{misc}

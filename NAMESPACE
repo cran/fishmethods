@@ -1,10 +1,11 @@
 import(boot)
 import(bootstrap)
 import(MASS)
+import(numDeriv)
 importFrom("lme4","glmer","glmerControl")
-importFrom("grDevices", "dev.off", "rgb", "tiff")
+importFrom("grDevices", "dev.off", "rgb", "tiff","rainbow")
 importFrom("graphics", "abline", "arrows", "axis", "barplot", "box",
-             "curve", "hist", "lines", "matplot", "par", "plot",
+             "curve", "hist", "lines", "matplot", "par", "plot","rect",
              "points", "text","legend")
 importFrom("stats", "acf", "na.omit","aggregate", "anova", "aov", "arima",
              "bartlett.test", "coef", "cov2cor", "dlogis", "dnorm", "dt",
@@ -12,7 +13,7 @@ importFrom("stats", "acf", "na.omit","aggregate", "anova", "aov", "arima",
              "pchisq", "pf", "plogis", "pnorm", "poisson", "predict",
              "pt", "qbinom", "qhyper", "qnorm", "qpois", "qt",
              "quantile", "rbinom", "residuals", "rexp", "rlnorm",
-             "rmultinom", "rnorm", "runif", "sd", "ts", "var","glm","model.matrix","AIC")
+             "rmultinom", "rnorm", "runif", "sd", "ts", "var","glm","model.matrix","AIC","nlm")
 importFrom("utils", "read.csv", "stack", "write.table")
 
 exportPattern("^[[:alpha:]]+")

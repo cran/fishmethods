@@ -2,7 +2,7 @@
 \alias{growth}
 \title{Fitting Growth Curves to Length- or Weight-at-Age Data}
 \description{
-  Fits various growth models to length and weight-at-age data.
+  Fits three growth models to length and weight-at-age data.
 }
 \usage{
 growth(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,error=1,
@@ -26,16 +26,14 @@ growth(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,error=1,
  \item{control}{see function \emph{nls}.}
 }
 \details{
-  If unit is length, a standard von Bertalanffy growth curve is fitted to length-at-age data using nonlinear least-squares (function \emph{nls}).
+ Three growth models (von Bertalanffy, Gompert and logistic) are fitted to length- or weight-at-age data using nonlinear least-squares (function \emph{nls}).
   If individual data are provided, mean size data can be calculated by specifying \emph{calctype}=2. When fitting mean size data, 
   observations can be weighted by the inverse sample variance(\emph{wgtby}=2), resulting in weighted nonlinear least squares. Additive or multiplicative 
-  error structures are specified via \emph{error}.  See page 135 in Quinn and Deriso (1999) for more information on error structures.
+  error structures are specified via \emph{error}.  See page 135 in Quinn and Deriso (1999) for more information on error structures. 
+
+If unit is weight,  
+  the exponent for the von Bertalanffy growth in weight model is not estimated and must be specified (\emph{B}).
  
-  If unit is weight, three growth models (von Bertalanffy, Gompert and logistic) are fitted to weight-at-age data. 
-  The exponent for the von Bertalanffy growth in weight model is not estimated and must be specified (\emph{B}).
-  Individual and mean weight data can be used. When fitting mean size data, observations can be weighted by the inverse 
-  sample variance (\emph{wgtby}=2), resulting in weighted nonlinear least squares. Additive or multiplicative 
-  error structures are specified via \emph{error}.
  
   Plots of model fit and residuals are generated unless \emph{graph}=FALSE.   
 }

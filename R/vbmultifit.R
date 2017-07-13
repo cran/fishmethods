@@ -1,5 +1,5 @@
 vbmultifit<-function(len=NULL,age=NULL,group=NULL,fixed=c(1,1,1),error=1,
-        select=1,Linf=c(NULL),K=c(NULL),t0=c(NULL),graph=0,
+        select=1,Linf=c(NULL),K=c(NULL),t0=c(NULL),plot=FALSE,
                 control=list(maxiter=10000,minFactor=1/1024,tol=1e-5)){
    if(is.null(len)) 
          stop ("len is missing") 
@@ -20,27 +20,37 @@ x2<-NULL;wgt<-NULL
 x<-as.data.frame(cbind(len,age,cat))
   index<-as.numeric(which(is.na(x),arr.ind=TRUE))[1]
   if(!is.na(index)) x<-x[-index,]
-  storeLinf<-NULL; storeK<-NULL;storet0<-NULL
-  subcats<-sapply(2:ncol(x),function(y) list(x[,y]))
-  subcats<-subcats[c(2:length(subcats),1)]
-  subcats[[ngroups+1]]<-trunc(subcats[[ngroups+1]])
-  g1<-aggregate(x[,1],subcats,mean)
-  names(g1)[ngroups+1]<-"age"
-  for(t in 2:ngroups){
-    m1<-g1[g1[,t]==1,]
-    m1$x2<-NA
-    m1$x2[1:c(length(m1$x)-1)]<-m1$x[2:c(length(m1$x))]   
-    out1<-lm(x~x2,data=m1,subset=(!is.na(x2)))
-    KK<-abs(log(coef(out1)[2]))
-    LI<--coef(out1)[1]/(coef(out1)[2]-1)
-    dx1<-as.data.frame(cbind(LI-m1$x,m1$age));dx1<-dx1[dx1[,1]>0,]
-    t0d<-(coef(lm(log(dx1[,1])~dx1[,2]))[1]-log(LI))/KK
-    storeLinf<-c(storeLinf,as.numeric(LI))
-    storeK<-c(storeK,as.numeric(KK))
-    storet0<-c(storet0,as.numeric(t0d))
-  }
+ 
   if(select==1){ 
-    Lparms<-c(max(storeLinf),-(max(storeLinf)-storeLinf))
+    storeLinf<-NULL; storeK<-NULL;storet0<-NULL
+    subcats<-sapply(2:ncol(x),function(y) list(x[,y]))
+    subcats<-subcats[c(2:length(subcats),1)]
+    subcats[[ngroups+1]]<-trunc(subcats[[ngroups+1]])
+    g1<-aggregate(x[,1],subcats,mean)
+    names(g1)[ngroups+1]<-"age"
+    for(t in 2:ngroups){
+      m1<-g1[g1[,t]==1,]
+      temp<-m1[,c(ncol(m1)-1,ncol(m1))];names(temp)<-c("age","len")
+      m1$age<-m1$age+1
+      m1<-merge(m1,temp,by.x="age",by.y="age",all.x=TRUE,all.y=TRUE)
+      m1<-m1[-unique(which(is.na(m1),arr.ind=TRUE)[,1]),]   
+      out1<-lm(len~x,data=m1)
+      KK<-as.numeric(abs(log(coef(out1)[2])))
+      LI<-coef(out1)[1]/(1-coef(out1)[2])
+      dx1<-as.data.frame(cbind(LI-m1$x,m1$age));dx1<-dx1[dx1[,1]>0,]
+      t0d<-(coef(lm(log(dx1[,1])~dx1[,2]))[1]-log(LI))/KK
+      storeLinf<-c(storeLinf,as.numeric(LI))
+      storeK<-c(storeK,as.numeric(KK))
+      storet0<-c(storet0,as.numeric(t0d))
+    }   
+    qL<-quantile(storeLinf,prob=c(0.1,0.90))
+    storeLinf<-ifelse(storeLinf<qL[1]|storeLinf>qL[2],median(storeLinf),storeLinf)
+    qK<-quantile(storeK,prob=c(0.1,0.90))
+    storeK<-ifelse(storeK<qK[1]|storeK>qK[2],median(storeK),storeK)
+    qt<-quantile(storet0,prob=c(0.1,0.90))
+    storet0<-ifelse(storet0<qt[1]|storet0>qt[2],median(storet0),storet0)
+    
+    Lparms<-c(mean(storeLinf),-(mean(storeLinf)-storeLinf))
     Kparms<-c(max(storeK),max(storeK)-storeK)
     indexs<-which(abs(storet0)==max(abs(storet0)))
     t0parms<-c(storet0[indexs],storet0[indexs]-storet0)
@@ -62,7 +72,6 @@ x<-as.data.frame(cbind(len,age,cat))
     names(x)<-c(levels(group),"age","len")
     x<-x[,c("len","age",levels(group))]
     x$wgt<-1
-    
   }
   if(error==3){
     subcats<-sapply(2:ncol(x),function(y) list(x[,y]))
@@ -132,7 +141,7 @@ x<-as.data.frame(cbind(len,age,cat))
       names(nlsout)<-c("results","AIC","residuals")
    
       # Plots
-      if(graph==1){
+      if(plot==TRUE){
         primcolors<-c("black","red","green3","salmon","blue","purple","orange","gray36","pink")
         par(mfrow=c(1,2))
             cols<-primcolors[1:ngroups]
@@ -178,7 +187,8 @@ x<-as.data.frame(cbind(len,age,cat))
             }
           legend("topleft", levels(group),bty="n", xpd = TRUE, title="Group",ncol=2, inset = c(0.1,0),x.intersp=0.65,
                  pch=16,cex = 1.0,col=primcolors[1:ngroups])
-      }#graph==1
+      }#plot==1
+par(mfrow=c(1,1))
   return(nlsout)
 }
 
