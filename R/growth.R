@@ -1,4 +1,5 @@
 growth<-function(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,error=1,
+                 specwgt=0.0001,
          Sinf=NULL,K=NULL,t0=NULL,B=3,graph=TRUE,
          control=list(maxiter=10000,minFactor=1/1024,tol=1e-5)){
    if(is.null(size)) 
@@ -26,9 +27,11 @@ growth<-function(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,e
                 aggregate(x$size,list(x$age),var),by.y=c("Group.1"),
                 by.x=c("Group.1"))
                 names(d4)<-c("age","size","var")
-              x<-d4[!is.na(d4$size) & !is.na(d4$age) & !is.na(d4$var),]
+              x<-d4[!is.na(d4$size) & !is.na(d4$age),]
+              x$var<-ifelse(x$var<=0.0|is.na(x$var),NA,x$var)
               if(wgtby==2) wgts<-1/x$var
               if(wgtby==1) wgts<-rep(1,length(x$var))
+              wgts<-ifelse(is.na(wgts),specwgt,wgts)
             }
     }
 
@@ -40,7 +43,7 @@ growth<-function(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,e
            }
          if(wgtby==2){
              x<-as.data.frame(cbind(size,age,s2)) 
-   		   x<-x[!is.na(x$size) & !is.na(x$age)& !is.na(x$s2),]
+   		        x<-x[!is.na(x$size) & !is.na(x$age)& !is.na(x$s2),]
              wgts<-1/x$s2
      	}
      }
@@ -342,4 +345,3 @@ par(mfrow=c(1,1))
       return(nlsout)
  }
 }# end of function
-

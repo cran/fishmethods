@@ -23,7 +23,7 @@ pointsize = 10))
   \item{projcatch}{if projtype = 2, a single catch value used over all projection years or a
 	vector of catch values (length is equal to \code{projyears}).}
  \item{grout}{numeric argument specifying whether projection graph should be shown on 
-  the console only (grout==1) or shown on the console and exported to a TIF graph file (grout==2).
+  the console only (grout=1) or shown on the console and exported to a TIF graph file (grout=2).
    No graph (grout== 0). If plotted, the median (solid line), mean (dashed line), and 2.5th and 97.5 
    percentiles(dotted lines) are displayed. Use \code{setwd} before running function to direct .tif file
 	 to a specific directory. The name of .tif file is automatically determined.} 

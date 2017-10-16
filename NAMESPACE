@@ -5,15 +5,16 @@ import(numDeriv)
 importFrom("lme4","glmer","glmerControl")
 importFrom("grDevices", "dev.off", "rgb", "tiff","rainbow")
 importFrom("graphics", "abline", "arrows", "axis", "barplot", "box",
-             "curve", "hist", "lines", "matplot", "par", "plot","rect",
-             "points", "text","legend")
+             "curve", "hist", "lines", "matplot", "par", "plot", "rect",
+             "points", "text", "legend", "mtext")
 importFrom("stats", "acf", "na.omit","aggregate", "anova", "aov", "arima",
              "bartlett.test", "coef", "cov2cor", "dlogis", "dnorm", "dt",
              "integrate", "lm", "median", "nls", "optim", "optimize",
              "pchisq", "pf", "plogis", "pnorm", "poisson", "predict",
              "pt", "qbinom", "qhyper", "qnorm", "qpois", "qt",
              "quantile", "rbinom", "residuals", "rexp", "rlnorm",
-             "rmultinom", "rnorm", "runif", "sd", "ts", "var","glm","model.matrix","AIC","nlm")
+             "rmultinom", "rnorm", "runif", "sd", "ts", "var", "glm", "model.matrix", "AIC", "nlm", "lowess")
 importFrom("utils", "read.csv", "stack", "write.table")
-
+S3method(print,grotagplus)
+S3method(plot,grotagplus)
 exportPattern("^[[:alpha:]]+")

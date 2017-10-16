@@ -62,15 +62,9 @@ dlproj<-function(dlobj=NULL,projyears=NULL,
      if(length(projcatch)==1) catch1<-rep(projcatch,projyears)
    }
     
-    parms<-dlobj$Values[dlobj$Values[,1]==1,c(2,4,5,6)]
-    names(parms)<-c("FmsyM","BmsyK","M","K") 
-     w<-function(x){
-        f<-function(d){(x-(d^(1/(1-d))))^2}
-        optimize(f,c(0,1000),tol=0.000001)[[1]]
-     }
-     parms$n<-apply(as.data.frame(parms$BmsyK),1,w)
-     parms$g<-(parms$n^(parms$n/(parms$n-1)))/(parms$n-1)
-     P<-NULL
+    parms<-dlobj$Values[dlobj$Values[,1]==1,c(2,4,5,6,7,8,9,14,15)]
+    names(parms)<-c("FmsyM","BmsyK","M","K","Fmsy","Umsy","MSY","n","g") 
+      P<-NULL
      bigB<-read.csv("Biotraj-dbsra.csv",header=FALSE)[,-1]
      bigB<-t(bigB)    
        
@@ -80,10 +74,7 @@ dlproj<-function(dlobj=NULL,projyears=NULL,
     
      for(nn in 1:nrow(parms)){
         P<-0
-        Fmsy<-parms$FmsyM[nn]*parms$M[nn]
-        Umsy<-(Fmsy/(Fmsy+parms$M[nn]))*(1-exp(-Fmsy-parms$M[nn]))
-        MSY<-parms$K[nn]*parms$BmsyK[nn]*Umsy
-      
+        MSY<-parms$MSY[nn]
        for(t in star:c(nrow(pB)-1)){  
            if(parms$BmsyK[nn]>=0.5) P<-parms$g[nn]*MSY*(pB[t-agemat,nn]/parms$K[nn])-parms$g[nn]*MSY*(pB[t-agemat,nn]/parms$K[nn])^parms$n[nn] 
            if(parms$BmsyK[nn]>0.3 & parms$BmsyK[nn]<0.5){
@@ -128,17 +119,17 @@ dlproj<-function(dlobj=NULL,projyears=NULL,
     ylim=c(0,max(apply(pB[star:c(length(pB[,1])),],1,quantile,probs=0.975))*1.20),ylab=paste("Biomass (",grdef$unit,")",sep=""),xlab="Year",
       cex.lab=grdef$cex.lab,
             cex.axis=grdef$cex.axis,main=grdef$mains,cex.main=grdef$cex.main,lwd=grdef$lwd)
-   lines(apply(pB[star:c(length(pB[,1])),],1,mean)~c(dlobj$end1yr:c(dlobj$end1yr+projyears)),lty=2,lwd=grdef$lwd)
+     lines(apply(pB[star:c(length(pB[,1])),],1,mean)~c(dlobj$end1yr:c(dlobj$end1yr+projyears)),lty=2,lwd=grdef$lwd)
      lines(apply(pB[star:c(length(pB[,1])),],1,quantile,probs=0.025)~c(dlobj$end1yr:c(dlobj$end1yr+projyears)),lty=3,lwd=grdef$lwd)
      lines(apply(pB[star:c(length(pB[,1])),],1,quantile,probs=0.975)~c(dlobj$end1yr:c(dlobj$end1yr+projyears)),lty=3,lwd=grdef$lwd)
    dev.off()
   }
  }
-dd<-pB[star:c(length(pB[,1])),]
+ dd<-pB[star:c(length(pB[,1])),]
  rownames(dd)<-c(dlobj$end1yr:c(dlobj$end1yr+projyears))
  ans<-list(dlobj$type,dd)
-names(ans)<-c("type","ProjBio")
-return(ans)
+ names(ans)<-c("type","ProjBio")
+ return(ans)
 }# dbsra
 #####################################################  
 ################## Catch msy #######################

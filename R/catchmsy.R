@@ -325,8 +325,8 @@ if(spec=="beta"){
      grunits[graphs,6]<-grdef$mains   
     if(any(graphs==1)){
           plot(catch~year,type="l",xlab="Year",ylab=paste("Catch (",catdef$unit,")",sep=""),
-          ylim=c(0,round(max(catch,mMSY,MSY95[3]),0)),cex=grunits[1,4],cex.lab=grunits[1,3],
-            cex.axis=grunits[1,2],main=grunits[1,6],cex.main=grunits[1,7],lwd=grunits[1,9])
+          ylim=c(0,round(max(catch,mMSY,MSY95[3]),1)),cex=grunits[1,4],cex.lab=grunits[1,3],
+            cex.axis=grunits[1,2],main=grunits[1,6],cex.main=grunits[1,7],lwd=grunits[1,8])
            if(pstdef$ol==1){
              abline(h=mMSY,lwd=pstdef$mlwd,lty=pstdef$mlty)
              abline(h=MSY95[1],lwd=pstdef$llwd,lty=pstdef$llty)
@@ -335,8 +335,8 @@ if(spec=="beta"){
           if(grout==2){
            word.tif("catch-cmsy")
             plot(catch~year,type="l",xlab="Year",ylab=paste("Catch (",catdef$unit,")",sep=""),
-            ylim=c(0,round(max(catch,mMSY,MSY95[3]),0)),cex=grunits[1,4],cex.lab=grunits[1,3],
-              cex.axis=grunits[1,2],main=grunits[1,6],cex.main=grunits[1,7],lwd=grunits[1,9])
+            ylim=c(0,round(max(catch,mMSY,MSY95[3]),1)),cex=grunits[1,4],cex.lab=grunits[1,3],
+              cex.axis=grunits[1,2],main=grunits[1,6],cex.main=grunits[1,7],lwd=grunits[1,8])
              if(pstdef$ol==1){
              abline(h=mMSY,lwd=pstdef$mlwd,lty=pstdef$mlty)
              abline(h=MSY95[1],lwd=pstdef$llwd,lty=pstdef$llty)

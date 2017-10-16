@@ -1,14 +1,15 @@
 dbsra<-function(year = NULL, catch = NULL, catchCV = NULL, 
   catargs = list(dist="none",low=0,up=Inf,unit="MT"),
-  agemat=NULL,
+  agemat=NULL, maxn=25,
   k = list(low=0,up=NULL,tol=0.01,permax=1000), 
+  b1k = list(dist="unif",low=0,up=1,mean=0,sd=0),
   btk = list(dist="unif",low=0,up=1,mean=0,sd=0,refyr=NULL),
   fmsym = list(dist="unif",low=0,up=1,mean=0,sd=0),
   bmsyk = list(dist="unif",low=0,up=1,mean=0,sd=0),
   M = list(dist="unif",low=0.0,up=1,mean=0,sd=0),
   nsims = 10000, catchout=0,
   grout = 1,
-  graphs = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14), 
+  graphs = c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15), 
   grargs = list(lwd=1,cex=1,nclasses=20,mains=" ",cex.main=1,cex.axis=1,cex.lab=1),
   pstats=list(ol=1,mlty=1,mlwd=1.5,llty=3,llwd=1,ulty=3,ulwd=1),
   grtif=list(zoom=4,width=11,height=13,pointsize=10))
@@ -63,6 +64,27 @@ dbsra<-function(year = NULL, catch = NULL, catchCV = NULL,
    if(any(names(fmsym)=="sd")){ 
             if(fmsymdef$sd!=fmsym$sd) fmsymdef$sd<-fmsym$sd
    }
+  
+  #b1k
+  b1kdef=list(dist="unif",low=0,up=1,mean=0,sd=0)
+  if(any(names(b1k)=="dist")){ 
+    if(b1kdef$dist!=b1k$dist) b1kdef$dist<-b1k$dist
+  }
+  if(any(names(b1k)=="low")){ 
+    if(b1kdef$low!=b1k$low) b1kdef$low<-b1k$low
+  }
+  if(any(names(b1k)=="up")){ 
+    if(b1kdef$up!=b1k$up) b1kdef$up<-b1k$up
+  }
+  if(any(names(b1k)=="mean")){ 
+    if(b1kdef$mean!=b1k$mean) b1kdef$mean<-b1k$mean
+  }
+  if(any(names(b1k)=="sd")){ 
+    if(b1kdef$sd!=b1k$sd) b1kdef$sd<-b1k$sd
+  }
+  if(any(names(b1k)=="refyr")){ 
+    if(b1kdef$refyr!=b1k$refyr) b1kdef$refyr<-b1k$refyr
+  }
   #btk
   btkdef=list(dist="unif",low=0,up=1,mean=0,sd=0,refyr=max(year))
   if(any(names(btk)=="dist")){ 
@@ -84,6 +106,7 @@ dbsra<-function(year = NULL, catch = NULL, catchCV = NULL,
             if(btkdef$refyr!=btk$refyr) btkdef$refyr<-btk$refyr
    }
   
+  #bmsyk
   bmsykdef=list(dist="unif",low=0.5,up=0.5,mean=0,sd=0)
    if(any(names(bmsyk)=="dist")){ 
             if(bmsykdef$dist!=bmsyk$dist) bmsykdef$dist<-bmsyk$dist
@@ -178,9 +201,12 @@ dbsra<-function(year = NULL, catch = NULL, catchCV = NULL,
    if(any(names(grtif)=="pointsize")){ 
             if(tifdef$pointsize!=grtif$pointsize) tifdef$pointsize<-grtif$pointsize
    }       
-
+  if(b1kdef$low<0|b1kdef$low>1) stop("b1k low can only range from 0 to 1")
+  if(b1kdef$up<0|b1kdef$up>1) stop("b1k up can only range from 0 to 1")
+  
   if(btkdef$low<0|btkdef$low>1) stop("btk low can only range from 0 to 1")
   if(btkdef$up<0|btkdef$up>1) stop("btk up can only range from 0 to 1")
+  
   if(any(is.na(catch))) stop("Missing catch values are not allowed.")
   if(catdef$dist!="none"){
     if(catdef$dist %in% c("norm","lnorm") & any(!is.numeric(catchCV))) stop("catchCV is required for resampling")
@@ -244,6 +270,7 @@ if(spec=="beta"){
   storep<-data.frame(NULL)
   ###########Program
   fmsymX<-fmsymdef$mean
+  b1kX<-b1kdef$mean
   btkX<-btkdef$mean 
   bmsykX<-bmsykdef$mean
   MM<-Mdef$mean
@@ -251,6 +278,7 @@ if(spec=="beta"){
   for(nn in 1:nsims){
      if(fmsymdef$dist!="none") fmsymX<-getrandom(1,fmsymdef$dist,a=fmsymdef$low,b=fmsymdef$up,mean=fmsymdef$mean,sd=fmsymdef$sd)
      if(btkdef$dist!="none") btkX<-getrandom(1, btkdef$dist,a= btkdef$low,b= btkdef$up,mean= btkdef$mean,sd= btkdef$sd)
+     if(b1kdef$dist!="none") b1kX<-getrandom(1, b1kdef$dist,a= b1kdef$low,b= b1kdef$up,mean= b1kdef$mean,sd= b1kdef$sd)
      if(bmsykdef$dist!="none") bmsykX<-getrandom(1,bmsykdef$dist,a=bmsykdef$low,b=bmsykdef$up,mean=bmsykdef$mean,sd=bmsykdef$sd)
      if(Mdef$dist!="none") MM<-getrandom(1,Mdef$dist,a=Mdef$low,b=Mdef$up,mean=Mdef$mean,sd=Mdef$sd)
       ## Resample catch if desired
@@ -276,7 +304,7 @@ if(spec=="beta"){
         Fmsy<-fmsymX*MM
         Umsy<-(Fmsy/(Fmsy+MM))*(1-exp(-Fmsy-MM))
         MSY<-K*bmsykX*Umsy
-        B[1]<-K
+        B[1]<-b1kX*K
        for(t in 1:timelen){  
          if(t<=agemat)  P[t]<-0
          if(t>agemat){
@@ -313,7 +341,7 @@ if(spec=="beta"){
         Fmsy<-fmsymX*MM
         Umsy<-(Fmsy/(Fmsy+MM))*(1-exp(-Fmsy-MM))
         MSY<-bigK*bmsykX*Umsy
-        B[1]<-bigK
+        B[1]<-bigK*b1kX
        for(t in 1:timelen){       
          if(t<=agemat)  P[t]<-0
          if(t>agemat){
@@ -342,7 +370,7 @@ if(spec=="beta"){
        }
        
       bll<-0
-      if(min(B)>0 && max(B)<=bigK && (out$objective<=kdef$tol^2) && (abs((max(B)-bigK)/bigK)*100)<=kdef$permax) bll<-1 
+      if(min(B)>0 && max(B)<=bigK && (out$objective<=kdef$tol^2) && (abs((max(B)-bigK)/bigK)*100)<=kdef$permax && n<=maxn) bll<-1 
       if(nn==1){
             write.table(t(c(bll,B)),file="Biotraj-dbsra.csv",sep=",",row.names=FALSE,col.names=FALSE,append=FALSE)
            if(catchout==1) write.table(t(c(bll,dcatch)),file="Catchtraj-dbsra.csv",sep=",",row.names=FALSE,col.names=FALSE,append=FALSE)
@@ -364,10 +392,14 @@ if(spec=="beta"){
         storep[nn,11]<-Umsy*B[timelen+1]  #OFL
         storep[nn,12]<-B[refyr]  
         storep[nn,13]<-B[timelen+1]
+        storep[nn,14]<-n
+        storep[nn,15]<-g
+        storep[nn,16]<-b1kX
+        
     }#n loop  
    
 # Get results for bll==1 for graphing
-  colnames(storep)<-c("ll","FmsyM","BtK","BmsyK","M","K","Fmsy","Umsy","MSY","Bmsy","OFLT1","Brefyr","BT1")
+  colnames(storep)<-c("ll","FmsyM","BtK","BmsyK","M","K","Fmsy","Umsy","MSY","Bmsy","OFLT1","Brefyr","BT1","n","g","B1K")
   datar<-storep[storep[,1]==1,]
 if(length(datar[,1])>0){ 
     mMSY<-round(mean(datar$MSY),3)
@@ -386,6 +418,8 @@ if(length(datar[,1])>0){
     M95<-round(quantile(datar$M,probs=c(0.025,0.50,0.975)),4)
     mbtk<-round(mean(datar$BtK),3)
     btk95<-round(quantile(datar$BtK,probs=c(0.025,0.50,0.975)),4)
+    mb1k<-round(mean(datar$B1K),3)
+    b1k95<-round(quantile(datar$B1K,probs=c(0.025,0.50,0.975)),4)
     mFmsyM<-round(mean(datar$FmsyM),3)
     FmsyM95<-round(quantile(datar$FmsyM,probs=c(0.025,0.50,0.975)),4)
     mBmsyK<-round(mean(datar$BmsyK),3)
@@ -397,18 +431,18 @@ if(length(datar[,1])>0){
    
     # Plot graphs
   if(grout>0){
-     grunits<-data.frame(gr=c(1:14),cexa=0,cexl=0,cexx=0,nclass=0,mains=" ",cexmain=0,lwd=0,stringsAsFactors=FALSE)
+     grunits<-data.frame(gr=c(1:15),cexa=0,cexl=0,cexx=0,nclass=0,mains=" ",cexmain=0,lwd=0,stringsAsFactors=FALSE)
      grunits$lwd<-ifelse(grunits$gr %in% c(1,13),grdef$lwd,0)   
      grunits[,2]<-grdef$cex.axis
      grunits[,3]<-grdef$cex.lab
      grunits[,4]<-grdef$cex
-     grunits$nclass<-ifelse(grunits$gr %in% c(2,3,4,5,6,7,8,9,10,11,12,14),grdef$nclasses,grunits$nclass)
+     grunits$nclass<-ifelse(grunits$gr %in% c(2,3,4,5,6,7,8,9,10,11,12,14,15),grdef$nclasses,grunits$nclass)
      grunits$cexmain<-grdef$cex.main
      grunits[graphs,6]<-grdef$mains
     
     if(any(graphs==1)){
           plot(catch~year,type="l",xlab="Year",ylab=paste("Catch (",catdef$unit,")",sep=""),
-          ylim=c(0,round(max(catch,mMSY,MSY95[3]),0)),cex=grunits[1,4],cex.lab=grunits[1,3],
+          ylim=c(0,round(max(catch,mMSY,MSY95[3]),1)),cex=grunits[1,4],cex.lab=grunits[1,3],
             cex.axis=grunits[1,2],main=grunits[1,6],cex.main=grunits[1,7],lwd=grunits[1,8])
            if(pstdef$ol==1){
              abline(h=MSY95[2],lwd=pstdef$mlwd,lty=pstdef$mlty)
@@ -419,7 +453,7 @@ if(length(datar[,1])>0){
           if(grout==2){
            word.tif("catch")
             plot(catch~year,type="l",xlab="Year",ylab=paste("Catch (",catdef$unit,")",sep=""),
-            ylim=c(0,round(max(catch,mMSY,MSY95[3]),0)),cex=grunits[1,4],cex.lab=grunits[1,3],
+            ylim=c(0,round(max(catch,mMSY,MSY95[3]),1)),cex=grunits[1,4],cex.lab=grunits[1,3],
               cex.axis=grunits[1,2],main=grunits[1,6],cex.main=grunits[1,7],lwd=grunits[1,8])
              if(pstdef$ol==1){
              abline(h=MSY95[2],lwd=pstdef$mlwd,lty=pstdef$mlty)
@@ -573,6 +607,24 @@ if(length(datar[,1])>0){
           dev.off()
         }
     }
+     if(any(graphs==15)){   
+       hist(datar$B1K,freq=FALSE,xlim=c(0,max(datar$B1K)*1.30),xlab="B1/K",nclass=grunits[15,5],cex.lab=grunits[15,3],cex.axis=grunits[15,2],main=grunits[15,6],cex.main=grunits[15,7])
+       if(pstdef$ol==1){
+         abline(v=b1k95[2],lwd=pstdef$mlwd,lty=pstdef$mlty)
+         abline(v=b1k95[1],lwd=pstdef$llwd,lty=pstdef$llty)
+         abline(v=b1k95[3],lwd=pstdef$ulwd,lty=pstdef$ulty)
+       }
+       if(grout==2){
+         word.tif("B1Kden") 
+         hist(datar$B1K,freq=FALSE,xlim=c(0,max(datar$B1K)*1.30),xlab="B1/K",nclass=grunits[15,5],cex.lab=grunits[15,3],cex.axis=grunits[15,2],main=grunits[15,6],cex.main=grunits[15,7])
+         if(pstdef$ol==1){
+           abline(v=b1k95[2],lwd=pstdef$mlwd,lty=pstdef$mlty)
+           abline(v=b1k95[1],lwd=pstdef$llwd,lty=pstdef$llty)
+           abline(v=b1k95[3],lwd=pstdef$ulwd,lty=pstdef$ulty)
+         }
+         dev.off()
+       }
+     }
        if(any(graphs==10)){   
          hist(datar$FmsyM,freq=FALSE,xlim=c(0,max(datar$FmsyM)*1.30),xlab="Fmsy/M",nclass=grunits[11,5],cex.lab=grunits[11,3],cex.axis=grunits[11,2],main=grunits[11,6],cex.main=grunits[11,7])
          if(pstdef$ol==1){
@@ -633,7 +685,6 @@ if(length(datar[,1])>0){
          bigB<-t(bigB[,-1])
          cols<-ifelse(ar==0,"gray85","black")
          types<-ifelse(ar==0,3,1)
-                 
           par(mfrow=c(1,2))
          matplot(y=bigB[,c(which(ar==1))],x=c(year,year[length(year)]+1),type="l",lty=types[c(which(ar==1))],xlab="Year",ylab=paste("Biomass (",catdef$unit,")",sep=""),
             ylim=c(0,max(bigB)),cex=grunits[13,4],cex.lab=grunits[13,3],col=cols[c(which(ar==1))],main="Accepted",
@@ -642,13 +693,18 @@ if(length(datar[,1])>0){
            lines(y=apply(bigB[,c(which(ar==1))],1,function(x){quantile(x,probs=0.025)}),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$llty,col="red")
            lines(y=apply(bigB[,c(which(ar==1))],1,function(x){quantile(x,probs=0.975)}),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$ulty,col="red")
  
-         matplot(y=bigB[,c(which(ar==0))],x=c(year,year[length(year)]+1),type="l",lty=types[c(which(ar==0))],xlab="Year",ylab=paste("Biomass (",catdef$unit,")",sep=""),
+         if(length(c(which(ar==0)))>2){
+           matplot(y=bigB[,c(which(ar==0))],x=c(year,year[length(year)]+1),type="l",lty=types[c(which(ar==0))],xlab="Year",ylab=paste("Biomass (",catdef$unit,")",sep=""),
             ylim=c(0,max(bigB)),cex=grunits[13,4],cex.lab=grunits[13,3],col=cols[c(which(ar==0))],main="Rejected",
               cex.axis=grunits[13,2],cex.main=grunits[13,7],lwd=grunits[13,8])    
            lines(y=apply(bigB[,c(which(ar==0))],1,median),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$mlty,col="red")
            lines(y=apply(bigB[,c(which(ar==0))],1,function(x){quantile(x,probs=0.025)}),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$llty,col="red")
            lines(y=apply(bigB[,c(which(ar==0))],1,function(x){quantile(x,probs=0.975)}),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$ulty,col="red")
-        if(grout==2){
+         }
+           if(length(c(which(ar==0)))<=2){
+             warning("<3 runs were rejected!")
+           }
+           if(grout==2){
             word.tif("Biomasstraj") 
             par(mfrow=c(1,2))
             matplot(y=bigB[,c(which(ar==1))],x=c(year,year[length(year)]+1),type="l",lty=types[c(which(ar==1))],xlab="Year",ylab=paste("Biomass (",catdef$unit,")",sep=""),
@@ -658,18 +714,22 @@ if(length(datar[,1])>0){
            lines(y=apply(bigB[,c(which(ar==1))],1,function(x){quantile(x,probs=0.025)}),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$llty,col="red")
            lines(y=apply(bigB[,c(which(ar==1))],1,function(x){quantile(x,probs=0.975)}),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$ulty,col="red")
  
-         matplot(y=bigB[,c(which(ar==0))],x=c(year,year[length(year)]+1),type="l",lty=types[c(which(ar==0))],xlab="Year",ylab=paste("Biomass (",catdef$unit,")",sep=""),
-            ylim=c(0,max(bigB)),cex=grunits[13,4],cex.lab=grunits[13,3],col=cols[c(which(ar==0))],main="Rejected",
-              cex.axis=grunits[13,2],cex.main=grunits[13,7],lwd=grunits[13,8])    
-           lines(y=apply(bigB[,c(which(ar==0))],1,median),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$mlty,col="red")
-           lines(y=apply(bigB[,c(which(ar==0))],1,function(x){quantile(x,probs=0.025)}),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$llty,col="red")
-           lines(y=apply(bigB[,c(which(ar==0))],1,function(x){quantile(x,probs=0.975)}),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$ulty,col="red")
-          dev.off()
+           if(length(c(which(ar==0)))>2){
+             matplot(y=bigB[,c(which(ar==0))],x=c(year,year[length(year)]+1),type="l",lty=types[c(which(ar==0))],xlab="Year",ylab=paste("Biomass (",catdef$unit,")",sep=""),
+                     ylim=c(0,max(bigB)),cex=grunits[13,4],cex.lab=grunits[13,3],col=cols[c(which(ar==0))],main="Rejected",
+                     cex.axis=grunits[13,2],cex.main=grunits[13,7],lwd=grunits[13,8])    
+             lines(y=apply(bigB[,c(which(ar==0))],1,median),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$mlty,col="red")
+             lines(y=apply(bigB[,c(which(ar==0))],1,function(x){quantile(x,probs=0.025)}),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$llty,col="red")
+             lines(y=apply(bigB[,c(which(ar==0))],1,function(x){quantile(x,probs=0.975)}),x=c(year,year[length(year)]+1),lwd=2,lty=pstdef$ulty,col="red")
+           }        
+           dev.off()
         }
        rm(bigB)
        par(mfrow=c(1,1))
-    }
-         if(any(graphs==14)){ 
+     }
+     
+     
+    if(any(graphs==14)){ 
           #BmsyK
            breaks<-hist(storep[,"BmsyK"],plot=FALSE,nclass=grunits[14,5])$breaks
            good<-table((cut(storep[storep[,1]==1,"BmsyK"], breaks)))
@@ -778,7 +838,7 @@ if(length(datar[,1])>0){
            axis(1,at=xpos,labels=FALSE) 
             dev.off()
            word.tif("BtKAR")
-              #BtK
+          #BtK
            breaks<-hist(storep[,"BtK"],plot=FALSE,nclass=grunits[14,5])$breaks
            good<-table((cut(storep[storep[,1]==1,"BtK"], breaks)))
            dimnames(good)[[1]]<-(breaks[1:c(length(breaks)-1)]+breaks[2:c(length(breaks))])/2    
@@ -789,6 +849,19 @@ if(length(datar[,1])>0){
            barplot(t(newd),xlab="Bt/K",ylab="Frequency",col=c("black","NA"),cex.main=0.7,main=paste("Accepted=Black","  ","Rejected=White"))
            axis(1,at=xpos,labels=FALSE) 
       dev.off()
+      word.tif("B1KAR")
+      #B1K
+      breaks<-hist(storep[,"B1K"],plot=FALSE,nclass=grunits[14,5])$breaks
+      good<-table((cut(storep[storep[,1]==1,"B1K"], breaks)))
+      dimnames(good)[[1]]<-(breaks[1:c(length(breaks)-1)]+breaks[2:c(length(breaks))])/2    
+      bad<-table((cut(storep[storep[,1]==0,"B1K"], breaks)))
+      dimnames(bad)[[1]]<-(breaks[1:c(length(breaks)-1)]+breaks[2:c(length(breaks))])/2    
+      newd<-cbind(good,bad)       
+      xpos<-barplot(t(newd),ylim=c(0,max(newd)),plot=FALSE)  
+      barplot(t(newd),xlab="B1/K",ylab="Frequency",col=c("black","NA"),cex.main=0.7,main=paste("Accepted=Black","  ","Rejected=White"))
+      axis(1,at=xpos,labels=FALSE) 
+      dev.off()
+      
           word.tif("FmsyMAR")
            #FmsyM
            breaks<-hist(storep[,"FmsyM"],plot=FALSE,nclass=grunits[14,5])$breaks
@@ -862,16 +935,18 @@ if(length(datar[,1])>0){
     outs[3,]<-cbind(bmsykdef$dist,bmsykdef$low,bmsykdef$up,bmsykdef$mean,bmsykdef$sd)
     outs[4,]<-cbind(Mdef$dist,Mdef$low,Mdef$up,Mdef$mean,Mdef$sd)
     outs[5,]<-cbind(NA,btkdef$refyr,NA,NA,NA)
-    colnames(outs)<-c("Distr","Lower","Upper","Mean ","SD")
-    rownames(outs)<-c("Fmsy/M","Br/K","Bmsy/K","M","refyr")
+    outs[6,]<-cbind(b1kdef$dist,b1kdef$low,b1kdef$up,b1kdef$mean,b1kdef$sd)
+        colnames(outs)<-c("Distr","Lower","Upper","Mean ","SD")
+    rownames(outs)<-c("Fmsy/M","Br/K","Bmsy/K","M","refyr","B1/K")
   
     outs1<-data.frame(Mean=NA,Median=NA,per2_5=NA,per97_5=NA,min=NA,max=NA)
     outs1[1,]<-cbind(mFmsyM,FmsyM95[[2]],FmsyM95[[1]],FmsyM95[[3]],min(datar$FmsyM),max(datar$FmsyM))
     outs1[2,]<-cbind(mbtk,btk95[[2]],btk95[[1]],btk95[[3]],min(datar$BtK),max(datar$BtK))
     outs1[3,]<-cbind(mBmsyK,BmsyK95[[2]],BmsyK95[[1]],BmsyK95[[3]],min(datar$BmsyK),max(datar$BmsyK))
     outs1[4,]<-cbind(mM,M95[[2]],M95[[1]],M95[[3]],min(datar$M),max(datar$M))
+    outs1[5,]<-cbind(mb1k,b1k95[[2]],b1k95[[1]],b1k95[[3]],min(datar$B1K),max(datar$B1K))
     colnames(outs1)<-c("Mean (ll=1)","Median (ll=1)","2.5% (ll=1)","97.5% (ll=1)","min (ll=1)","max (ll=1)")
-    rownames(outs1)<-c("Fmsy/M","Bt/K","Bmsy/K","M")
+    rownames(outs1)<-c("Fmsy/M","Bt/K","Bmsy/K","M","B1/K")
     
     outs2<-data.frame(Mean=NA,Median=NA, per2_5=NA,per97_5=NA,min=NA,max=NA)
     outs2[1,]<-cbind(mMSY,MSY95[[2]],MSY95[[1]],MSY95[[3]],min(datar$MSY),max(datar$MSY))
@@ -896,9 +971,10 @@ if(length(datar[,1])==0){
     outs[3,]<-cbind(bmsykdef$dist,bmsykdef$low,bmsykdef$up,bmsykdef$mean,bmsykdef$sd)
     outs[4,]<-cbind(Mdef$dist,Mdef$low,Mdef$up,Mdef$mean,Mdef$sd)
     outs[5,]<-cbind(NA,btkdef$refyr,NA,NA,NA)
+    outs[6,]<-cbind(b1kdef$dist,b1kdef$low,b1kdef$up,b1kdef$mean,b1kdef$sd)
     colnames(outs)<-c("Distr","Lower","Upper","Mean ","SD")
-    rownames(outs)<-c("Fmsy/M","Bt/K","Bmsy/K","M","refyr")
-    outs1<-data.frame(Mean=NA,Median=NA,per2_5=NA,per97_5=NA,min=NA,max=NA)
+    rownames(outs)<-c("Fmsy/M","Bt/K","Bmsy/K","M","refyr","B1/K")
+        outs1<-data.frame(Mean=NA,Median=NA,per2_5=NA,per97_5=NA,min=NA,max=NA)
     colnames(outs1)<-c("Mean (ll=1)","Median (ll=1)","2.5% (ll=1)","97.5% (ll=1)")
     outs2<-data.frame(Mean=NA,Median=NA, per2_5=NA,per97_5=NA,min=NA,max=NA)
     colnames(outs2)<-c("Mean (ll=1)","Median (ll=1)","2.5% (ll=1)","97.5% (ll=1)","min (ll=1)","max (ll=1)")
@@ -908,4 +984,3 @@ if(length(datar[,1])==0){
   }
     return(ans) 
 }#function
-

@@ -240,7 +240,7 @@ K=c(NULL),t0=c(NULL),plottype=0,
     plot(0,0, type = "n", bty = "n", xaxt = "n", yaxt = "n",col.lab="transparent")
     legend("topleft", levels(group),bty="n", xpd = TRUE, title="Group",ncol=2, inset = c(0.1,0),x.intersp=0.65,
     pch=16,cex = 1.5,col=primcolors[1:ngroups])
-      
+      par(mfrow=c(1,1))
 		}#plottype==1
    if (plottype==2){
      par(mfrow=c(3,2))
@@ -275,8 +275,8 @@ K=c(NULL),t0=c(NULL),plottype=0,
      plot(0,0, type = "n", bty = "n", xaxt = "n", yaxt = "n",col.lab="transparent")
      legend("topleft", levels(group),bty="n", xpd = TRUE, title="Group",ncol=2, inset = c(0.1,0),x.intersp=0.65,
             pch=16,cex = 1.5,col=primcolors[1:ngroups])
+     par(mfrow=c(1,1))
   }#plottype==2
 }#plottype>0
-par(mfrow=c(1,1))
   return(nlsout)
 }

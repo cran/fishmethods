@@ -8,13 +8,14 @@ This function estimates MSY from catch following Dick and MAcCall (2011).
 \usage{
 dbsra(year = NULL, catch = NULL, catchCV = NULL, 
 catargs = list(dist = "none", low = 0, up = Inf, unit = "MT"), 
-agemat = NULL, k = list(low = 0, up = NULL, tol = 0.01, permax = 1000), 
+agemat = NULL, maxn=25, k = list(low = 0, up = NULL, tol = 0.01, permax = 1000), 
+b1k = list(dist = "unif", low = 0, up = 1, mean = 0, sd = 0),
 btk = list(dist = "unif", low = 0, up = 1, mean = 0, sd = 0, refyr = NULL), 
 fmsym = list(dist = "unif", low = 0, up = 1, mean = 0, sd = 0), 
 bmsyk = list(dist = "unif", low = 0, up = 1, mean = 0, sd = 0), 
 M = list(dist = "unif", low = 0, up = 1, mean = 0, sd = 0), nsims = 10000, 
 catchout = 0, grout = 1, 
-graphs = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14), 
+graphs = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15), 
 grargs = list(lwd = 1, cex = 1, nclasses = 20, mains = " ", cex.main = 1, 
 cex.axis = 1, 
 cex.lab = 1), pstats = list(ol = 1, mlty = 1, mlwd = 1.5, llty = 3, llwd = 1, 
@@ -38,6 +39,8 @@ grtif = list(zoom = 4, width = 11, height = 13, pointsize = 10))}
        be applied to catch internally. 
      }
   \item{agemat}{median age at entry to the reproductive biomass.}
+  \item{maxn}{the maximum limit of the Pella-Tomlinson shape parameter that should not be 
+      exceeded in the rule for accepting a run.}  
   \item{k}{list arguments for estimation of  \code{k} (carrying capacity). \code{low} and \code{up} are 
    the lower and upper bounds of the minimization routine and \code{tol} is the tolerance level 
    for minimization. A simple equation \code{((btk)-(b[refyr]/k))^2} is used as
@@ -45,6 +48,17 @@ grtif = list(zoom = 4, width = 11, height = 13, pointsize = 10))}
    below. \code{permax} is the absolute percent difference between the maximum biomass estimate
    and \code{k} that should not be exceeded in the rule for accepting a run (see \code{details}). 
   }
+ \item{b1k}{list arguments for B1/K, the relative depletive level in the first year. 
+   \code{dist} is the statistical distribution name from which to sample \code{b1k}. 
+   \code{low} and \code{up} are the lower and upper bounds of \code{b1k} 
+   in the selected distribution.  \code{mean} and \code{sd} are the mean and standard deviation 
+    for selected distributions. The following are valid distributions: "none", "unif" - uniform, 
+    "norm" - normal, "lnorm" - log-normal, "gamma" - gamma, and "beta" - beta distributions. 
+    "unif" requires non-missing values for \code{low} and \code{up}. "norm", "lnorm", 
+    "gamma" and "beta" require non-missing values for \code{low},\code{up}, \code{mean} and 
+    \code{sd}. If "lnorm" is used, \code{mean} and \code{sd} must be on the natural log scale
+    (keep \code{low} and \code{up} on the original scale). If \code{dist}= "none", the mean is used as
+     a fixed constant.}
   \item{btk}{list arguments for Bt/K, the relative depletive level in a specific reference year (\code{refyr}). 
    \code{dist} is the statistical distribution name from which to sample \code{btk}. 
    \code{low} and \code{up} are the lower and upper bounds of \code{btk} 
@@ -148,7 +162,8 @@ The overfishing limit (OFL) is Umsy*B[termyr].
 The rule for accepting a run is:
 if(min(B)>0 && max(B)<=k && 
 
-(objective function minimum<=tol^2) && abs(((max(B)-k)/k)*100)<=permax
+(objective function minimum<=tol^2) && abs(((max(B)-k)/k)*100)<=permax 
+&& n<=maxn
 
 If using the R Gui (not Rstudio), run 
 
@@ -203,6 +218,7 @@ Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@st
   dbsra(year =cowcod$year, catch = cowcod$catch, catchCV = NULL, 
     catargs = list(dist="none",low=0,up=Inf,unit="MT"),
     agemat=11, k = list(low=100,up=15000,tol=0.01,permax=1000), 
+    b1k = list(dist="none",low=0.01,up=0.99,mean=1,sd=0.1),
     btk = list(dist="beta",low=0.01,up=0.99,mean=0.1,sd=0.1,refyr=2009),
     fmsym = list(dist="lnorm",low=0.1,up=2,mean=-0.223,sd=0.2),
     bmsyk = list(dist="beta",low=0.05,up=0.95,mean=0.4,sd=0.05),
