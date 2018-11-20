@@ -44,7 +44,7 @@ Pennington, M. , L. Burmeister, and V. Hjellvik. 2002. Assessing the precision o
 from trawl-survey samples. Fish. Bull. 100:74-80.
 
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 data(codcluslen)
 temp<-codcluslen[codcluslen$region=="NorthCape" & codcluslen$number>0,]

@@ -37,7 +37,7 @@ to Table 8.8, p. 314 in Quinn and Deriso.
 \references{Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford University Press, New York, New York. 542 pages
 
 Lai, H.L. 1987. Optimum allocation for estimating age composition using age-length keys. U.S. Fish. Bull. 85:179-185}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{alkss}} \code{\link{alkprop}}}
 \examples{
 data(alkdata)

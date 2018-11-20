@@ -34,7 +34,7 @@ See reference to Table 8.6, p. 312 in Quinn and Deriso.
   \item{n }{list element containing the sample size estimates for each age}
 }
 \references{Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford University Press, New York, New York. 542 pages}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{alkD}} \code{\link{alkprop}}}
 \examples{
 data(alkdata) 

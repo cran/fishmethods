@@ -50,7 +50,7 @@ pwpop(abund = NULL, year = NULL, periods = NULL, Cs = NULL,
 \references{Neter, J. , M. H. Kutner, C. J. Nachtsheim, and W. Wasserman.  1996.  Applied Linear Statistical Models.
   The Magraw-Hill Companies. 1408 p.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 data(counts)
 pwpop(abund = counts$number, year = counts$year,periods = 3, Cs = c(2000,2005), 

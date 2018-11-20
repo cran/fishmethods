@@ -56,12 +56,10 @@ If gestimate=TRUE, unconstrained nonlinear least-squares (function \emph{nls}) i
 Francis, R. I. C. C. 1988. Are growth parameters estimated from tagging and age-length data comparable?
 Can. J. Fish. Aquat. Sci. 45: 936-942.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 }
 \examples{
 data(pinfish)
 with(pinfish,vbfr(age=age,L=sl,agephi=3,agepsi=6))
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
 \keyword{misc}

@@ -6,7 +6,7 @@
 }
 \usage{
 deplet(catch = NULL, effort = NULL, method = c("l", "d", "ml",
- "hosc", "hesc", "hemqle", "wh"), kwh=NULL, nboot = 500)
+ "hosc", "hesc", "hemqle", "wh"), kwh=NULL, nboot = 500, Nstart=NULL)
 }
 \arguments{
 \item{catch}{the vector containing catches for each removal period (in sequential order).}
@@ -20,6 +20,8 @@ model of Chao and Chang (1999), and \code{hemqle}= maximum quasi likelihood esti
 \item{kwh}{the number of capture parameters (p) to fit in method \code{wh}. NULL for all possible capture parameters.}
 \item{nboot}{the number of bootstrap resamples for estimation of standard errors in the \code{ml},
 \code{hosc},\code{hesc}, and \code{hemqle} methods}
+\item{Nstart}{starting value for N in method "wh". If NULL, start value is
+automatically determined}
 }
 \details{
 The variable effort models include the Leslie-Davis (\code{l}) estimator (Leslie and Davis, 1939), the effort-corrected Delury (\code{d}) estimator (Delury,1947; Braaten, 1969),
@@ -58,7 +60,7 @@ Otis, D. L., K. P. Burnham, G. C. White, and D. R. Anderson. 1978. Statistical i
 White, G. C., D. R. Anderson, K. P. Burnham, and D. L. Otis. 1982. Capture-recapture and Removal Methods for Sampling
 Closed Populations. Los Alamos National Laboratory LA-8787-NERP. 235 p.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 data(darter)
 deplet(catch=darter$catch,effort=darter$effort,method="hosc") 

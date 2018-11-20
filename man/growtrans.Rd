@@ -32,7 +32,7 @@ Chen, Y., M. Hunter, R. Vadas, and B. Beal. 2003. Developing a growth-transition
 of the green sea urchin (Strongylocentrotus droebachiensis) off Maine. Fish. Bull. 101: 737-744.
 }
 \note{This function is based on an example EXCEL spreadsheet provided by Yong Chen.}   
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 }
 \examples{
 # For Chen et al. 2003

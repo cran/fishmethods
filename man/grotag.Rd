@@ -64,7 +64,7 @@ from tagging data. New Zealand Journal of Marine and Freshwater Research, 22, p.
 \author{
 Marco Kienzle \email{Marco.Kienzle@gmail.com}
 
-Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 
 \examples{
 data(bonito)

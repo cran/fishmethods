@@ -45,7 +45,7 @@
 
 \references{Shertzer, K. W., M. H. Prager, and E. K. Williams. 2008.  A probability-based approach to setting 
   annual catch levels. Fishery Bulletion 106: 225-232.}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \note{Chris Legault of the National Marine Fisheries Service, Woods Hole, MA provided R code for the randomization method
 	and Daniel Hennen of the the National Marine Fisheries Service, Woods Hole, MA provided the R code for using 
 	mvrnorm to obtain log-normal distributions. 

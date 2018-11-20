@@ -1,11 +1,11 @@
-\name{vblrt}
-\alias{vblrt}
-\title{Likelihood Ratio Tests for Comparing Multiple von Bertalanffy Growth Curves}
+\name{growthlrt}
+\alias{growthlrt}
+\title{Likelihood Ratio Tests for Comparing Multiple Growth Curves}
 \description{
-  Likelihood ratio tests for comparison of two or more von Bertalanffy growth curves following Kimura (1980).
+  Likelihood ratio tests for comparison of two or more growth curves (von Bertalanffy, Gompertz and logistic)
 }
 \usage{
-vblrt(len = NULL, age = NULL, group = NULL, error = 1,
+growthlrt(len = NULL, age = NULL, group = NULL, model = 1, error = 1,
  select = 1, Linf = c(NULL), K = c(NULL), t0 = c(NULL),plottype=0,
 control=list(maxiter=10000,minFactor=1/1024,tol=1e-5))
 }
@@ -14,6 +14,8 @@ control=list(maxiter=10000,minFactor=1/1024,tol=1e-5))
   \item{len}{the vector of lengths of individual fish.}
   \item{age}{the vector of ages associated with the length vector.}
   \item{group}{the vector of character names specifying group association. The first character in the name must be a letter.}
+  \item{model}{code indicating the growth model to use. 1 = von Bertalanffy, 2= Gompertz and 3= logistic. Default=1.}
+
   \item{error}{the error variance assumption.  1= constant variance for all \emph{lij}s; 2= constant variance for all mean 
 lengths at age; 3=var of \emph{lij} varies with age. See methods a-c in Kimura (1980: pp. 766).  The required statistics 
 for each type of error are calculated from the individual length-age observations.}
@@ -39,7 +41,19 @@ the parameter estimate of the reference group (lowest alpha-numeric order) and t
 have 1 if group identifier is the current group and 0 otherwise. The group number depends on the alph-numeric order.
 See function \emph{model.matrix}.  
 
- To extract the VB parameters for each group under an hypothesis: 
+The model choices are: 
+
+von Bertalanffy
+La=Linf(1-exp(-K*(a-t0)))
+
+Gompertz
+La=Linf*exp(-exp(-K*(a-t0)))
+
+Logisitic
+La=Linf/(1+exp(-K*(a-t0)))
+ 
+
+To extract the VB parameters for each group under an hypothesis: 
    
             x$'model Ho'$coefficients
 
@@ -63,6 +77,10 @@ Linf3<-Linf1+ x$'model Ho'$coefficients[3]
 
 For models H1, H2, H3 and H4, the parameter L1 or K1 or t01 will be
 shared across groups. 
+
+If RSSHX >RSSH0, less information is accounted for by RSSHX model (where X is hypothesis 1, 2,..etc.).  
+If Chi-square is significant, RSSH0 is the better model. If Chi-square is not significant, RSSHX is 
+the better model. 
 }
 \value{
   \item{results }{list element with the likelihood ratio tests comparing von Bertalanffy models.}
@@ -79,7 +97,7 @@ University Press.
 
 Kimura, D. K. 1980. Likelihood methods for the von Bertalanffy growth curve. U. S. Fish. Bull. 77(4): 765-776.  
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 ## Normally, the length and age data will represent data for individuals.  
 ## Kimura's data are mean lengths-at-age but are usable because error=2 
@@ -87,7 +105,7 @@ Kimura, D. K. 1980. Likelihood methods for the von Bertalanffy growth curve. U. 
 ## one value is present for each age,the mean length will be calculated
 ## as the same value.
 data(Kimura)
-vblrt(len=Kimura$length,age=Kimura$age,group=Kimura$sex,error=2,select=1,
+growthlrt(len=Kimura$length,age=Kimura$age,group=Kimura$sex,model=1,error=2,select=1,
 plottype=2)
 }
 \keyword{misc}

@@ -140,7 +140,7 @@ Burnham, K. P. D. R. Anderson, G. C. White, C. Brownie, and K. H. Pollock. 1987.
 
 Hightower, J. E., J. R. Jackson, and K. H. Pollock. 2001. Use of telemetry methods to estimate natural and fishing mortality of striped bass in Lake Gaston, North Carolina. Transactions of the American Fisheries Society 130: 557-567.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 }
 \seealso{\code{fm_model_avg},\code{fm_checkdesign}}
 \examples{

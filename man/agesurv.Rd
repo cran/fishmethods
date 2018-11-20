@@ -44,7 +44,7 @@ Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford Universi
 
 Smith, M. W. and 5 others. 2012. Recommendations for catch-curve analysis. N. Am. J. Fish. Manage. 32: 956-967.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{data(rockbass)
 agesurv(age=rockbass$age,full=6)}
 \keyword{misc}

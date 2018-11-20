@@ -23,7 +23,7 @@ associated standard errors.
 }
 \references{Jensen, A. L. 1996. \emph{Ratio estimation of mortality using catch curves}. Fisheries Research 27: 61-67.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{ \code{\link{agesurv}}}
 \examples{
 data(Jensen)

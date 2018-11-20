@@ -52,7 +52,7 @@ Olsson, F. 2005. Confidence intervals for the mean of a log-normal distribution.
  Education 13(1). www.amstat.org/publications/jse/v13n1/olsson.html
 }
 \author{
-Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
+Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 }
 \examples{
 ## The example below shows accuracy of the back-transformation

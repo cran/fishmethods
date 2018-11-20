@@ -30,7 +30,7 @@ across all models.  An unconditional standard error is also calculated by
 \references{ 
 Burnham, K. P. and D. R. Anderson. 2002. Model selection and multimodel inference : A Practical Information-Theorectic Approach, 2nd edition. Spriner-Verlag, New York, NY. 488 p.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{fm_telemetry}}}
 \examples{
 ## This is a typical specification, not a working example

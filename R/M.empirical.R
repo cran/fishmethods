@@ -1,10 +1,10 @@
 
-M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,T=NULL,tmax=NULL,tm=NULL,GSI=NULL,
-      Wdry=NULL,Wwet=NULL,Bl=NULL, method=c(1,2,3,4,5,6,7,8,9,10,11)){
-   if(any(method==1) & any(is.null(Linf),is.null(Kl),is.null(T)))
-           stop("Method 1 requires Linf, Kl, and T")
-    if(any(method==2) & any(is.null(Winf),is.null(Kw),is.null(T)))
-           stop("Method 2 requires Winf, Kw, and T")
+M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,TC=NULL,tmax=NULL,tm=NULL,GSI=NULL,
+      Wdry=NULL,Wwet=NULL,Bl=NULL, TK=NULL, BM=NULL, method=c(1,2,3,4,5,6,7,8,9,10,11,12)){
+   if(any(method==1) & any(is.null(Linf),is.null(Kl),is.null(TC)))
+           stop("Method 1 requires Linf, Kl, and TC")
+    if(any(method==2) & any(is.null(Winf),is.null(Kw),is.null(TC)))
+           stop("Method 2 requires Winf, Kw, and TC")
     if(any(method==3) & is.null(tmax))
            stop("Method 3 requires tmax")
     if(any(method==4) & any(is.null(tmax),is.null(Kl)))
@@ -23,7 +23,8 @@ M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,T=NULL,tmax=NULL,tm=NU
            stop("Method 10 requires tmax")
    if(any(method==11) & any(is.null(Linf),is.null(Kl)))
            stop("Method 11 requires Linf and Kl")
-
+  if(any(method==12) & any(is.null(tmax),is.null(BM),is.null(TK)))
+    stop("Method 12 requires tmax, BM and T")
 
     n<-length(method)
     if(any(method==3)) n<-n+1
@@ -32,15 +33,15 @@ M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,T=NULL,tmax=NULL,tm=NU
     cnt<-0
    if(any(method==1)){
       cnt<-cnt+1
-      out[cnt,1]<-round(10^(-0.0066-0.279*log10(Linf)+0.6543*log10(Kl)+0.4634*log10(T)),3)
+      out[cnt,1]<-round(10^(-0.0066-0.279*log10(Linf)+0.6543*log10(Kl)+0.4634*log10(TC)),3)
       dimnames(out)[[1]][cnt]<-list("Pauly (1980) - Length Equation")
-      if (T<4 || T>30) warning ("Temperature value seems wrong -- <4 or >30")
+      if (TC<4 || TC>30) warning ("Temperature value seems wrong -- <4 or >30")
      }
    if(any(method==2)){ 
        cnt<-cnt+1
-       out[cnt,1]<-round(10^(-0.2107-0.0824*log10(Winf)+0.6757*log10(Kw)+0.4627*log10(T)),3)
+       out[cnt,1]<-round(10^(-0.2107-0.0824*log10(Winf)+0.6757*log10(Kw)+0.4627*log10(TC)),3)
        dimnames(out)[[1]][cnt]<-list("Pauly (1980) - Weight Equation")
-       if (T<4 || T>30) warning ("Temperature value seems wrong -- <4 or >30")
+       if (TC<4 || TC>30) warning ("Temperature value seems wrong -- <4 or >30")
     }
    if(any(method==3)){
         if (tmax<0.5 || tmax>300)
@@ -93,7 +94,11 @@ M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,T=NULL,tmax=NULL,tm=NU
       out[cnt,1]<-round(4.118*(Kl^0.73)*(Linf^-0.33),3)
       dimnames(out)[[1]][cnt]<-list("Then et al. (2015)-growth")
      }
-
+    if(any(method==12)){
+      cnt<-cnt+1
+      out[cnt,1]<-round(10^(1.672+0.993*log10(1/tmax)-0.035*log10(BM)-300.447/TK),3)
+      dimnames(out)[[1]][cnt]<-list("Brey 1999")
+    }
     return(out)
 }
 

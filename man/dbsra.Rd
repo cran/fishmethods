@@ -206,7 +206,7 @@ Dick, E. J. and A. D. MacCall. 2011. Depletion-based stock reduction analysis: a
 sustainable yield for data-poor fish stocks. Fisheries Research 110: 331-341.
 }
 \author{
-Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
+Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 }
 \note{The random distribution function was adapted from Nadarajah, S and S. Kotz. 2006. R 
  programs for computing truncated distributions. Journal of Statistical Software 16, code snippet 2.

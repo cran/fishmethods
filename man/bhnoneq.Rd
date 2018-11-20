@@ -47,7 +47,7 @@ graph = TRUE)
  }
 \references{Gedamke, T. and J. M. Hoenig. 2006. Estimating mortality from mean length
   data in nonequilibrium situations, with application to the assessment of goosefish. Trans. Am. Fish. Soc. 135:476-487}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 
 Quang C. Huynh of Virginia Institute of Marine Science}
 \note{ Todd Gedamke provided the predicted mean length code in C++.

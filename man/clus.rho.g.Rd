@@ -36,7 +36,7 @@
 \references{Donner, A. 1986. A review of inference procedures for the intraclass correlation coefficient
  in the one-way random effects model. International Statistical Review. 54: 67-82.
  }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{clus.str.lf} \link{clus.lf} \link{clus.mean}}}
 \examples{
   data(codcluslen)

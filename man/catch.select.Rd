@@ -37,7 +37,7 @@ Smith, M. W. and 5 others. 2012. Recommendations for catch-curve analysis. N. Am
 
 Sparre, P. and S. C. Venema. 1998. Introduction to tropical fish stock assessment. Part 1. Manual. FAO Fisheries Technical Paper, No. 206.1, Rev. 2. Rome. 407 p. Available on the world-wide web.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 data(sblen)
 catch.select(len=sblen$len_inches,binsize=2,lenmin=10,peakplus=1,Linf=47.5,K=0.15, 

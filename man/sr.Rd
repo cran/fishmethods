@@ -145,7 +145,7 @@ of exploited fish stocks at low population levels. Science 269: 1106-1108.
 Quinn, T. J. and R. B. Deriso. 1999. Quantitative fish dynamics. Oxford University Press. 542 pages. 
 
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 
 \examples{
  \dontrun{

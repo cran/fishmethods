@@ -79,7 +79,7 @@ The seven models are fitted by maximum likelihood using formulae shown in Hampto
 }
 \references{Hampton, J. 1991. Estimation of southern bluefin tuna Thunnus maccoyii growth parameters from tagging data, using von Bertalanffy models incorporating individual variation. U. S. Fishery Bulletin 89: 577-590.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{mort.al}}
 }
 \examples{

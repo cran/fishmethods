@@ -35,7 +35,7 @@
   Hedges,L.V. 2007. Correcting a significance test for clustering. Journal of Educational and Behavioral 
   Statistics. 32: 151-179.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
    data(codcluslen)
    temp<-codcluslen[codcluslen$number>0,]

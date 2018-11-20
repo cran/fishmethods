@@ -21,7 +21,7 @@ convmort(value = NULL, fromto = 1, type = 2, M = NULL)
 }
 \references{Ricker, W. E. 1975. Computation and interpretation of biological statistics of fish populations.
 Bull. Fish. Res. Board. Can. 191: 382 p.}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 convmort(0.3,fromto=1,type=2,M=0.15)
 }

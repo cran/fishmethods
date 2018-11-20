@@ -23,7 +23,7 @@ alk(age=NULL,size=NULL,binsize=NULL,type=1)
   }
 \value{A table of size, total numbers at size, and numbers (or proportions)-at-age per size class.}
 \references{Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford University Press, New York, New York. 542 pages}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{alkD}} \code{\link{alkss}} \code{\link{alkprop}}}
 \examples{
  \dontrun{

@@ -30,7 +30,7 @@ catch length frequencies. Trans. Am. Fish. Soc. 121:115-122.
 Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford University Press, New York, New York. 542 pages.
 
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{bhnoneq}}}
 \examples{data(pinfish)
 bheq(pinfish$sl,type=1,K=0.33,Linf=219.9,Lc=120,nboot=200)

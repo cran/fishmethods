@@ -17,7 +17,7 @@ zt(x = NULL, ctype = 1)
 \value{
   vector containing the transformed time series.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 data(wolffish)
 zt(wolffish$index) 

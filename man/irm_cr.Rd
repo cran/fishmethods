@@ -119,7 +119,7 @@ return models allowing for harvest and catch and release: evidence of environmen
 striped bass fishing and natural mortality rates.  North Amercian Journal of Fisheries Management 27:387-396.
 
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{irm_h}} \code{\link{tag_model_avg}}}
 \examples{
 ## Data come from Appendix Table A2 and model structure from model (a) in

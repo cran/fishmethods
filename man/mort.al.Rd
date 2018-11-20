@@ -43,7 +43,7 @@ using simulated single tag-recovery data. ICES Journal of Marine Science 66: 573
 Tanaka, E. 2006. Simultaneous estimation of instantaneous mortality coefficients and rate of effective survivors to number of released fish 
 using multiple sets of tagging experiments. Fisheries Science 72: 710-718.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
  \dontrun{
   data(tanaka)

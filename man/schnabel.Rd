@@ -24,7 +24,7 @@ For the Schumacher-Eschmeyer method, the t distribution is used to set confidenc
 the inverse standard errors (invSE), lower (LCI) and upper (UCI) confidence intervals,
  and the type of distribution used to set confidence intervals (CI Distribution). }
 \references{ Krebs, C. J. 1989. \emph{Ecological Methodologies}. Harper and Row, New York, NY. 654 p.}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 data(Gerking)
 schnabel(catch=Gerking$C,recaps=Gerking$R, newmarks=Gerking$nM,

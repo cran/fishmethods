@@ -1,4 +1,4 @@
-vbmultifit<-function(len=NULL,age=NULL,group=NULL,fixed=c(1,1,1),error=1,
+growthmultifit<-function(len=NULL,age=NULL,group=NULL,model=1,fixed=c(1,1,1),error=1,
         select=1,Linf=c(NULL),K=c(NULL),t0=c(NULL),plot=FALSE,
                 control=list(maxiter=10000,minFactor=1/1024,tol=1e-5)){
    if(is.null(len)) 
@@ -7,19 +7,23 @@ vbmultifit<-function(len=NULL,age=NULL,group=NULL,fixed=c(1,1,1),error=1,
          stop ("age is missing") 
    if(is.null(group)) 
          stop ("group is missing.")
+   if(is.factor(group)) stop ("group must be a vector of characters")
    group<-as.factor(group) 
    if(length(age)!=length(len)) stop ("Vectors of different lengths")
    if(length(len)!=length(group)) stop ("Vectors of different lengths")
    if(length(age)!=length(group)) stop ("Vectors of different lengths")
+   
+  
   ngroups<-nlevels(group) 
   if(nlevels(group)<2) stop("Only two or more groups are allowed.")
   if(select==2 & (is.null(Linf)|is.null(K)|is.null(t0))) stop("User-specified values of Linf, K, and t0 are required")
-  cat<-as.data.frame(model.matrix(lm(age~as.factor(group))))
-  names(cat)<-levels(group)
-x2<-NULL;wgt<-NULL   
-x<-as.data.frame(cbind(len,age,cat))
-  index<-as.numeric(which(is.na(x),arr.ind=TRUE))[1]
-  if(!is.na(index)) x<-x[-index,]
+    cat<-as.data.frame(model.matrix(lm(age~as.factor(group))))
+    names(cat)<-levels(group)
+    x2<-NULL;wgt<-NULL   
+    x<-as.data.frame(cbind(len,age,cat))
+   index<-which(is.na(x),arr.ind=TRUE)
+   index<-as.numeric(index[,1])
+  if(length(index)>0) x<-x[-index,]
  
   if(select==1){ 
     storeLinf<-NULL; storeK<-NULL;storet0<-NULL
@@ -33,7 +37,8 @@ x<-as.data.frame(cbind(len,age,cat))
       temp<-m1[,c(ncol(m1)-1,ncol(m1))];names(temp)<-c("age","len")
       m1$age<-m1$age+1
       m1<-merge(m1,temp,by.x="age",by.y="age",all.x=TRUE,all.y=TRUE)
-      m1<-m1[-unique(which(is.na(m1),arr.ind=TRUE)[,1]),]   
+      m1<-m1[-unique(which(is.na(m1),arr.ind=TRUE)[,1]),] 
+      if(length(m1[,1])<=3) stop("There aren't enough neighboring ages to fit a Walford plot. Use select=2.")
       out1<-lm(len~x,data=m1)
       KK<-as.numeric(abs(log(coef(out1)[2])))
       LI<-coef(out1)[1]/(1-coef(out1)[2])
@@ -56,12 +61,12 @@ x<-as.data.frame(cbind(len,age,cat))
     t0parms<-c(storet0[indexs],storet0[indexs]-storet0)
   }
   if(select==2){
-    if(length(Linf)!=ngroups) stop("Number of Linfs does not match number of groups")
+   if(length(Linf)!=ngroups) stop("Number of Linfs does not match number of groups")
     if(length(K)!=ngroups) stop("Number of Ks does not match number of groups")
     if(length(t0)!=ngroups) stop("Number of t0s does not match number of groups")
-    Lparms<-c(Linf[1],Linf[1]-Linf[2:ngroups])
-    Kparms<-c(K[1],K[1]-K[2:ngroups])
-    t0parms<-c(t0[1],t0[1]-t0[2:ngroups])
+    Lparms<-c(Linf[1],Linf[2:ngroups]-Linf[1])
+    Kparms<-c(K[1],K[2:ngroups]-K[1])
+    t0parms<-c(t0[1],t0[2:ngroups]-t0[1])
     
   }
   if(error==1) x$wgt<-1
@@ -131,12 +136,14 @@ x<-as.data.frame(cbind(len,age,cat))
   }
   # Full model
   starts<-paste("list(",Linfs,",",Ks,",",t0s,")",sep="",collapse="")
-  equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+  if(model==1) equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+  if(model==2) equat<-paste("len~(",pL,")*","exp(-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+  if(model==3) equat<-paste("len~(",pL,")/","(1+exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
   Ho<-try(nls(eval(parse(text=equat)),data=x,       
               weights=wgt,start=eval(parse(text=starts)),
               control=control),silent=TRUE)
   if(class(Ho)=="try-error") stop(paste("Ho: ",attributes(Ho)[2],sep=""))
-  resid0<-residuals(Ho)
+      resid0<-residuals(Ho)
       nlsout<-list(summary(Ho),AIC(Ho),resid0)
       names(nlsout)<-c("results","AIC","residuals")
    
@@ -154,7 +161,7 @@ x<-as.data.frame(cbind(len,age,cat))
                   all(y==0)})
                 temp1<-x[keep, ]
                 temp1<-temp1[order(temp1$age),]
-                plot(len~age,data=temp1,lwd=1.5,xlab="Age",ylab="Length",ylim=c(0,max(x$len)),
+                plot(len~age,data=temp1,lwd=1.5,xlab="Age",ylab="Length",ylim=c(min(x$len),max(x$len)),
                      xlim=c(0,max(x$age)),pch=16)
                 lines(temp1$pred~temp1$age,col=cols[i])
               }
@@ -165,7 +172,7 @@ x<-as.data.frame(cbind(len,age,cat))
                 lines(temp1$pred~temp1$age,col=cols[i],lwd=1.5)
               }
             }
-           legend("topleft", levels(group),bty="n", xpd = TRUE, title="Group",ncol=2, inset = c(0.1,0),x.intersp=0.65,
+           legend("bottomright", levels(group),bty="n", xpd = TRUE, title="Group",ncol=2, inset = c(0.1,0),x.intersp=0.65,
                  pch=16,cex = 1.0,col=primcolors[1:ngroups])
             getpred<-paste("x$pred<-resid(Ho)",sep="",collapse="")
             eval(parse(text=getpred))
@@ -185,11 +192,10 @@ x<-as.data.frame(cbind(len,age,cat))
                 points(temp1$pred~temp1$age,col=cols[i],pch=16)
               }
             }
-          legend("topleft", levels(group),bty="n", xpd = TRUE, title="Group",ncol=2, inset = c(0.1,0),x.intersp=0.65,
+          legend("topright", levels(group),bty="n", xpd = TRUE, title="Group",ncol=2, inset = c(0.1,0),x.intersp=0.65,
                  pch=16,cex = 1.0,col=primcolors[1:ngroups])
-      }#plot==1
-par(mfrow=c(1,1))
+          par(mfrow=c(1,1))
+    }#plot==1
+
   return(nlsout)
 }
-
-

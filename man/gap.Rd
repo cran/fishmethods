@@ -30,7 +30,7 @@ observations should correspond to large standardized weighted gaps.
 \references{
 Tukey, J. W. 1971. Exploratory data analysis. Addison-Wesley, Reading, MA. 431 pp.}
 \author{
-Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
  y<-c(rnorm(10,10,2),1000)
  gap(y)

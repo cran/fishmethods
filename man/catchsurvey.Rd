@@ -38,7 +38,7 @@ Symposium on Invertebrate Stock Assessment and Management. Can Spec Publ Fish Aq
 See also Collie JS and MP Sissenwine. 1983. Estimating population size from relative abundance data
 measured with error. Can J Fish Aquat Sci. 40:1871-1879.
 }
-\author{ Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{ Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
  ## Example takes a bit of time to run
   \dontrun{

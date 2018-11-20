@@ -52,7 +52,7 @@
  Ridout, M. S., C. G. B. Demetrio, and D. Firth. 1999. Estimating intraclass correlation for
   binary data. Biometrics 55: 137-148.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{clus.lf} \link{clus.str.lf} \link{clus.mean}}}
 \examples{
   data(codcluslen)

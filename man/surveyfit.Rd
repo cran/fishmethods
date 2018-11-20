@@ -26,7 +26,7 @@ Following Equation 4 in Pennington (1986), fitted values are calculated from the
 \value{List containing summary statistics (sample size (n), the first three sample autocorrelations (r1-r3) for the first differenced logged series)
  and parameter estimates (theta, theta standard error, and sigma2), the observed log-transformed index and fitted values, and the ARIMA function output.}
 \references{Pennington, M. P. 1986. Some statistical techniques for estimating abundance indices from trawl surveys. Fishery Bulletin 84(3): 519-525.}
-\author{ Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{ Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{surveyref}}} 
 \examples{
 data(yellowtail)

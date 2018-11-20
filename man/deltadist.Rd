@@ -23,7 +23,7 @@ the delta distribution mean and variance are given in Pennington (1983).
 }
 \references{Pennington, M. 1983. Efficient estimators of abundance for fish and plankton
 surveys. Biometrics 39: 281-286.}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 data(catch)
 deltadist(catch$value) 

@@ -33,7 +33,7 @@ See Krebs for formulae.
 \value{Dataframe containing life table values.
 }
 \references{Krebs, C. J. 1989. \emph{Ecological Methodologies}. Harper and Row, New York, NY. 654 p.}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 data(buffalo)
 lifetable(age=buffalo$age,numbers=buffalo$nx,type=2)

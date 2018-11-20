@@ -40,7 +40,7 @@ the seasonal length frequencies into age classes.
 }
 \references{ Shepherd, J. G. 1987. A weakly parametric method for the analysis of length composition data. In: D. Pauly and
 G. Morgan, (eds). The Theory and Application of Length-Based Methods of Stock Assessment. ICLARM Conf. Ser. Manilla.}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \note{Shepherd's Fortran code provided in his original working document was translated into R code. 
 }
 \examples{

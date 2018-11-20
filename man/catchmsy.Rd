@@ -182,7 +182,7 @@ Martell, S. and R. Froese. 2012. A simple method for estimating MSY from catch a
 Fish and Fisheries 14:504-514.
 }
 \author{
-Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
+Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 }
 \note{The random distribution function was adapted from Nadarajah, S and S. Kotz. 2006. 
  R programs for computing truncated distributions. Journal of Statistical Software 16, 

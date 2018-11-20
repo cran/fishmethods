@@ -1,5 +1,5 @@
 deplet<-function(catch=NULL,effort=NULL,method=c("l","d","ml","hosc","hesc","hemqle","wh"),
-       kwh=NULL, nboot=500){ 
+       kwh=NULL,nboot=500,Nstart=NULL){ 
  if(!any(method %in% c("l","d","ml","hosc","hesc","hemqle","wh")))
  	stop("not a valid method.")          
      if(is.null(catch)) 
@@ -88,7 +88,6 @@ deplet<-function(catch=NULL,effort=NULL,method=c("l","d","ml","hosc","hesc","hem
         ml.out<-NULL 
         dd<-x
         Q<-NULL
-        parms<-c(k=0.0005)
         ml<-function(y){
           k<-y[1] 
           dd$p<-1-exp(-k*dd$effort)
@@ -391,7 +390,8 @@ if(any(method=="wh")){
       	qq<-seq(1,nsam,1)
 		T[c(seq(1,nsam,1))]<-cumsum(catch[c(seq(1,nsam,1))])
 		TC<-sum(catch)
-		N<-TC
+		if(is.null(Nstart)) N<-TC
+		if(!is.null(Nstart)) N<-Nstart
       ans<-NULL
       resids<-NULL
       preds<-NULL
@@ -400,8 +400,7 @@ if(any(method=="wh")){
       for(k in 1:endk){# limited to n-p 
             	if(k==1) ps<-T[nsam]/(nsam*N-sum(T[1:nsam-1]))  
             	if(k>=2) ps<-rep(T[nsam]/(nsam*N-sum(T[1:nsam-1])),k)
-			parms<-c(N,ps) 
-           
+			   parms<-c(N,ps) 
       		model<-function(y){					
    			  N<-y[1]
   			  ps<-y[2:length(y)] 

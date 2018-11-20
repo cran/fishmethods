@@ -90,7 +90,7 @@ Burnham, K. P. and D. R. Anderson. 2002. Model selection and multimodel inferenc
 Hoenig, J. M, N. J. Barrowman, W. S. Hearn, and K. H. Pollock. 1998. Multiyear tagging studies incorporating fishing 
 effort data.  Canadian Journal of Fisheries and Aquatic Sciences 55: 1466-1476.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{irm_cr}} \code{\link{tag_model_avg}}}
 \examples{
 # Data come from Table 4 and model structure from Table 5 under "year-specific F, 

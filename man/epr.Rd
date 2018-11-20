@@ -15,14 +15,14 @@ epr(age = NULL, fecund = NULL, partial = NULL, pmat = pmat,
   \item{partial}{partial recruitment vector applied to fishing mortality (F) to obtain partial F-at-age.  Length of this vector must match length of the age vector. }
   \item{pmat}{proportion of mature fish at each age. Length of this vector must match the length of the age vector.  }
   \item{M}{vector containing a single natural mortality (M) rate if M is assumed constant over all ages, or a vector of
-  Ms, one for each age. If the latter, the vector length match the length of the age vector. }
+  Ms, one for each age. If the latter, the vector length must match the length of the age vector. }
   \item{pF}{the proportion of fishing mortality that occurs before spawning.}
   \item{pM}{the proportion of natural mortality that occurs before spawning.}
-  \item{MSP}{the percentage of maximum spawning potential (percent MSP reference point) for which F and SBPR should be calculated.  }
+  \item{MSP}{the percentage of maximum spawning potential (percent MSP reference point) for which F and EPR should be calculated.  }
   \item{plus}{a logical value indicating whether the last age is a plus-group. Default is FALSE.}
   \item{oldest}{if plus=TRUE, a numeric value indicating the oldest age in the plus group. }
-  \item{maxF}{the maximum value of F range over which SBPR will be calculated. SBPR is calculated for F = 0 to maxF.}
-  \item{incrF}{F increment for SBPR calculation.}
+  \item{maxF}{the maximum value of F range over which EPR will be calculated. EPR is calculated for F = 0 to maxF.}
+  \item{incrF}{F increment for EPR calculation.}
 }
 \details{
   Eggs-per-recruit analysis is conducted following Gabriel et al. (1989).  The F and EPR for the percentage maximum spawning potential reference point
@@ -36,7 +36,7 @@ epr(age = NULL, fecund = NULL, partial = NULL, pmat = pmat,
 \references{Gabriel, W. L., M. P. Sissenwine, and W. J. Overholtz. 1989. Analysis of spawning stock biomass per recruit:
 an example for Georges Bank haddock. North American Journal of Fisheries Management 9: 383-391.}
 
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{ypr}} \code{\link{sbpr}}}
 \examples{
     data(menhaden)

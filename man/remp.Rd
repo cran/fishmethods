@@ -25,7 +25,7 @@ cdf probabilities of empirical observations, then an observation is obtained by 
 \note{Jon Brodziak of the National Marine Fisheries Service, Honolulu, HI described this technique
  in his AGEPRO program.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 # Striped bass recruits per spawning stock biomass ratios 
 # for 2001-2011 from 2013 assessment

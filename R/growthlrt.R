@@ -1,4 +1,4 @@
-vblrt<-function(len=NULL,age=NULL,group=NULL,error=1,select=1,Linf=c(NULL),
+growthlrt<-function(len=NULL,age=NULL,group=NULL,model=1, error=1,select=1,Linf=c(NULL),
 K=c(NULL),t0=c(NULL),plottype=0,
                 control=list(maxiter=10000,minFactor=1/1024,tol=1e-5)){
    if(is.null(len)) 
@@ -15,9 +15,10 @@ K=c(NULL),t0=c(NULL),plottype=0,
     cat<-as.data.frame(model.matrix(lm(age~as.factor(group))))
     x2<-NULL;wgt<-NULL  
      names(cat)<-levels(group)
-     	x<-as.data.frame(cbind(len,age,cat))
-      index<-as.numeric(which(is.na(x),arr.ind=TRUE))[1]
-     	if(!is.na(index)) x<-x[-index,]
+     x<-as.data.frame(cbind(len,age,cat))
+     index<-which(is.na(x),arr.ind=TRUE)
+     index<-as.numeric(index[,1])
+     if(length(index)>0) x<-x[-index,]
          
       if(select==1){ 
            storeLinf<-NULL; storeK<-NULL;storet0<-NULL
@@ -33,7 +34,8 @@ K=c(NULL),t0=c(NULL),plottype=0,
              m1$age<-m1$age+1
              m1<-merge(m1,temp,by.x="age",by.y="age",all.x=TRUE,all.y=TRUE)
              m1<-m1[-unique(which(is.na(m1),arr.ind=TRUE)[,1]),]   
-             out1<-lm(len~x,data=m1)
+             if(length(m1[,1])<=3) stop("There aren't enough neighboring ages to fit a Walford plot. Use select=2.")      
+   	     out1<-lm(len~x,data=m1)
              KK<-as.numeric(abs(log(coef(out1)[2])))
              LI<-coef(out1)[1]/(1-coef(out1)[2])
              dx1<-as.data.frame(cbind(LI-m1$x,m1$age));dx1<-dx1[dx1[,1]>0,]
@@ -54,17 +56,17 @@ K=c(NULL),t0=c(NULL),plottype=0,
         t0parms<-c(storet0[indexs],storet0[indexs]-storet0)
       }
     if(select==2){
-      if(length(Linf)!=ngroups) stop("Number of Linfs does not match number of groups")
-      if(length(K)!=ngroups) stop("Number of Ks does not match number of groups")
-      if(length(t0)!=ngroups) stop("Number of t0s does not match number of groups")
-      Lparms<-c(Linf[1],Linf[1]-Linf[2:ngroups])
-      Kparms<-c(K[1],K[1]-K[2:ngroups])
-      t0parms<-c(t0[1],t0[1]-t0[2:ngroups])
+     if(length(Linf)!=ngroups) stop("Number of Linfs does not match number of groups")
+    if(length(K)!=ngroups) stop("Number of Ks does not match number of groups")
+    if(length(t0)!=ngroups) stop("Number of t0s does not match number of groups")
+    Lparms<-c(Linf[1],Linf[2:ngroups]-Linf[1])
+    Kparms<-c(K[1],K[2:ngroups]-K[1])
+    t0parms<-c(t0[1],t0[2:ngroups]-t0[1])
   
     }
      
     if(error==1) x$wgt<-1
-      if(error==2){
+    if(error==2){
  	    subcats<-sapply(2:ncol(x),function(y) list(x[,y]))
  	    subcats<-subcats[c(2:length(subcats),1)]
  	       x<-aggregate(x$len,subcats,mean)
@@ -73,7 +75,7 @@ K=c(NULL),t0=c(NULL),plottype=0,
          x$wgt<-1
          
         }
-      if(error==3){
+    if(error==3){
         subcats<-sapply(2:ncol(x),function(y) list(x[,y]))
         subcats<-subcats[c(2:length(subcats),1)]
         d1<-aggregate(x$len,subcats,mean,na.rm=TRUE)
@@ -115,7 +117,10 @@ K=c(NULL),t0=c(NULL),plottype=0,
       
     # Full model
       starts<-paste("list(",Linfs,",",Ks,",",t0s,")",sep="",collapse="")
-      equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+      if(model==1) equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+      if(model==2) equat<-paste("len~(",pL,")*","exp(-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+      if(model==3) equat<-paste("len~(",pL,")/","(1+exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+
       Ho<-try(nls(eval(parse(text=equat)),data=x,       
         	 weights=wgt,start=eval(parse(text=starts)),
              control=control),silent=TRUE)
@@ -130,7 +135,10 @@ K=c(NULL),t0=c(NULL),plottype=0,
       pt0<-paste(c(paste(pt0[1:c(ngroups-1)],"+",sep=""),pt0[ngroups]),collapse="")
       pL<-paste("Linf",1,"*",names(x)[3],sep="")
       starts<-paste("list(",Linf1,",",Ks,",",t0s,")",sep="",collapse="")
-      equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+      if(model==1) equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+      if(model==2) equat<-paste("len~(",pL,")*","exp(-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+      if(model==3) equat<-paste("len~(",pL,")/","(1+exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+      
       H1<-try(nls(eval(parse(text=equat)),data=x,        
 		       weights=wgt,start=eval(parse(text=starts)),control=control),silent=TRUE)
       if(class(H1)=="try-error") stop(paste("H1: ",attributes(H1)[2],sep=""))
@@ -145,8 +153,10 @@ K=c(NULL),t0=c(NULL),plottype=0,
 	    pt0<-paste(c(paste(pt0[1:c(ngroups-1)],"+",sep=""),pt0[ngroups]),collapse="")
 	    
 	    starts<-paste("list(",Linfs,",",K2,",",t0s,")",sep="",collapse="")
-	    equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
- 	    H2<-try(nls(eval(parse(text=equat)),data=x,       
+	    if(model==1) equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+	    if(model==2) equat<-paste("len~(",pL,")*","exp(-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+	    if(model==3) equat<-paste("len~(",pL,")/","(1+exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+	    H2<-try(nls(eval(parse(text=equat)),data=x,       
  	         weights=wgt,start=eval(parse(text=starts)),
  	         control=control),silent=TRUE)
  	    if(class(H2)=="try-error") stop(paste("H2: ",attributes(H2)[2],sep=""))
@@ -161,7 +171,10 @@ K=c(NULL),t0=c(NULL),plottype=0,
      t01<-substr(t0s,1,c(gregexpr(pattern =',',t0s)[[1]][1]-1))
      pt0<-paste("t0",1,"*",names(x)[3],sep="")
      starts<-paste("list(",Linfs,",",Ks,",",t01,")",sep="",collapse="")
-     equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+     if(model==1) equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+     if(model==2) equat<-paste("len~(",pL,")*","exp(-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+     if(model==3) equat<-paste("len~(",pL,")/","(1+exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+     
      H3<-try(nls(eval(parse(text=equat)),data=x,       
     	         weights=wgt,start=eval(parse(text=starts)),
     	         control=control),silent=TRUE)
@@ -176,8 +189,10 @@ K=c(NULL),t0=c(NULL),plottype=0,
      pK<-paste("K",1,"*",names(x)[3],sep="")
      pt0<-paste("t0",1,"*",names(x)[3],sep="")
      starts<-paste("list(",Linf1,",",K1,",",t01,")",sep="",collapse="")
-        equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
-    H4<-try(nls(eval(parse(text=equat)),data=x,       
+     if(model==1) equat<-paste("len~(",pL,")*","(1-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+     if(model==2) equat<-paste("len~(",pL,")*","exp(-exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+     if(model==3) equat<-paste("len~(",pL,")/","(1+exp(-(",pK,")*(age-(",pt0,"))))",sep="",collapse="")
+     H4<-try(nls(eval(parse(text=equat)),data=x,       
                 weights=wgt,start=eval(parse(text=starts)),
                 control=control),silent=TRUE)
     if(class(H4)=="try-error") stop(paste("H4: ",attributes(H4)[2],sep=""))
@@ -199,7 +214,10 @@ K=c(NULL),t0=c(NULL),plottype=0,
       
       hyp<-c(Llabs,Klabs,t0labs,paste(Llabs,",",Klabs,",",t0labs,sep=""))
       labels<-c("Ho vs H1","Ho vs H2","Ho vs H3","Ho vs H4")
-      compout<-data.frame(tests=labels,hypothesis=hyp,chisq=X,df=df,p=p)
+      if(model==1) curve_choice<-"von Bert"
+      if(model==2) curve_choice<-"Gompertz"
+      if(model==3) curve_choice<-"Logistic"
+      compout<-data.frame(tests=labels,hypothesis=hyp,chisq=X,df=df,p=p,model=curve_choice)
       rss<-as.data.frame(cbind(labs,RSS,AICC));names(rss)<-c("model","rss","AIC")
       residuals_all<-as.data.frame(cbind(resid0,resid1,resid2,resid3,resid4))
       nlsout<-list(compout,summary(Ho),summary(H1),summary(H2),summary(H3), summary(H4),

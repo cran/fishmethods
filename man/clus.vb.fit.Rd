@@ -27,7 +27,7 @@ from all bootstrap fits is provided as well.
  List containing a summary of successful model fits and parameter estimates, standard deviation and 
   95 percent confidence intervals, and the average correlation matrix.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 }
 \examples{
   \dontrun{

@@ -3,33 +3,37 @@
 \title{Estimation of Natural Mortality Rates from Life History Parameters}
 \description{
  The approaches of Pauly (1980), Hoenig (1983), Alverson and Carney (1975), Roff (1984), Gunderson and Dygert (1988),
-Petersen and Wroblewski (1984), Lorenzen (1996), Gislason et al. (2010) and Then et al. (2015) are encoded for 
-estimation of natural mortality (M).
+Petersen and Wroblewski (1984), Lorenzen (1996), Gislason et al. (2010), Then et al. (2015) and Brey (1999)
+ are encoded for estimation of natural mortality (M).
 }
 \usage{
 M.empirical(Linf = NULL, Winf = NULL, Kl = NULL, Kw = NULL,
- T = NULL, tmax = NULL, tm = NULL, GSI = NULL, Wdry = NULL,
- Wwet = NULL, Bl = NULL, method = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11))
+ TC = NULL, tmax = NULL, tm = NULL, GSI = NULL, Wdry = NULL,
+ Wwet = NULL, Bl = NULL, TK = NULL, BM = NULL, method = c(1, 2, 
+3, 4, 5, 6, 7, 8, 9, 10, 11,12))
 }
 \arguments{
   \item{Linf}{Length-infinity value from a von Bertalanffy growth curve (total length-cm).}
   \item{Winf}{Weight-infinity value from a von Bertalanffy growth curve (wet weight-grams).}
   \item{Kl}{Kl is the growth coefficient (per year) from a von Bertalanffy growth curve for length.}
   \item{Kw}{Kw is the growth coefficient (per year) from a von Bertalanffy growth curve for weight.}
-  \item{T}{the mean water temperature (Celsius) experienced by the stock.}
+  \item{TC}{the mean water temperature (Celsius) experienced by the stock.}
   \item{tmax}{the oldest age observed for the species.}
   \item{tm}{the age at maturity.}
   \item{GSI}{gonadosomatic index (wet ovary weight over wet body weight).}
   \item{Wdry}{total dry weight in grams.}
   \item{Wwet}{total wet weight at mean length in grams.}
   \item{Bl}{body length in cm.}
+  \item{TK}{mean temperature (Kelvin).}
+  \item{BM}{maximum body mass (kJ - kiloJoules)}
   \item{method}{vector of method code(s).  Any combination of methods can employed. \code{1}= Pauly (1980)
- length equation - requires Linf, Kl, and T; \code{2}= Pauly (1980) weight equation - requires Winf, Kw, and T; 
+ length equation - requires Linf, Kl, and TC; \code{2}= Pauly (1980) weight equation - requires Winf, Kw, and TC; 
 \code{3}= Hoenig (1983) joint equation - requires tmax; \code{4}= Alverson and Carney (1975) - requires Kl and tmax; 
 \code{5}= Roff (1984) - requires Kl and tm; \code{6}= Gunderson and Dygert (1988) - requires GSI; \code{7}= Peterson
  and Wroblewski (1984) - requires Wdry; \code{8}= Lorenzen (1996) - requires Wwet;
  \code{9}= Gislason et al. (2010) - requires Linf, K and Bl; \code{10}= Then et al. (2015) tmax - requires tmax;
-\code{11}= Then et al. (2015) growth - requires Kl and Linf.
+\code{11}= Then et al. (2015) growth  - requires Kl and Linf.
+\code{12}= Brey (1999) - requires tmax, TK, and BM.
   }
 }
 \details{
@@ -39,6 +43,8 @@ certain fish groups.
 \value{A matrix of M estimates.
 }
 \references{Alverson, D. L. and M. J. Carney. 1975. A graphic review of the growth and decay of population cohorts. J. Cons. Int. Explor. Mer 36: 133-143.
+
+Brey, T. 1999. Growth performance and mortality in aquatic macrobenthic invertebrates. Advances in Marine Biology 35: 155-223.
 
 Gislason, H., N. Daan, J. C. Rice, and J. G. Pope. 2010. Size, growth, temperature and the natural mortality of marine fish. Fish and Fisheries 11: 149-158.
 
@@ -59,8 +65,8 @@ ICES J. Mar. Sci. 72: 82-92.
 
  }
 \note{Original functions for the Pauly (1980) length equation and the Hoenig (1983) fish equation were provided by Michael H. Prager, National Marine Fisheries Service, Beaufort, North Carolina.}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
-M.empirical(Linf=30.1,Kl=0.31,T=24,method=c(1))
+M.empirical(Linf=30.1,Kl=0.31,TC=24,method=c(1))
 }
 \keyword{misc}

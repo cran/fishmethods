@@ -46,7 +46,7 @@ If the number of occasions to be assigned parameters from other occasions are gr
 }
 \value{dataframe containing the parameter order by occasion. 
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{fm_telemetry}}}
 \examples{
 fm_checkdesign(occasions=27, design=c("1*14","4*17","7*20","11*24"),type="F")

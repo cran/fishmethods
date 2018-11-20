@@ -103,7 +103,7 @@ Chapman and Hall, New York, NY, 399 pp.
 
 Seigel, S. 1956. Nonparametric Statistics for Behavioral Sciences. McGraw-Hill, New York, NY. 312 p.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{clus.lf}}}
 \examples{
 data(codstrcluslen)

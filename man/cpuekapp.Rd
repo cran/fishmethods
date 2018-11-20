@@ -33,7 +33,7 @@ Kappenman, R. F. 1999. Trawl survey based abundance estimation using data sets w
 unusually large catches. ICES Journal of Marine Science. 56: 28-35.
 }
 \author{
-Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
+Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 }
 \seealso{\code{\link{gap}}}
 \examples{

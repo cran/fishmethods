@@ -27,7 +27,7 @@ opt_trophy(M = NULL, N = 1000, recage = NULL, entage = NULL,
   \item{Fmax }{F at which trophy catch is maximum}
 }
 \references{Jense, A. L. 1981. Optimum size limits for trout fisheries. Can. J. Fish. Aquat. Sci. 38: 657-661.}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{opt_slot}}}
 \examples{
 # Example from Jensen (1981) page 659

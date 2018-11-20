@@ -37,7 +37,7 @@ missing values or if the vector is too large, the vector is truncated.}
 when immature fish are unavailable for study, with applications to American shad in the York
 River, Virginia. North Am. J. Fish. Manage. 21: 703-716.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
   \dontrun{
    ## Maki data for 3 years combined

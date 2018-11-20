@@ -8,7 +8,7 @@ abundance indices based on research surveys
 }
 \usage{
 surveyref(x = NULL, refpt = 25, compyear = NULL, reffix = FALSE,
- refrange = NULL, nboot = 500, allboots = FALSE)
+ refrange = NULL, nboot = 500, allboots = FALSE, nreps = 10000)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,6 +22,7 @@ determination of the lower quantile.  The values should be enclosed within \code
   \item{nboot}{the number of bootstrap replicates.}
   \item{allboots}{a logical value specifying whether the fitted values for the bootstrap replicates 
 should be included in the output. Default = FALSE.}
+  \item{nreps}{the number of samples to draw  in function \code{pgen}. Default = 10000.}
 }
 \details{
   Using the output object from function \code{surveyfit}, the methodology of Helser and Hayes (1995) is applied to 
@@ -30,8 +31,8 @@ lower quantile (reference point).  The procedure is : 1) add to the original fit
  with replacement from the Pennington model fit, 2) repeat this \code{nboot} times to create new time series, 
 3) fit the Pennington model to each new time series using the original theta estimate to get \code{nboot} replicates
  of new fitted time series, and 4) determine the lower quantile for each new fitted time 
-series.  A probability profile specifying the probability that the selected index value is less than the quantile reference
- point for various decision confidence levels is calculated following Helser et al. (2002).
+series.  The probability of the abundance index being less than the quartile reference point is calculated using 
+function \code{pgen} with \code{comp}=1. 
 
 If comparisons between the current year's index and the reference point will be made year-after-year, Helser and Hayes
  (1995) recommend using a fixed set of years to select the lower quantile.  This procedure will avoid a change in 
@@ -46,11 +47,8 @@ fitted bootstrap replicates (\code{comp_refpt}),  the original fitted time serie
  of the bootstrap replicates (\code{boot_runs}).
 }
 \references{Helser, T. E. and D. B. Hayes. 1995.  Providing quantitative management advice from stock abundance 
-indices based on research surveys. Fishery Bulletin 93: 290-298.
-
-Hesler, T. E., A. Sharov, and D. M. Kahn. 2002. A stochastic decision-based approach to assessing the status of the 
-  Delaware Bay blue crab stock. American Fisheries Society Symposium 27: 63-82.}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+indices based on research surveys. Fishery Bulletin 93: 290-298.}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{surveyfit}}} 
 \examples{
 data(wolffish)

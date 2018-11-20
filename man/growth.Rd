@@ -45,7 +45,7 @@ If unit is weight,
 
 \references{Quinn, T. J. and R. B. Deriso. 1999. Quantitative fish dynamics. Oxford University Press. 542 pages. 
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 data(pinfish)
 growth(intype=1,unit=1,size=pinfish$sl,age=pinfish$age,

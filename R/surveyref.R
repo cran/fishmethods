@@ -1,4 +1,4 @@
-surveyref<-function(x=NULL,refpt=25,compyear=NULL,reffix=FALSE,refrange=NULL,nboot=500,allboots=FALSE){
+surveyref<-function(x=NULL,refpt=25,compyear=NULL,reffix=FALSE,refrange=NULL,nboot=500,allboots=FALSE,nreps=10000){
 	 if(is.null(x)) stop ("x must be specified.")
 	 if(is.null(x$ARIMA_output)) stop ("x is not a surveyfit output object.")
        if(is.null(refpt)) stop("refpt must be specified.")
@@ -40,21 +40,13 @@ surveyref<-function(x=NULL,refpt=25,compyear=NULL,reffix=FALSE,refrange=NULL,nbo
         if(reffix==TRUE) newq<-rbind(newq,quantile(newpred[f_yr:l_yr],refpt/100))    
         if(reffix==FALSE) newq<-rbind(newq,quantile(newpred,refpt/100))    
 
-}
+   }
 runs<-as.data.frame(cbind(x$index$year,allruns))
 testyear<-as.data.frame(stack(runs[runs[,1] %in% c(compyear),-1])$values)
 testyear[,1]<-round(testyear[,1],2)
 qdist<-as.data.frame(newq)[,1]
 qdist<-round(qdist,2)
-
-ref<-quantile(qdist,c(seq(0,1,0.05)))
-probs<-NULL
-loopcnt<-length(as.vector(ref))
-  for(cl in 1:loopcnt){
-   probs[cl]<-length(testyear[testyear[,1]<ref[cl],])/(nboot*length(compyear))
-  }
-  prob<-data.frame(confidence=c(sort(seq(0,100,5),decreasing=TRUE)),prob=probs)
-  prob<-prob[order(prob[,1]),]
+prob<-pgen(est=testyear[,1],limit=qdist,comp=1,nreps=nreps)
 	ans<-NULL
       ans$comp_refpt<-as.data.frame(cbind(qvalue,mean(qdist)))
 		names(ans$comp_refpt)<-c("orig_q","boot_mean_q")
@@ -64,7 +56,7 @@ loopcnt<-length(as.vector(ref))
 	    names(ans$emp_dist_index)<-c("value","freq")
   	ans$emp_dist_refpt<-as.data.frame(table(qdist))
 	    names(ans$emp_dist_refpt)<-c("value","freq")
-      ans$prob_index<-prob
+      ans$prob_index_less_than_refpt<-prob
       if(allboots==TRUE) ans$boot_runs<-runs
       return(ans)
 } #end function

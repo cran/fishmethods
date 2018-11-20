@@ -24,7 +24,7 @@ and the upper confidence limits(UCI).
 }
 \references{ Seber, G. A. F. 2002. \emph{The Estimation of Animal Abundance and Related Parameters, Second Edition}. The Blackburn Press,
 Caldwell, New Jersey. 654 p.}
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 mrN.single(M=948,C=421,R=167)
 }

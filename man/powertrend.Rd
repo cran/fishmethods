@@ -39,7 +39,7 @@ for full details. It is assumed that time intervals between samplings is equal.
 
 Gerrodette, T. 1991. Models for power of detecting trends - a reply to Link and Hatfield. Ecology 72(5): 1889-1892.
 }
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \examples{
 powertrend(A1=1000,PSE=0.1)
 }

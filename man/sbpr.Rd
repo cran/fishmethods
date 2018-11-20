@@ -41,7 +41,7 @@ of F and SBPR for a percentage of maximum spawning potential are calculated.}
 \references{Gabriel, W. L., M. P. Sissenwine, and W. J. Overholtz. 1989. Analysis of spawning stock biomass 
   per recruit: an example for Georges Bank haddock. North American Journal of Fisheries Management 9: 383-391.}
 
-\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}}
+\author{Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{ypr}}}
 \examples{
 data(haddock)
