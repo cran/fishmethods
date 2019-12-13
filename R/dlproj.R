@@ -194,4 +194,3 @@ names(ans)<-c("type","ProjBio")
  return(ans)  
 }
 }#function
-  

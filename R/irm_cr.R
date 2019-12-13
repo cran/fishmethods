@@ -5,8 +5,8 @@ irm_cr<-function(relyrs=NULL,recapyrs=NULL,N=NULL,recapharv=NULL,recaprel=NULL,h
       FAp<-rep(initial[2],length(FAyr))  
       Mp<-rep(initial[3],length(Myr))  
 ### Error Messages
-    if(class(recapharv)!="matrix") stop("recapharv is not a matrix.")
-    if(class(recaprel)!="matrix") stop("recaprel is not a matrix.")
+    if(!is(recapharv,"matrix")) stop("recapharv is not a matrix.")
+    if(!is(recaprel,"matrix")) stop("recaprel is not a matrix.")
     if(is.null(relyrs)|is.null(recapyrs)) stop("Missing relyrs or recapyrs.")
     if(is.null(N)) stop("Ns are missing.")
     if(is.null(recapharv)) stop("Missing recovery matrix for harvested fish.")

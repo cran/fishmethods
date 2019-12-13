@@ -1,32 +1,33 @@
-###############################################################################
-#
-#                  Survival Rate Estimators
-#
-###############################################################################
-
-agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("lr","he","cr","crcb","ripois","wlr","pois")){
+agesurv<-function(type=1,age=NULL,number=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("lr","he","cr","crcb","ripois","wlr","pois"),
+                  glmer.control=glmerControl(optCtrl=list(maxfun=10000),optimizer="bobyqa")){
      if(is.null(age)) 
          stop ("vector does not exist")
       if(!is.numeric(age)) 
          stop ("vector is not numeric")
+      if(type==2 & is.null(number)) stop("Number at age is a required vector")
       if(is.null(full)) 
-         stop ("fully-recruited age not specified") 
-      age<-age[!is.na(age)]
-      st_obj<-as.data.frame(table(age))
-      st_obj[,1]<-as.numeric(levels(st_obj[,1])[as.integer(st_obj[,1])])
+         stop ("fully-recruited age not specified")
+      if(type==1){
+        age<-age[!is.na(age)]
+        st_obj<-as.data.frame(table(age))
+        st_obj[,1]<-as.numeric(levels(st_obj[,1])[as.integer(st_obj[,1])])
+      }
+      if(type==2){
+        st_obj<-data.frame(age=age,number=number)
+        st_obj<-st_obj[!is.na(st_obj$age),]
+      }
       if(is.null(last)) last<-max(age) else last<-last 
-      d<<-subset(st_obj,st_obj[,1]>=full & st_obj[,1]<=last)
-        names(d)<-c("age","number")
-      if(d[1,1]!=full) 
-         stop ("Age specified as fully-recruited does not exist.")
+       d<<-subset(st_obj,st_obj[,1]>=full & st_obj[,1]<=last)
+       names(d)<-c("age","number")
+      if(d[1,1]!=full) stop ("Age specified as fully-recruited does not exist.")
       cnt<-1
      if(length(d[,1])<=2){
         print(paste("warning: only", length(d[,1]),"ages!!!"))
         rown<-length(method)*length(estimate)-1
       }
-     if(length(d[,1])>2) 
-        rown<-length(method)*length(estimate)  
-     results<-data.frame(Method=rep("NA",rown),
+     if(length(d[,1])>2) rown<-length(method)*length(estimate)  
+      
+       results<-data.frame(Method=rep("NA",rown),
                     Parameter=rep("NA",rown),
                     Estimate=rep(as.numeric(NA),rown),
                     SE=rep(as.numeric(NA),rown),stringsAsFactors=F)
@@ -202,10 +203,10 @@ agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("lr"
      
   if(any(method=="ripois")){
       max.age<-max(d[,1])
-      my.control<-glmerControl(optCtrl=list(maxfun=10000),optimizer="bobyqa")
-    extd<-rbind(d,cbind(age=(max.age+1):(3*max.age),number=rep(0,max.age)))
-    wer<-glmer(number~age+(1|age),family=poisson,data=extd,control=my.control)
-    if(any(estimate=="s")){
+      extd<-rbind(d,cbind(age=(max.age+1):(3*max.age),number=rep(0,max.age)))
+      wer<-try(glmer(number~age+(1|age),family=poisson,data=extd,control=glmer.control),silent=TRUE)
+    if(!any(class(wer)=="try-error")){
+     if(any(estimate=="s")){
       results[cnt,1]<-"Random-Intercept Poisson Model"
       results[cnt,2]<-"S"
       tf<-bt.log(summary(wer)$coefficients[2,1],summary(wer)$coefficients[2,2],sum(d[,2]))
@@ -221,8 +222,24 @@ agesurv<-function(age=NULL,full=NULL,last=NULL,estimate=c("s","z"),method=c("lr"
      cnt<-cnt+1
     }
   }
-     out<-list(results,d);names(out)<-c("results","data")
-   return(out)
+ if(any(class(wer)=="try-error")){
+   if(any(estimate=="s")){
+     results[cnt,1]<-"Random-Intercept Poisson Model"
+     results[cnt,2]<-"S"
+     results[cnt,3]<-NA
+     results[cnt,4]<-NA
+     cnt<-cnt+1
+   }
+   if(any(estimate=="z")){
+     results[cnt,1]<-"Random-Intercept Poisson Model"
+     results[cnt,2]<-"Z"
+     results[cnt,3]<-NA
+     results[cnt,4]<-NA 
+     cnt<-cnt+1
+   } 
+  } 
+ } #ripois
+ out<-list(results,d);names(out)<-c("results","data")
+ return(out)
 }
-
 

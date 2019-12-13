@@ -342,6 +342,7 @@ if(spec=="beta"){
         Umsy<-(Fmsy/(Fmsy+MM))*(1-exp(-Fmsy-MM))
         MSY<-bigK*bmsykX*Umsy
         B[1]<-bigK*b1kX
+
        for(t in 1:timelen){       
          if(t<=agemat)  P[t]<-0
          if(t>agemat){

@@ -2,6 +2,8 @@ import(boot)
 import(bootstrap)
 import(MASS)
 import(numDeriv)
+import(data.table)
+importFrom("methods","is")
 importFrom("lme4","glmer","glmerControl")
 importFrom("grDevices", "dev.off", "rgb", "tiff","rainbow")
 importFrom("graphics", "abline", "arrows", "axis", "barplot", "box",
@@ -13,7 +15,8 @@ importFrom("stats", "acf", "na.omit","aggregate", "anova", "aov", "arima",
              "pchisq", "pf", "plogis", "pnorm", "poisson", "predict",
              "pt", "qbinom", "qhyper", "qnorm", "qpois", "qt",
              "quantile", "rbinom", "residuals", "rexp", "rlnorm",
-             "rmultinom", "rnorm", "runif", "sd", "ts", "var", "glm", "model.matrix", "AIC", "nlm", "lowess","uniroot")
+             "rmultinom", "rnorm", "runif", "sd", "ts", "var", "glm", 
+	     "model.matrix", "AIC", "nlm", "lowess","uniroot","vcov")
 importFrom("utils", "read.csv", "stack", "write.table")
 S3method(print,grotagplus)
 S3method(plot,grotagplus)

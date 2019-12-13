@@ -1,4 +1,5 @@
-clus.vb.fit<-function(len=NULL,age=NULL,cluster=NULL,nboot=1000,
+
+clus.vb.fit<-function(len=NULL,age=NULL,cluster=NULL,nboot=1000,sumtype=1,
                     control=list(maxiter=10000,
                     minFactor=1/1024,tol=1e-5)){
 
@@ -10,20 +11,17 @@ if(mode(cluster)!="numeric") stop ("cluster must be a numeric variable")
 ins<-as.data.frame(cbind(len,age,cluster))
 ins<-ins[!is.na(ins$len) & !is.na(ins$age) & !is.na(ins$cluster),]
 ins<-ins[order(ins$cluster),]
-   nclus<-length(as.character(as.data.frame(table(ins$cluster))$Var1))
-   listclus<-as.character(as.data.frame(table(ins$cluster))$Var1)   
-  parms<-data.frame(NULL)
-  for(i in 1:nboot){
-    #boot strap by cluster
-    x<-data.frame(NULL)
-    out<-NULL
-    temp<-sample(1:nclus,replace=T)
-    tempclus<-listclus[temp]
-      for(j in 1:nclus){
-        out<-ins[ins$cluster==tempclus[j],]
-        x<-rbind(x,out)
-      }
-  #calculate starting values for parameters
+   nclus<-length(unique(ins$cluster))
+   listclus<-unique(ins$cluster) 
+   parms<-data.frame(NULL)
+   
+  samp <- sample(listclus, nclus, replace = TRUE)
+  datDT <- as.data.table(ins)
+  setkey(datDT, "cluster")
+  
+   for(i in 1:nboot){
+    samp <- sample(listclus, nclus, replace = TRUE)
+    x <- datDT[list(samp), allow.cartesian = TRUE]
   mbt<-NULL;mbxt<-NULL;g2<-NULL
   g2<-aggregate(x$len,list(round(x$age,0)),mean)
   mbt<-g2;mbt[,1]<-mbt[,1]-1
@@ -56,7 +54,11 @@ ins<-ins[order(ins$cluster),]
   }
 } # boot loop
  #calculate statistics
- means<-colMeans(parms,na.rm=TRUE)
+  if(sumtype==1) means<-c(mean(parms[,1],na.rm=TRUE),mean(parms[,2],na.rm=TRUE),mean(parms[,3],na.rm=TRUE),
+                          mean(parms[,4],na.rm=TRUE),mean(parms[,5],na.rm=TRUE),mean(parms[,6],na.rm=TRUE))
+  
+  if(sumtype==2) means<-c(median(parms[,1],na.rm=TRUE),median(parms[,2],na.rm=TRUE),median(parms[,3],na.rm=TRUE),
+                            median(parms[,4],na.rm=TRUE),median(parms[,5],na.rm=TRUE),median(parms[,6],na.rm=TRUE))
  sds<-apply(parms,2,sd,na.rm=TRUE)
  qLinf<-quantile(parms[,1],c(0.025,0.975),na.rm=TRUE)
  qK<-quantile(parms[,2],c(0.025,0.975),na.rm=TRUE)

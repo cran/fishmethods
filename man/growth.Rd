@@ -5,7 +5,7 @@
   Fits three growth models to length and weight-at-age data.
 }
 \usage{
-growth(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,error=1, 
+growth(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,se2=NULL,error=1, 
       specwgt=0.0001,Sinf=NULL,K=NULL,t0=NULL,B=3,graph=TRUE,
          control=list(maxiter=10000,minFactor=1/1024,tol=1e-5))
 }
@@ -16,7 +16,7 @@ growth(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,error=1,
   \item{age}{the vector of ages associated with the size vector.}
   \item{calctype}{if intype=1, 1 = use individual size data; 2 = calculate mean size from individual size data. Default calctype=1.}
   \item{wgtby}{weighting scheme: 1 = no weighting; 2 = weight means by inverse variance. Weighting of individual data points is not allowed. Default wgtby=1.}
-  \item{s2}{if intype=2 and wgtby=2, specify vector of sample variances associated with mean size-at-age data.}
+  \item{se2}{if intype=2 and wgtby=2, specify vector of variances (SE^2) associated with mean size-at-age data.}
   \item{error}{the error structure: 1 = additive; 2 = multiplicative. Default error=1.}
   \item{specwgt}{if \emph{intype}=1 and \emph{wgtby}=2, the weight value to use for cases        where var=0 or only one individual is available at a given age.}
   \item{Sinf}{the starting value for \emph{L-infinity or W-infinity} of the growth models. Required.}

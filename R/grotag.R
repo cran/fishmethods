@@ -233,7 +233,7 @@ grotag<-function(L1=NULL,L2=NULL,T1=NULL,T2=NULL,alpha=NULL,beta=NULL,
     mod1<-try(optim(par=parms,fn=f1,lower=getlow,upper=gethigh,
           method="L-BFGS-B",hessian=TRUE, control=control),silent=TRUE)
 
-  if(class(mod1)!="try-error"){
+  if(!is(mod1,"try-error")){
      AIC<-round(2*mod1$value+2*length(mod1$par),1)
      SE<-sqrt(diag(solve(mod1$hessian)))
       result = as.data.frame(matrix(NA, ncol=1, nrow = 12))
@@ -268,7 +268,7 @@ grotag<-function(L1=NULL,L2=NULL,T1=NULL,T2=NULL,alpha=NULL,beta=NULL,
      return(dd)
   }
 
-  if(class(mod1)=="try-error"){
+  if(is(mod1,"try-error")){
     return("Fit Failed.")
    }
 }#end function

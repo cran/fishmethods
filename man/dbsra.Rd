@@ -219,7 +219,7 @@ Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@ma
     catargs = list(dist="none",low=0,up=Inf,unit="MT"),
     agemat=11, k = list(low=100,up=15000,tol=0.01,permax=1000), 
     b1k = list(dist="none",low=0.01,up=0.99,mean=1,sd=0.1),
-    btk = list(dist="beta",low=0.01,up=0.99,mean=0.1,sd=0.1,refyr=2009),
+    btk = list(dist="beta",low=0.01,up=0.99,mean=0.4,sd=0.1,refyr=2009),
     fmsym = list(dist="lnorm",low=0.1,up=2,mean=-0.223,sd=0.2),
     bmsyk = list(dist="beta",low=0.05,up=0.95,mean=0.4,sd=0.05),
     M = list(dist="lnorm",low=0.001,up=1,mean=-2.90,sd=0.4),

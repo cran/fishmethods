@@ -81,7 +81,7 @@ pwpop<-function(abund=NULL,year=NULL,periods=NULL,Cs=NULL,
          if(pp>=2) labs<-c(labs,paste("C",pp-1,sep=""),paste("logR",pp,sep=""))
        }
        labs<-c(labs,"RSS","AIC","R2")
-    if(class(results1)!="try-error"){
+    if(!is(results1,"try-error")){
        cov1<-solve(results1$hessian)
          outpt<-data.frame(Parameters=labs,
            Estimate=c(round(results1$par,3),sum((log(d$N)-d$lpred)^2,na.rm=T),
@@ -130,7 +130,7 @@ pwpop<-function(abund=NULL,year=NULL,periods=NULL,Cs=NULL,
           lines(exp(lpred)~c(newt+year[1]-1),col="red")
      } #graph
     } #no error
-    if(class(results1)=="try-error"){
+    if(is(results1,"try-error")){
         outpt<-data.frame(Parameters=labs,
            Estimate=c(rep(NA,length(parms)),NA,NA,NA),
                     SE=c(rep(NA,length(parms)),NA,NA,NA))

@@ -53,7 +53,7 @@ Logisitic
 La=Linf/(1+exp(-K*(a-t0)))
  
 
-To extract the VB parameters for each group under an hypothesis: 
+To extract the growth parameters for each group under an hypothesis: 
    
             x$'model Ho'$coefficients
 

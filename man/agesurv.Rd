@@ -6,11 +6,16 @@
 linear regression (standard and weighted), Heincke, Chapman-Robson, Poisson GLM and GLMER methods.
 }
 \usage{
-agesurv(age = NULL, full = NULL, last = NULL, 
-estimate = c("s", "z"), method = c("lr", "he", "cr", "crcb","ripois","wlr","pois"))
+agesurv(type = 1, age = NULL,  number = NULL, full = NULL, last = NULL, 
+estimate = c("s", "z"), method = c("lr", "he", "cr", "crcb","ripois","wlr","pois"), 
+glmer.control = glmerControl(optCtrl=list(maxfun=10000), optimizer="bobyqa"))
 }
 \arguments{
-  \item{age}{ the vector of ages.  Each row represents the age of an individual.}
+  \item{type}{ the format of data. 1 = a single vector, each row represents the age of an individual (default), 
+        2 = summarized, one column of age and one column of numbers-at-age.}
+
+  \item{age}{ the vector of ages.}
+  \item{number}{ if \code{type} = 2, a vector of numbers-at-age matching the length of the age vector.}
   \item{full}{the fully-recruited age}
   \item{last}{the maximum age to include in the calculation. If not specified, the oldest age is used.}
   \item{estimate}{argument to select estimate type: "s" for annual survival, "z" for instantaneous total mortality.
@@ -21,10 +26,14 @@ estimate = c("s", "z"), method = c("lr", "he", "cr", "crcb","ripois","wlr","pois
 	Poisson mixed model estimator, "wlr" for Maceine-Bettoli weighted regression,
         "pois" for Poisson generalized linear model with overdispersion correction.
          Default is all.}
+  \item{glmer.control}{controls for function \code{glmer} used in the random-intercept Poisson mixed model. See
+       \code{glmerControl}.}
 }
-\details{The individual age data are tabulated and subsetted based on the \code{full} and \code{last} arguments.  
+\details{If \code{type} = 1, the individual age data are tabulated. The age data are then subsetted based on the \code{full} and \code{last} arguments.  
   Most calculations follow descriptions in Seber(1982), pages 414-418. If only two ages are present, a warning message 
-  is generated and the catch curve method is not calculated. Plus groups are not allowed.
+  is generated and the catch curve method is not calculated. Plus groups are not allowed. Any NAs represent no estimates due to some issue with model fit
+  like convergence. If age samples were collected via a survey using gears such as seines or trawl, or 
+  were subsampled from catch, the least biased estimators are the "pois" and "crcb" methods (Nelson, 2019). 
 }
 \value{
   \item{results}{list element containing table of parameters and standard errors.}
@@ -39,6 +48,9 @@ N. Am. J. Fish. Manage. 18: 990-1003.
 
 Millar, R. B. 2015. A better estimator of mortality rate from age-frequency data. Can. J. Fish. Aquat.
 Sci. 72: 364-375.
+
+Nelson, G. A. 2019. Bias in common catch-curve methods applied to age frequency data from fish surveys. ICES
+J. Mar. Sci. doi:10.1093/icesjms/fsz085.
 
 Quinn, T. J. and R. B. Deriso. 1999. Quantitative Fish Dynamics. Oxford University Press, New York, New York. 542 pages.
 

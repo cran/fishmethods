@@ -397,7 +397,7 @@ prob_dead<-c_prob*p_prob*minusp_prob*minus_s*s_dead_prob
        
 }# fit.obs  
 results<-try(optim(parms, fit.obs,method="BFGS",hessian=TRUE,control=control),silent=TRUE)
-if(class(results)!="try-error"){
+if(!is(results,"try-error")){
   Sf<-NULL;Sm<-NULL;P<-NULL
   Sf<-1/(1+exp(-results$par[c(Design[,2])]))
   Sm<-1/(1+exp(-results$par[c(Design[,3])]))
@@ -410,8 +410,7 @@ if(class(results)!="try-error"){
    MSE<-NULL
    PSE<-NULL
    Sfvar<-NULL;Smvar<-NULL;Pvar<-NULL
-   if(class(var1)!="try-error"){
-   # var1<-ifelse(var1<0,0,var1)
+   if(!is(var1,"try-error")){
     for(t in 1:c(nocc-1)){
       Sfvar[t]<-(var1[Design[t,2]]*exp(2.0*results$par[Design[t,2]]))/(1+exp(results$par[Design[t,2]]))^4
       Smvar[t]<-(var1[Design[t,3]]*exp(2*results$par[Design[t,3]]))/(1+exp(results$par[Design[t,3]]))^4
@@ -421,7 +420,7 @@ if(class(results)!="try-error"){
     MSE<-sqrt(Smvar/Sm^2)
     PSE<-sqrt(Pvar)
     }
-  if(class(var1)=="try-error"){
+  if(is(var1,"try-error")){
     FSE<-rep(NA,length(FF))
     MSE<-rep(NA,length(M))
     PSE<-rep(NA,length(P))
@@ -635,5 +634,5 @@ ans$whichdeadcells<-deadschedule
 ans$type="hightower"
 return(ans)
 }
-if(class(results)=="try-error") stop("Fit Failed.")
+if(is(results,"try-error")) stop("Fit Failed.")
 }

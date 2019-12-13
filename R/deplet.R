@@ -439,15 +439,15 @@ if(any(method=="wh")){
       		 repeat{
           	  		results<-try(optim(parms, model, gr = NULL,lower=lower,upper=upper,method=c("L-BFGS-B"), 
           			control=list(maxit=100000),hessian=TRUE),TRUE)   
-                     if(class(results)=="try-error"){
+                     if(is(results,"try-error")){
                 		 j<-j+1
                 		 parms<-c(parms[1]*(1+j/10),parms[2:length(parms)])
                 		 if(j==30) break
               	    }
-             	   if(class(results)!="try-error") break
+             	   if(!is(results,"try-error")) break
              	 }
 
-        if(class(results)!="try-error"){
+        if(!is(results,"try-error")){
             cov1<-solve(results$hessian)
             # in case SE is estimated inadequately
                 var<-ifelse(diag(cov1)<0,NA,diag(cov1))
@@ -473,7 +473,7 @@ if(any(method=="wh")){
             	prob<-1-pchisq(chi,df)
               aic<-2*results$value+2*length(results$par)
           }
-           if(class(results)=="try-error"){
+           if(is(results,"try-error")){
               pcatch1<-rep(NA,nsam)
            	resid<-rep(NA,nsam)
             	 chi<-NA
@@ -483,8 +483,8 @@ if(any(method=="wh")){
            }
        # Create CAPTURE TABLE  
                    plabs<-paste("p",seq(1,length(ps),1),sep="")
-                   if(class(results)!="try-error") comb<-cbind(round(results$par,4),round(SEs,4))
-                   if(class(results)=="try-error") comb<-cbind(rep(NA,length(parms)),round(SEs,4))
+                   if(!is(results,"try-error")) comb<-cbind(round(results$par,4),round(SEs,4))
+                   if(is(results,"try-error")) comb<-cbind(rep(NA,length(parms)),round(SEs,4))
                    	rownames(comb)<-c("N",plabs)
                    	comb<-as.data.frame(comb)
                   	names(comb)<-c("Estimate","SE")

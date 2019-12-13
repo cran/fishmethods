@@ -124,7 +124,7 @@ K=c(NULL),t0=c(NULL),plottype=0,
       Ho<-try(nls(eval(parse(text=equat)),data=x,       
         	 weights=wgt,start=eval(parse(text=starts)),
              control=control),silent=TRUE)
-      if(class(Ho)=="try-error") stop(paste("Ho: ",attributes(Ho)[2],sep=""))
+      if(is(Ho,"try-error")) stop(paste("Ho: ",attributes(Ho)[2],sep=""))
       resid0<-residuals(Ho)
       AICo<-AIC(Ho)
     # H1
@@ -141,7 +141,7 @@ K=c(NULL),t0=c(NULL),plottype=0,
       
       H1<-try(nls(eval(parse(text=equat)),data=x,        
 		       weights=wgt,start=eval(parse(text=starts)),control=control),silent=TRUE)
-      if(class(H1)=="try-error") stop(paste("H1: ",attributes(H1)[2],sep=""))
+      if(is(H1,"try-error")) stop(paste("H1: ",attributes(H1)[2],sep=""))
 	    resid1<-residuals(H1)
 	    AIC1<-AIC(H1)
 	#H2
@@ -159,7 +159,7 @@ K=c(NULL),t0=c(NULL),plottype=0,
 	    H2<-try(nls(eval(parse(text=equat)),data=x,       
  	         weights=wgt,start=eval(parse(text=starts)),
  	         control=control),silent=TRUE)
- 	    if(class(H2)=="try-error") stop(paste("H2: ",attributes(H2)[2],sep=""))
+ 	    if(is(H2,"try-error")) stop(paste("H2: ",attributes(H2)[2],sep=""))
      resid2<-residuals(H2)
      AIC2<-AIC(H2)
                
@@ -178,7 +178,7 @@ K=c(NULL),t0=c(NULL),plottype=0,
      H3<-try(nls(eval(parse(text=equat)),data=x,       
     	         weights=wgt,start=eval(parse(text=starts)),
     	         control=control),silent=TRUE)
-     if(class(H3)=="try-error") stop(paste("H3: ",attributes(H3)[2],sep=""))
+     if(is(H3,"try-error")) stop(paste("H3: ",attributes(H3)[2],sep=""))
      resid3<-residuals(H3)
      AIC3<-AIC(H3)
      #H4
@@ -195,7 +195,7 @@ K=c(NULL),t0=c(NULL),plottype=0,
      H4<-try(nls(eval(parse(text=equat)),data=x,       
                 weights=wgt,start=eval(parse(text=starts)),
                 control=control),silent=TRUE)
-    if(class(H4)=="try-error") stop(paste("H4: ",attributes(H4)[2],sep=""))
+    if(is(H4,"try-error")) stop(paste("H4: ",attributes(H4)[2],sep=""))
          resid4<-residuals(H4)
          AIC4<-AIC(H4)
   	 RSS<-c(sum(residuals(Ho)^2),sum(residuals(H1)^2),sum(residuals(H2)^2),

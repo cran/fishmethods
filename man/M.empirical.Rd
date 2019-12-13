@@ -3,14 +3,14 @@
 \title{Estimation of Natural Mortality Rates from Life History Parameters}
 \description{
  The approaches of Pauly (1980), Hoenig (1983), Alverson and Carney (1975), Roff (1984), Gunderson and Dygert (1988),
-Petersen and Wroblewski (1984), Lorenzen (1996), Gislason et al. (2010), Then et al. (2015) and Brey (1999)
- are encoded for estimation of natural mortality (M).
+Petersen and Wroblewski (1984), Lorenzen (1996), Gislason et al. (2010), Then et al. (2015), Brey (1999) and 
+ Charnov et al. (2013) are encoded for estimation of natural mortality (M).
 }
 \usage{
 M.empirical(Linf = NULL, Winf = NULL, Kl = NULL, Kw = NULL,
  TC = NULL, tmax = NULL, tm = NULL, GSI = NULL, Wdry = NULL,
- Wwet = NULL, Bl = NULL, TK = NULL, BM = NULL, method = c(1, 2, 
-3, 4, 5, 6, 7, 8, 9, 10, 11,12))
+ Wwet = NULL, Bl = NULL, TK = NULL, BM = NULL, L = NULL, method = c(1, 2, 
+3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13))
 }
 \arguments{
   \item{Linf}{Length-infinity value from a von Bertalanffy growth curve (total length-cm).}
@@ -26,6 +26,7 @@ M.empirical(Linf = NULL, Winf = NULL, Kl = NULL, Kw = NULL,
   \item{Bl}{body length in cm.}
   \item{TK}{mean temperature (Kelvin).}
   \item{BM}{maximum body mass (kJ - kiloJoules)}
+  \item{L}{fish length along the growth trajectory}
   \item{method}{vector of method code(s).  Any combination of methods can employed. \code{1}= Pauly (1980)
  length equation - requires Linf, Kl, and TC; \code{2}= Pauly (1980) weight equation - requires Winf, Kw, and TC; 
 \code{3}= Hoenig (1983) joint equation - requires tmax; \code{4}= Alverson and Carney (1975) - requires Kl and tmax; 
@@ -34,6 +35,8 @@ M.empirical(Linf = NULL, Winf = NULL, Kl = NULL, Kw = NULL,
  \code{9}= Gislason et al. (2010) - requires Linf, K and Bl; \code{10}= Then et al. (2015) tmax - requires tmax;
 \code{11}= Then et al. (2015) growth  - requires Kl and Linf.
 \code{12}= Brey (1999) - requires tmax, TK, and BM.
+\code{13}= Charnov et al (2013) - requires Linf, Kl, and L.
+
   }
 }
 \details{
@@ -45,6 +48,8 @@ certain fish groups.
 \references{Alverson, D. L. and M. J. Carney. 1975. A graphic review of the growth and decay of population cohorts. J. Cons. Int. Explor. Mer 36: 133-143.
 
 Brey, T. 1999. Growth performance and mortality in aquatic macrobenthic invertebrates. Advances in Marine Biology 35: 155-223.
+
+Charnov, E. L., H. Gislason, J. G. Pope. 2013. Evolutionary assembly rules for fish life histories. Fish and Fisheries 14: 213-224.
 
 Gislason, H., N. Daan, J. C. Rice, and J. G. Pope. 2010. Size, growth, temperature and the natural mortality of marine fish. Fish and Fisheries 11: 149-158.
 

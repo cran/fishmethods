@@ -1,6 +1,6 @@
 
 M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,TC=NULL,tmax=NULL,tm=NULL,GSI=NULL,
-      Wdry=NULL,Wwet=NULL,Bl=NULL, TK=NULL, BM=NULL, method=c(1,2,3,4,5,6,7,8,9,10,11,12)){
+      Wdry=NULL,Wwet=NULL,Bl=NULL, TK=NULL, BM=NULL, L=NULL, method=c(1,2,3,4,5,6,7,8,9,10,11,12,13)){
    if(any(method==1) & any(is.null(Linf),is.null(Kl),is.null(TC)))
            stop("Method 1 requires Linf, Kl, and TC")
     if(any(method==2) & any(is.null(Winf),is.null(Kw),is.null(TC)))
@@ -25,6 +25,9 @@ M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,TC=NULL,tmax=NULL,tm=N
            stop("Method 11 requires Linf and Kl")
   if(any(method==12) & any(is.null(tmax),is.null(BM),is.null(TK)))
     stop("Method 12 requires tmax, BM and T")
+  if(any(method==13) & any(is.null(Linf),is.null(Kl),is.null(L)))
+    stop("Method 13 requires Linf, Kl and L")
+  
 
     n<-length(method)
     if(any(method==3)) n<-n+1
@@ -98,6 +101,11 @@ M.empirical<-function(Linf=NULL,Winf=NULL,Kl=NULL,Kw=NULL,TC=NULL,tmax=NULL,tm=N
       cnt<-cnt+1
       out[cnt,1]<-round(10^(1.672+0.993*log10(1/tmax)-0.035*log10(BM)-300.447/TK),3)
       dimnames(out)[[1]][cnt]<-list("Brey 1999")
+    }
+    if(any(method==13)){
+      cnt<-cnt+1
+      out[cnt,1]<-round(((L/Linf)^(-1.5))*Kl,3)
+      dimnames(out)[[1]][cnt]<-list("Charnov et al. 2013")
     }
     return(out)
 }

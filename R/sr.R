@@ -24,7 +24,7 @@ if(any(model==0)){ #Density-Independent
      NLL
    }
   model0<-nlm(di,parms, hessian = TRUE)
-    if(class(model0)!="try-error"){
+    if(!is(model0,"try-error")){
      K<-2
      model0$pred<-vpred<-model0$estimate*datar$stock
      model0$sigma2<-sum((datar$recruits-vpred)^2)/length(datar$recruits)
@@ -54,7 +54,7 @@ if(any(model==1)){ #Ricker normal errors
       NLL
      }  
     model1 <- try(optim(parms,ricknorm,control=control),silent=FALSE)
- if(class(model1)!="try-error"){
+ if(!is(model1,"try-error")){
      K<-length(model1$par)+1 #added 1 for sigma2
      model1$hessian<-hessian(ricknorm,model1$par)      
      model1$pred<-vpred<-model1$par[1]*datar$stock*exp(-model1$par[2]*datar$stock)
@@ -86,7 +86,7 @@ if(any(model==2)){ #Ricker log-normal errors
         NLL      
      }  
     model2 <- try(optim(parms,ricklog,control=control),silent=FALSE)
-if(class(model2)!="try-error"){
+if(!is(model2,"try-error")){
      K<-length(model2$par)+1 #add 1 for sigma2  
      model2$hessian<-hessian(ricklog,model2$par)
      model2$pred<-vpred<-model2$par[1]*datar$stock*exp(-model2$par[2]*datar$stock)
@@ -126,7 +126,7 @@ if(select==1){
        NLL  
     }  
     model3 <- try(optim(parms,ricknormcorr,control=control),silent=TRUE)
-  if(class(model3)!="try-error"){
+  if(!is(model3,"try-error")){
       K<-length(model3$par)+1
       model3$hessian<-hessian(ricknormcorr,model3$par)
       model3$pred<-vpred<-model3$par[1]*datar$stock*exp(-model3$par[2]*datar$stock)
@@ -170,7 +170,7 @@ if(select==1){
         NLL  
     }  
     model4 <- try(optim(parms,ricklogcorr,control=control),silent=TRUE)
- if(class(model4)!="try-error"){
+ if(!is(model4,"try-error")){
       K<-length(model4$par)+1
       model4$hessian<-hessian(ricklogcorr,model4$par)
       model4$pred<-vpred<-model4$par[1]*datar$stock*exp(-model4$par[2]*datar$stock)
@@ -204,7 +204,7 @@ if(any(model==5)){ #Beverton-Holt normal errors
       NLL
     }  
     model5 <- try(optim(parms,bhnorm,control=control),silent=FALSE)
- if(class(model5)!="try-error"){
+ if(!is(model5,"try-error")){
     K<-length(model5$par)+1 # add 1 for sigma2
     model5$hessian<-hessian(bhnorm,model5$par)
     model5$pred<-vpred<-(model5$par[1]*datar$stock)/(1+(model5$par[1]*datar$stock)/model5$par[2])
@@ -235,7 +235,7 @@ if(any(model==6)){ #Beverton-Holt log-normal errors
       NLL      
     }  
     model6 <- try(optim(parms,bhlog,control=control),silent=FALSE)
-    if(class(model6)!="try-error"){
+    if(!is(model6,"try-error")){
       K<-length(model6$par)+1 #add 1 for sigma
       model6$hessian<-hessian(bhlog,model6$par)    
       model6$pred<-vpred<-(model6$par[1]*datar$stock)/(1+(model6$par[1]*datar$stock)/model6$par[2])
@@ -277,7 +277,7 @@ if(select==1){
      NLL  
     }  
     model7 <- try(optim(parms,bhnormcorr,control=control),silent=TRUE)
- if(class(model7)!="try-error"){
+ if(!is(model7,"try-error")){
       K<-length(model7$par)+1
       model7$hessian<-hessian(bhnormcorr,model7$par)
       model7$pred<-vpred<-(model7$par[1]*datar$stock)/(1+(model7$par[1]*datar$stock)/model7$par[2])
@@ -321,7 +321,7 @@ if(select==1){
          NLL  
     }  
     model8 <- try(optim(parms,bhlogcorr,control=control),silent=TRUE)
-   if(class(model8)!="try-error"){
+   if(!is(model8,"try-error")){
       K<-length(model8$par)+1
       model8$hessian<-hessian(bhlogcorr,model8$par)
       model8$pred<-vpred<-(model8$par[1]*datar$stock)/(1+(model8$par[1]*datar$stock)/model8$par[2])
@@ -357,7 +357,7 @@ if(any(model==9)){ #Shepherd normal errors
       NLL
       }  
     model9 <- try(optim(parms,shnorm,control=control),silent=FALSE)
-if(class(model9)!="try-error"){
+if(!is(model9,"try-error")){
     K<-length(model9$par)+1
     model9$hessian<-hessian(shnorm,model9$par)
     model9$pred<-vpred<-(model9$par[1]*datar$stock)/(1+((datar$stock/model9$par[2])^model9$par[3]))
@@ -391,7 +391,7 @@ if(any(model==10)){ #Shepherd log-normal errors
       NLL      
          }  
     model10 <- try(optim(parms,shlog,control=control),silent=FALSE)
-   if(class(model10)!="try-error"){
+   if(!is(model10,"try-error")){
       K<-length(model10$par)+1
       model10$hessian<-hessian(shlog,model10$par)
       model10$pred<-vpred<-(model10$par[1]*datar$stock)/(1+((datar$stock/model10$par[2])^model10$par[3]))
@@ -409,8 +409,8 @@ if(any(model==11)){ #Deriso-SChnute normal errors
     newparms<-try(nls(datar$recruits~A*datar$stock*(1-B*C*datar$stock)^(1/C),
                       start=list(A=al,B=1/mean(datar$stock[c(length(datar$stock)/2):length(datar$stock)]),C=-0.5),
                       control=list(maxiter=10000)),silent=TRUE)
-    if(class(newparms)!="try-error") parms<-c(as.numeric(summary(newparms)$coef[,1]))
-    if(class(newparms)=="try-error") stop("Can't generate good starting values using automatic selection for Model 11. Try manual starting values.")
+    if(!is(newparms,"try-error")) parms<-c(as.numeric(summary(newparms)$coef[,1]))
+    if(is(newparms,"try-error")) stop("Can't generate good starting values using automatic selection for Model 11. Try manual starting values.")
       }
   if(select==2){
     if(is.null(initial$DSA)) stop("starting value for parameter DSA is missing")
@@ -429,7 +429,7 @@ if(any(model==11)){ #Deriso-SChnute normal errors
     NLL
   }  
    model11 <- try(optim(parms,dsnorm,control=control),silent=FALSE)
-  if(class(model11)!="try-error"){
+  if(!is(model11,"try-error")){
     K<-length(model11$par)+1
     model11$pred<-vpred<-(model11$par[1]*datar$stock)*(1-model11$par[2]*model11$par[3]*datar$stock)^(1/model11$par[3])        
     sigma2<-sum((datar$recruits-vpred)^2)/length(datar$recruits)
@@ -448,8 +448,8 @@ if(any(model==12)){ #Deriso-Schnute log-normal errors
     newparms<-try(nls(datar$recruits~A*datar$stock*(1-B*C*datar$stock)^(1/C),
                       start=list(A=al,B=1/mean(datar$stock[c(length(datar$stock)/2):length(datar$stock)]),C=-0.5),
                       control=list(maxiter=10000)),silent=TRUE)
-    if(class(newparms)!="try-error") parms<-c(as.numeric(summary(newparms)$coef[,1]))
-    if(class(newparms)=="try-error") stop("Can't generate good starting values using automatic selection for Model 12. Try manual starting values.")
+    if(!is(newparms,"try-error")) parms<-c(as.numeric(summary(newparms)$coef[,1]))
+    if(is(newparms,"try-error")) stop("Can't generate good starting values using automatic selection for Model 12. Try manual starting values.")
   }
   if(select==2){
     if(is.null(initial$DSA)) stop("starting value for parameter DSA is missing")
@@ -469,7 +469,7 @@ if(any(model==12)){ #Deriso-Schnute log-normal errors
     NLL     
   }  
     model12 <- try(optim(parms,dslnorm,control=control),silent=FALSE)
-  if(class(model12)!="try-error"){
+  if(!is(model12,"try-error")){
     K<-length(model12$par)+1
     model12$hessian<-hessian(dslnorm,model12$par)
     model12$pred<-vpred<-model12$par[1]*datar$stock*(1-model12$par[2]*model12$par[3]*datar$stock)^(1/model12$par[3])
@@ -488,8 +488,8 @@ if(any(model==13)){ #Myers depensation normal errors
       newparms<-try(nls(datar$recruits~(A*datar$stock^C)/(1+(datar$stock^C)/B),
                   start=list(A=al,B=mean(datar$recruits[c(length(datar$recruits)/2):length(datar$recruits)]),C=1),
                   control=list(maxiter=10000)),silent=TRUE)
-    if(class(newparms)!="try-error") parms<-c(as.numeric(summary(newparms)$coef[1,1]),as.numeric(summary(newparms)$coef[2:3,1]))
-    if(class(newparms)=="try-error") stop("Can't generate good starting values using automatic selection for Model 13. Try manual starting values.")
+    if(!is(newparms,"try-error")) parms<-c(as.numeric(summary(newparms)$coef[1,1]),as.numeric(summary(newparms)$coef[2:3,1]))
+    if(is(newparms,"try-error")) stop("Can't generate good starting values using automatic selection for Model 13. Try manual starting values.")
       
   }
   if(select==2){
@@ -509,7 +509,7 @@ if(any(model==13)){ #Myers depensation normal errors
     NLL
   }  
   model13 <- try(optim(parms,mynorm,control=control),silent=FALSE)
-  if(class(model13)!="try-error"){
+  if(!is(model13,"try-error")){
     K<-length(model13$par)+1
     model13$pred<-vpred<-(model13$par[1]*datar$stock^model13$par[3])/(1+((datar$stock^model13$par[3])/model13$par[2]))  
     sigma2<-sum((datar$recruits-vpred)^2)/length(datar$recruits)
@@ -528,8 +528,8 @@ if(any(model==14)){ #Myers Depensatory log-normal errors
     newparms<-try(nls(datar$recruits~(A*datar$stock^C)/(1+(datar$stock^C)/B),
                       start=list(A=al,B=mean(datar$recruits[c(length(datar$recruits)/2):length(datar$recruits)]),C=1),
                       control=list(maxiter=10000)),silent=TRUE)
-    if(class(newparms)!="try-error") parms<-c(as.numeric(summary(newparms)$coef[1,1]),as.numeric(summary(newparms)$coef[2:3,1]))
-    if(class(newparms)=="try-error") stop("Can't generate good starting values using automatic selection for Model 14. Try manual starting values.")
+    if(!is(newparms,"try-error")) parms<-c(as.numeric(summary(newparms)$coef[1,1]),as.numeric(summary(newparms)$coef[2:3,1]))
+    if(is(newparms,"try-error")) stop("Can't generate good starting values using automatic selection for Model 14. Try manual starting values.")
   }
   if(select==2){
     if(is.null(initial$MYA)) stop("starting value for parameter MYA is missing")
@@ -548,7 +548,7 @@ if(any(model==14)){ #Myers Depensatory log-normal errors
     NLL     
   }  
   model14 <- try(optim(parms,mylnorm,control=control),silent=FALSE)
-  if(class(model14)!="try-error"){
+  if(!is(model14,"try-error")){
     K<-length(model14$par)+1
     model14$hessian<-hessian(mylnorm,model14$par)
     model14$pred<-vpred<-(model14$par[1]*datar$stock^model14$par[3])/(1+((datar$stock^model14$par[3])/model14$par[2]))  
@@ -575,78 +575,78 @@ modlabels<-rep("NA",length(model))
 if(any(model==0)){
 cnt<-cnt+1
 modlabels[cnt]<-"Dens-Ind"
-if(class(model0)!="try-error"){
+if(!is(model0,"try-error")){
  modelpt[c(1,2,9,11,12),cnt]<-c(model0$estimate,sqrt(solve(model0$hessian)),model0$sigma2,
    round(model0$minimum,2),model0$AICC)
    model_residuals[,cnt]<-model0$resids
    converge[cnt]<-model0$convergence
    predictions[,cnt]<-model0$pred
   }
-  if(class(model0)=="try-error") modelpt[c(1,2,9,11,12),cnt]<-rep(NaN,7)
+  if(is(model0,"try-error")) modelpt[c(1,2,9,11,12),cnt]<-rep(NaN,7)
 }
 if(any(model==1)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"Ricker N-U"
-  if(class(model1)!="try-error"){
+  if(!is(model1,"try-error")){
     ses<-try(round(sqrt(diag(solve(model1$hessian))),10),silent=TRUE)
-   if(class(ses)=="try-error") ses<-rep(NaN,length(model1$par))
+   if(is(ses,"try-error")) ses<-rep(NaN,length(model1$par))
      modelpt[c(1,2,3,4,9,11,12),cnt]<-c(model1$par[1],ses[1],model1$par[2],
       ses[2],model1$sigma2,round(model1$value,2),model1$AICC)
      model_residuals[,cnt]<-model1$resids
      corr<-try(cov2cor(solve(model1$hessian)),silent=TRUE)
-     if(class(corr)!="try-error"){
+     if(!is(corr,"try-error")){
        corr<-corr[lower.tri(corr)]
        parm_correl[1,cnt]<-corr[1]
      }
      
-     if(class(corr)=="try-error"){
+     if(is(corr,"try-error")){
        parm_correl[1,cnt]<-NA
      }
      converge[cnt]<-model1$convergence
      predictions[,cnt]<-model1$pred 
   }
-  if(class(model1)=="try-error") modelpt[c(1,2,3,4,7,11,12),cnt]<-rep(NaN,7)
+  if(is(model1,"try-error")) modelpt[c(1,2,3,4,7,11,12),cnt]<-rep(NaN,7)
 }
 if(any(model==2)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"Ricker L-U"
-  if(class(model2)!="try-error"){
+  if(!is(model2,"try-error")){
    ses<-try(sqrt(diag(solve(model2$hessian))),silent=TRUE)
-   if(class(ses)=="try-error") ses<-rep(NaN,length(model2$par))
+   if(is(ses,"try-error")) ses<-rep(NaN,length(model2$par))
      modelpt[c(1,2,3,4,9,11,12),cnt]<-c(model2$par[1],ses[1],model2$par[2],
     ses[2],model2$sigma2,round(model2$value,2),model2$AICC)
     model_residuals[,cnt]<-model2$resids
      corr<-try(cov2cor(solve(model2$hessian)),silent=TRUE)
-      if(class(corr)!="try-error"){
+      if(!is(corr,"try-error")){
         corr<-corr[lower.tri(corr)]
         parm_correl[1,cnt]<-corr[1]
       }
       
-      if(class(corr)=="try-error"){
+      if(is(corr,"try-error")){
         parm_correl[1,cnt]<-NA
       }
      converge[cnt]<-model2$convergence
      predictions[,cnt]<-model2$pred
    }
-     if(class(model2)=="try-error") modelpt[c(1,2,3,4,7,11,12),cnt]<-rep(NaN,7)
+     if(is(model2,"try-error")) modelpt[c(1,2,3,4,7,11,12),cnt]<-rep(NaN,7)
 }
 if(any(model==3)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"Ricker N-C"
- if(class(model3)!="try-error"){
+ if(!is(model3,"try-error")){
    ses<-try(sqrt(diag(solve(model3$hessian))),silent=TRUE)
-   if(class(ses)=="try-error") ses<-rep(NaN,length(model3$par))
+   if(is(ses,"try-error")) ses<-rep(NaN,length(model3$par))
     modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-c(model3$par[1],ses[1],model3$par[2],
     ses[2],model3$par[3],ses[3],model3$sigma2w,round(model3$value,2),model3$AICC)
     model_residuals[,cnt]<-model3$resids
      corr<-try(cov2cor(solve(model3$hessian)),silent=TRUE)
-     if(class(corr)!="try-error"){
+     if(!is(corr,"try-error")){
        corr<-corr[lower.tri(corr)]
        parm_correl[1,cnt]<-corr[1]
        parm_correl[3,cnt]<-corr[2]
        parm_correl[5,cnt]<-corr[3]
      }
-     if(class(corr)=="try-error"){
+     if(is(corr,"try-error")){
        parm_correl[1,cnt]<-NA
        parm_correl[3,cnt]<-NA
        parm_correl[5,cnt]<-NA
@@ -654,25 +654,25 @@ if(any(model==3)){
     converge[cnt]<-model3$convergence
     predictions[,cnt]<-model3$pred
    }
-  if(class(model3)=="try-error") modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-rep(NaN,9)
+  if(is(model3,"try-error")) modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-rep(NaN,9)
 }
 if(any(model==4)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"Ricker L-C"
- if(class(model4)!="try-error"){
+ if(!is(model4,"try-error")){
    ses<-try(sqrt(diag(solve(model4$hessian))),silent=TRUE)
-    if(class(ses)=="try-error") ses<-rep(NaN,length(model4$par))
+    if(is(ses,"try-error")) ses<-rep(NaN,length(model4$par))
    modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-c(model4$par[1],ses[1],model4$par[2],
     ses[2],model4$par[3],ses[3],model4$sigma2w,round(model4$value,2),model4$AICC)
    model_residuals[,cnt]<-model4$resids
    corr<-try(cov2cor(solve(model4$hessian)),silent=TRUE)
-   if(class(corr)!="try-error"){
+   if(!is(corr,"try-error")){
      corr<-corr[lower.tri(corr)]
      parm_correl[1,cnt]<-corr[1]
      parm_correl[3,cnt]<-corr[2]
      parm_correl[5,cnt]<-corr[3]
    }
-   if(class(corr)=="try-error"){
+   if(is(corr,"try-error")){
      parm_correl[1,cnt]<-NA
      parm_correl[3,cnt]<-NA
      parm_correl[5,cnt]<-NA
@@ -681,70 +681,70 @@ if(any(model==4)){
    converge[cnt]<-model4$convergence
    predictions[,cnt]<-model4$pred
   }
-  if(class(model4)=="try-error") modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-rep(NaN,9)
+  if(is(model4,"try-error")) modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-rep(NaN,9)
 }
 if(any(model==5)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"BH N-U"
-  if(class(model5)!="try-error"){
+  if(!is(model5,"try-error")){
     ses<-try(sqrt(diag(solve(model5$hessian))),silent=TRUE)
-   if(class(ses)=="try-error") ses<-rep(NaN,length(model5$par))
+   if(is(ses,"try-error")) ses<-rep(NaN,length(model5$par))
      modelpt[c(1,2,3,4,9,11,12),cnt]<-c(model5$par[1],ses[1],model5$par[2],
       ses[2],model5$sigma2,round(model5$value,2),model5$AICC)
     model_residuals[,cnt]<-model5$resids
  corr<-try(cov2cor(solve(model5$hessian)),silent=TRUE)
- if(class(corr)!="try-error"){
+ if(!is(corr,"try-error")){
    corr<-corr[lower.tri(corr)]
    parm_correl[1,cnt]<-corr[1]
  }
  
- if(class(corr)=="try-error"){
+ if(is(corr,"try-error")){
    parm_correl[1,cnt]<-NA
  }
      converge[cnt]<-model5$convergence
      predictions[,cnt]<-model5$pred
   }
-  if(class(model5)=="try-error") modelpt[c(1,2,3,4,7,11,12),cnt]<-rep(NaN,7)
+  if(is(model5,"try-error")) modelpt[c(1,2,3,4,7,11,12),cnt]<-rep(NaN,7)
 }
 if(any(model==6)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"BH L-U"
-  if(class(model6)!="try-error"){
+  if(!is(model6,"try-error")){
    ses<-try(sqrt(diag(solve(model6$hessian))),silent=TRUE)
-   if(class(ses)=="try-error") ses<-rep(NaN,length(model6$par))
+   if(is(ses,"try-error")) ses<-rep(NaN,length(model6$par))
    modelpt[c(1,2,3,4,9,11,12),cnt]<-c(model6$par[1],ses[1],model6$par[2],
     ses[2],model6$sigma2,round(model6$value,2),model6$AICC)
    model_residuals[,cnt]<-model6$resids
      corr<-try(cov2cor(solve(model6$hessian)),silent=TRUE)
-     if(class(corr)!="try-error"){
+     if(!is(corr,"try-error")){
        corr<-corr[lower.tri(corr)]
        parm_correl[1,cnt]<-corr[1]
      }
-     if(class(corr)=="try-error"){
+     if(is(corr,"try-error")){
        parm_correl[1,cnt]<-NA
      }
   converge[cnt]<-model6$convergence
   predictions[,cnt]<-model6$pred
   }
-  if(class(model6)=="try-error") modelpt[c(1,2,3,4,7,11,12),cnt]<-rep(NaN,7)
+  if(is(model6,"try-error")) modelpt[c(1,2,3,4,7,11,12),cnt]<-rep(NaN,7)
 }
 if(any(model==7)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"BH N-C"
- if(class(model7)!="try-error"){
+ if(!is(model7,"try-error")){
    ses<-try(sqrt(diag(solve(model7$hessian))),silent=TRUE)
-   if(class(ses)=="try-error") ses<-rep(NaN,length(model7$par))
+   if(is(ses,"try-error")) ses<-rep(NaN,length(model7$par))
    modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-c(model7$par[1],ses[1],model7$par[2],
     ses[2],model7$par[3],ses[3],model7$sigma2w,round(model7$value,2),model7$AICC)
     model_residuals[,cnt]<-model7$resids
  corr<-try(cov2cor(solve(model7$hessian)),silent=TRUE)
- if(class(corr)!="try-error"){
+ if(!is(corr,"try-error")){
    corr<-corr[lower.tri(corr)]
    parm_correl[1,cnt]<-corr[1]
    parm_correl[3,cnt]<-corr[2]
    parm_correl[5,cnt]<-corr[3]
  }
- if(class(corr)=="try-error"){
+ if(is(corr,"try-error")){
    parm_correl[1,cnt]<-NA
    parm_correl[3,cnt]<-NA
    parm_correl[5,cnt]<-NA
@@ -752,26 +752,26 @@ if(any(model==7)){
    converge[cnt]<-model7$convergence
    predictions[,cnt]<-model7$pred
   }
-  if(class(model7)=="try-error") modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-rep(NaN,9)
+  if(is(model7,"try-error")) modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-rep(NaN,9)
 }
 if(any(model==8)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"BH L-C"
- if(class(model8)!="try-error"){
+ if(!is(model8,"try-error")){
    ses<-try(sqrt(diag(solve(model8$hessian))),silent=TRUE)
- if(class(ses)=="try-error") ses<-rep(NaN,length(model8$par))
+ if(is(ses,"try-error")) ses<-rep(NaN,length(model8$par))
 
    modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-c(model8$par[1],ses[1],model8$par[2],
     ses[2],model8$par[3],ses[3],model8$sigma2w,round(model8$value,2),model8$AICC)
    model_residuals[,cnt]<-model8$resids
  corr<-try(cov2cor(solve(model8$hessian)),silent=TRUE)
- if(class(corr)!="try-error"){
+ if(!is(corr,"try-error")){
    corr<-corr[lower.tri(corr)]
    parm_correl[1,cnt]<-corr[1]
    parm_correl[3,cnt]<-corr[2]
    parm_correl[5,cnt]<-corr[3]
  }
- if(class(corr)=="try-error"){
+ if(is(corr,"try-error")){
    parm_correl[1,cnt]<-NA
    parm_correl[3,cnt]<-NA
    parm_correl[5,cnt]<-NA
@@ -780,25 +780,25 @@ if(any(model==8)){
  converge[cnt]<-model8$convergence
 predictions[,cnt]<-model8$pred
   }
-  if(class(model8)=="try-error") modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-rep(NaN,9)
+  if(is(model8,"try-error")) modelpt[c(1,2,3,4,7,8,10,11,12),cnt]<-rep(NaN,9)
 }
 if(any(model==9)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"SH N-U"
- if(class(model9)!="try-error"){
+ if(!is(model9,"try-error")){
    ses<-try(sqrt(diag(solve(model9$hessian))),silent=TRUE)
- if(class(ses)=="try-error") ses<-rep(NaN,length(model9$par))
+ if(is(ses,"try-error")) ses<-rep(NaN,length(model9$par))
    modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-c(model9$par[1],ses[1],model9$par[2],
     ses[2],model9$par[3],ses[3],model9$sigma2,round(model9$value,2),model9$AICC)
    model_residuals[,cnt]<-model9$resids
    corr<-try(cov2cor(solve(model9$hessian)),silent=TRUE)
-   if(class(corr)!="try-error"){
+   if(!is(corr,"try-error")){
      corr<-corr[lower.tri(corr)]
      parm_correl[1,cnt]<-corr[1]
      parm_correl[2,cnt]<-corr[2]
      parm_correl[4,cnt]<-corr[3]
    }
-   if(class(corr)=="try-error"){
+   if(is(corr,"try-error")){
      parm_correl[1,cnt]<-NA
      parm_correl[2,cnt]<-NA
      parm_correl[4,cnt]<-NA
@@ -806,27 +806,27 @@ if(any(model==9)){
    converge[cnt]<-model9$convergence
    predictions[,cnt]<-model9$pred
   }
-  if(class(model9)=="try-error") modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
+  if(is(model9,"try-error")) modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
 }
 
 if(any(model==10)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"SH L-U"
- if(class(model10)!="try-error"){
+ if(!is(model10,"try-error")){
    ses<-try(sqrt(diag(solve(model10$hessian))),silent=TRUE)
- if(class(ses)=="try-error") ses<-rep(NaN,length(model10$par))
+ if(is(ses,"try-error")) ses<-rep(NaN,length(model10$par))
    modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-c(model10$par[1],ses[1],model10$par[2],
     ses[2],model10$par[3],ses[3],model10$sigma2,round(model10$value,2),model10$AICC)
    model_residuals[,cnt]<-model10$resids
    corr<-try(cov2cor(solve(model10$hessian)),silent=TRUE)
-   if(class(corr)!="try-error"){
+   if(!is(corr,"try-error")){
      corr<-corr[lower.tri(corr)]
      parm_correl[1,cnt]<-corr[1]
      parm_correl[2,cnt]<-corr[2]
      parm_correl[4,cnt]<-corr[3]
    
    }
-   if(class(corr)=="try-error"){
+   if(is(corr,"try-error")){
      parm_correl[1,cnt]<-NA
      parm_correl[2,cnt]<-NA
      parm_correl[4,cnt]<-NA
@@ -834,27 +834,27 @@ if(any(model==10)){
     converge[cnt]<-model10$convergence
     predictions[,cnt]<-model10$pred
   }
-  if(class(model10)=="try-error") modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
+  if(is(model10,"try-error")) modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
 }
 
 if(any(model==11)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"DS N-U"
-  if(class(model11)!="try-error"){
+  if(!is(model11,"try-error")){
     ses<-try(sqrt(diag(solve(model11$hessian))),silent=TRUE)
-    if(class(ses)=="try-error") ses<-rep(NaN,length(model11$par))
+    if(is(ses,"try-error")) ses<-rep(NaN,length(model11$par))
     modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-c(model11$par[1],ses[1],model11$par[2],
                                          ses[2],model11$par[3],ses[3],model11$sigma2,round(model11$value,2),model11$AICC)
     model_residuals[,cnt]<-model11$resids
     corr<-try(cov2cor(solve(model11$hessian)),silent=TRUE)
-    if(class(corr)!="try-error"){
+    if(!is(corr,"try-error")){
       corr<-corr[lower.tri(corr)]
       parm_correl[1,cnt]<-corr[1]
       parm_correl[2,cnt]<-corr[2]
       parm_correl[4,cnt]<-corr[3]
       
     }
-    if(class(corr)=="try-error"){
+    if(is(corr,"try-error")){
       parm_correl[1,cnt]<-NA
       parm_correl[2,cnt]<-NA
       parm_correl[4,cnt]<-NA
@@ -862,28 +862,28 @@ if(any(model==11)){
     converge[cnt]<-model11$convergence
     predictions[,cnt]<-model11$pred
   }
-  if(class(model11)=="try-error") modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
+  if(is(model11,"try-error")) modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
 }
 
 
 if(any(model==12)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"DS L-U"
-  if(class(model12)!="try-error"){
+  if(!is(model12,"try-error")){
     ses<-try(sqrt(diag(solve(model12$hessian))),silent=TRUE)
-    if(class(ses)=="try-error") ses<-rep(NaN,length(model12$par))
+    if(is(ses,"try-error")) ses<-rep(NaN,length(model12$par))
     modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-c(model12$par[1],ses[1],model12$par[2],
                                          ses[2],model12$par[3],ses[3],model12$sigma2,round(model12$value,2),model12$AICC)
     model_residuals[,cnt]<-model12$resids
     corr<-try(cov2cor(solve(model12$hessian)),silent=TRUE)
-    if(class(corr)!="try-error"){
+    if(!is(corr,"try-error")){
       corr<-corr[lower.tri(corr)]
       parm_correl[1,cnt]<-corr[1]
       parm_correl[2,cnt]<-corr[2]
       parm_correl[4,cnt]<-corr[3]
       
     }
-    if(class(corr)=="try-error"){
+    if(is(corr,"try-error")){
       parm_correl[1,cnt]<-NA
       parm_correl[2,cnt]<-NA
       parm_correl[4,cnt]<-NA
@@ -891,28 +891,28 @@ if(any(model==12)){
     converge[cnt]<-model12$convergence
     predictions[,cnt]<-model12$pred
   }
-  if(class(model12)=="try-error") modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
+  if(is(model12,"try-error")) modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
 }
 
 
 if(any(model==13)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"MY N-U"
-  if(class(model13)!="try-error"){
+  if(!is(model13,"try-error")){
     ses<-try(sqrt(diag(solve(model13$hessian))),silent=TRUE)
-    if(class(ses)=="try-error") ses<-rep(NaN,length(model13$par))
+    if(is(ses,"try-error")) ses<-rep(NaN,length(model13$par))
     modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-c(model13$par[1],ses[1],model13$par[2],
                                          ses[2],model13$par[3],ses[3],model13$sigma2,round(model13$value,2),model13$AICC)
     model_residuals[,cnt]<-model13$resids
     corr<-try(cov2cor(solve(model13$hessian)),silent=TRUE)
-    if(class(corr)!="try-error"){
+    if(!is(corr,"try-error")){
       corr<-corr[lower.tri(corr)]
       parm_correl[1,cnt]<-corr[1]
       parm_correl[2,cnt]<-corr[2]
       parm_correl[4,cnt]<-corr[3]
       
     }
-    if(class(corr)=="try-error"){
+    if(is(corr,"try-error")){
       parm_correl[1,cnt]<-NA
       parm_correl[2,cnt]<-NA
       parm_correl[4,cnt]<-NA
@@ -920,27 +920,27 @@ if(any(model==13)){
     converge[cnt]<-model13$convergence
     predictions[,cnt]<-model13$pred
   }
-  if(class(model13)=="try-error") modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
+  if(is(model13,"try-error")) modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
 }
 
 if(any(model==14)){ 
   cnt<-cnt+1
   modlabels[cnt]<-"MY L-U"
-  if(class(model14)!="try-error"){
+  if(!is(model14,"try-error")){
     ses<-try(sqrt(diag(solve(model14$hessian))),silent=TRUE)
-    if(class(ses)=="try-error") ses<-rep(NaN,length(model14$par))
+    if(is(ses,"try-error")) ses<-rep(NaN,length(model14$par))
     modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-c(model14$par[1],ses[1],model14$par[2],
                                          ses[2],model14$par[3],ses[3],model14$sigma2,round(model14$value,2),model14$AICC)
     model_residuals[,cnt]<-model14$resids
     corr<-try(cov2cor(solve(model14$hessian)),silent=TRUE)
-    if(class(corr)!="try-error"){
+    if(!is(corr,"try-error")){
       corr<-corr[lower.tri(corr)]
       parm_correl[1,cnt]<-corr[1]
       parm_correl[2,cnt]<-corr[2]
       parm_correl[4,cnt]<-corr[3]
       
     }
-    if(class(corr)=="try-error"){
+    if(is(corr,"try-error")){
       parm_correl[1,cnt]<-NA
       parm_correl[2,cnt]<-NA
       parm_correl[4,cnt]<-NA
@@ -948,7 +948,7 @@ if(any(model==14)){
     converge[cnt]<-model14$convergence
     predictions[,cnt]<-model14$pred
   }
-  if(class(model14)=="try-error") modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
+  if(is(model14,"try-error")) modelpt[c(1,2,3,4,5,6,9,11,12),cnt]<-rep(NaN,9)
 }
 
 colnames(modelpt)<-colnames(model_residuals)<-colnames(parm_correl)<-colnames(converge)<-colnames(predictions)<-modlabels
@@ -965,7 +965,7 @@ evidence_ratios[,2]<-round(evidence_ratios[,2],3)
 evidence_ratios[,3]<-round(evidence_ratios[,3],3)
 evidence_ratios[,4]<-round(evidence_ratios[,4],3)
 if(plot==TRUE){
-plot(datar$recruits~datar$stock,ylim=c(0,max(predictions)*1.20),
+plot(datar$recruits~datar$stock,ylim=c(0,max(predictions)*1.30),
 xlim=c(0,max(datar$stock)*1.20),type="p",
 xlab="Spawning Stock (or Eggs)",ylab="Recruits")
 rect(par("usr")[1], par("usr")[3], par("usr")[2], par("usr")[4], col = 
@@ -984,6 +984,3 @@ results<-list(results=modelpt,evidence_ratios=evidence_ratios,convergence=conver
               predicted=predictions,residuals=model_residuals)
 return(results)
 }#function end
-
-
-

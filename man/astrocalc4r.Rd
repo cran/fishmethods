@@ -105,7 +105,7 @@ Larry Jacobson, Alan Seaver, and Jiashen Tang
 NOAA National Marine Fisheries Service
 Northeast Fisheries Science Center, 166 Water St., Woods Hole, MA 02543
 
-\email{Larry.Jacobson@noaa.gov}
+\email{larryjacobson6@gmail.com}
 }
 \examples{
 astrocalc4r(day=12,month=9,year=2000,hour=12,timezone=-5,lat=40.9,lon=-110)

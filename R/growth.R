@@ -1,4 +1,4 @@
-growth<-function(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,error=1,
+growth<-function(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,se2=NULL,error=1,
                  specwgt=0.0001,
          Sinf=NULL,K=NULL,t0=NULL,B=3,graph=TRUE,
          control=list(maxiter=10000,minFactor=1/1024,tol=1e-5)){
@@ -10,7 +10,7 @@ growth<-function(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,e
          stop ("unit is missing.") 
    if(length(age)!=length(size)) stop ("Vectors of different lengths")
    if((is.null(Sinf)|is.null(K)|is.null(t0))) stop("Values of Sinf, K, and t0 must be specified")
-   if(intype==2 & wgtby==2 & is.null(s2)) stop("s2: You need to specify the s2 vector")
+   if(intype==2 & wgtby==2 & is.null(se2)) stop("se2: You need to specify the se2 vector")
    if(intype==1 & calctype==1 & wgtby==2) stop("wgtby: You can't weight an individual observation, only means")
    if(intype==2 & calctype==2) stop("calctype: Data already inputted as means")
    wgts<-NULL;d4<-NULL;x<-NULL;vbl<-NULL;gomp<-NULL;logist<-NULL;vpred<-NULL;tempred<-NULL
@@ -42,9 +42,9 @@ growth<-function(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,s2=NULL,e
                 wgts<-rep(1,length(x$size))
            }
          if(wgtby==2){
-             x<-as.data.frame(cbind(size,age,s2)) 
-   		        x<-x[!is.na(x$size) & !is.na(x$age)& !is.na(x$s2),]
-             wgts<-1/x$s2
+             x<-as.data.frame(cbind(size,age,se2)) 
+   		        x<-x[!is.na(x$size) & !is.na(x$age)& !is.na(x$se2),]
+             wgts<-1/x$se2
      	}
      }
 

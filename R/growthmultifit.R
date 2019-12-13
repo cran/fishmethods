@@ -142,7 +142,7 @@ growthmultifit<-function(len=NULL,age=NULL,group=NULL,model=1,fixed=c(1,1,1),err
   Ho<-try(nls(eval(parse(text=equat)),data=x,       
               weights=wgt,start=eval(parse(text=starts)),
               control=control),silent=TRUE)
-  if(class(Ho)=="try-error") stop(paste("Ho: ",attributes(Ho)[2],sep=""))
+  if(is(Ho,"try-error")) stop(paste("Ho: ",attributes(Ho)[2],sep=""))
       resid0<-residuals(Ho)
       nlsout<-list(summary(Ho),AIC(Ho),resid0)
       names(nlsout)<-c("results","AIC","residuals")

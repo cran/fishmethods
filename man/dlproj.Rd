@@ -79,7 +79,4 @@ Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@ma
    outbio<-dlproj(dlobj = outs, projyears = 20, projtype = 0, grout = 1)
  }
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+\keyword{misc}
