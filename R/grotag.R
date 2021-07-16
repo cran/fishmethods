@@ -1,6 +1,6 @@
 grotag<-function(L1=NULL,L2=NULL,T1=NULL,T2=NULL,alpha=NULL,beta=NULL,
                design=list(nu=0,m=0,p=0,sea=0),
-               stvalue=list(sigma=0.9,nu=0.4,m=-1,p=0.01,u=0.4,w=0.4),
+               stvalue=list(sigma=0.9,nu=0.4,m=-1,p=0.1,u=0.4,w=0.4),
                upper=list(sigma=5,nu=1,m=2,p=1,u=1,w=1),
 			lower=list(sigma=0,nu=0,m=-2,p=0,u=0,w=0),
               gestimate=TRUE,st.ga=NULL,st.gb=NULL,st.galow=NULL,st.gaup=NULL,
@@ -256,7 +256,7 @@ grotag<-function(L1=NULL,L2=NULL,T1=NULL,T2=NULL,alpha=NULL,beta=NULL,
       kk<-merge(allparms,ee,by.x="pars",by.y="pars",all.x=TRUE,all.y=TRUE) 
       kk$p<-ifelse(is.na(kk$p),0,kk$p)
       result = cbind(result, SE = c(NA,round(kk$p[1],2), round(kk$p[2],2),round(kk$p[7],3),round(kk$p[8],3),round(kk$p[4],3),round(kk$p[3],3),round(kk$p[5],3),round(kk$p[6],4),NA,NA,NA))
-	Linf<-(beta*mod1$par[1]-alpha*mod1$par[2])/(mod1$par[1]-mod1$par[2])*-1
+	Linf<-(beta*mod1$par[1]-alpha*mod1$par[2])/(mod1$par[1]-mod1$par[2])
       K<--1*log(1+(mod1$par[1]-mod1$par[2])/(alpha-beta))
       result1 = as.data.frame(matrix(NA, ncol=1, nrow = 3))
       dimnames(result1)[[1]] = c("Parameters","Linf","K ")

@@ -11,7 +11,7 @@ likelihood optimization performed by optim using the "L-BFGS-B" method.
 \usage{
 grotag(L1 = NULL, L2 = NULL, T1 = NULL, T2 = NULL, alpha = NULL, beta = NULL, 
  design = list(nu = 0, m = 0, p = 0, sea = 0), 
- stvalue = list(sigma = 0.9, nu = 0.4, m = -1, p = 0.01, u = 0.4, w = 0.4), 
+ stvalue = list(sigma = 0.9, nu = 0.4, m = -1, p = 0.1, u = 0.4, w = 0.4), 
  upper = list(sigma = 5, nu = 1, m = 2, p = 1, u = 1, w = 1), 
  lower = list(sigma = 0, nu = 0, m = -2, p = 0, u = 0, w = 0), gestimate = TRUE, 
  st.ga = NULL, st.gb = NULL, st.galow = NULL, st.gaup = NULL, st.gblow = NULL,
@@ -61,11 +61,12 @@ in the reference is used throughout.
 \references{Francis, R.I.C.C., 1988. Maximum likelihood estimation of growth and growth variability 
 from tagging data. New Zealand Journal of Marine and Freshwater Research, 22, p.42-51. 
 }
+
 \author{
 Marco Kienzle \email{Marco.Kienzle@gmail.com}
 
 Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
-
+\seealso{\code{\link{grotagplus}}}
 \examples{
 data(bonito)
 
@@ -73,8 +74,8 @@ data(bonito)
 with(bonito,
  grotag(L1=L1, L2=L2, T1=T1, T2=T2,alpha=35,beta=55,
  	design=list(nu=1,m=1,p=1,sea=1),
- 	stvalue=list(sigma=0.9,nu=0.4,m=-1,p=0,u=0.4,w=0.4),
+ 	stvalue=list(sigma=0.9,nu=0.4,m=-1,p=0.2,u=0.4,w=0.4),
  	upper=list(sigma=5,nu=1,m=2,p=0.5,u=1,w=1),
- 	lower=list(sigma=0,nu=0,m=-2,p=0,u=0,w=0),control=list(maxit=1e4)))
+ 	lower=list(sigma=0,nu=0,m=-2,p=0.0,u=0,w=0),control=list(maxit=1e4)))
 }
 \keyword{misc}

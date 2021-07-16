@@ -24,7 +24,7 @@ growth<-function(intype=1,unit=1,size=NULL,age=NULL,calctype=1,wgtby=1,se2=NULL,
               x<-as.data.frame(cbind(size,age)) 
 		    x<-x[!is.na(x$size) & !is.na(x$age),]
 		    d4<-merge(aggregate(x$size,list(x$age),mean),
-                aggregate(x$size,list(x$age),var),by.y=c("Group.1"),
+                aggregate(x$size,list(x$age),function(x){var(x)/length(x)}),by.y=c("Group.1"),
                 by.x=c("Group.1"))
                 names(d4)<-c("age","size","var")
               x<-d4[!is.na(d4$size) & !is.na(d4$age),]

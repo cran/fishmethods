@@ -17,7 +17,7 @@ Recruit and postrecruit survey indices and catch data for Gulf of Maine northern
   }
 }
 \source{
-\url{http://www.nefsc.noaa.gov/publications/crd/crd0716/pdfs/a.pdf}
+\url{https://www.fisheries.noaa.gov/region/new-england-mid-atlantic#science}
 }
 \keyword{datasets}
 

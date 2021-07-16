@@ -43,6 +43,4 @@ agesurvcl<-function(age=NULL,group=NULL,full=NULL,last=NULL){
   return(ans)
 }    
 
-#dd<-agesurvcl(age=data$age,group=data$group,full=0)
-
 

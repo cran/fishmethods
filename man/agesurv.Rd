@@ -6,10 +6,11 @@
 linear regression (standard and weighted), Heincke, Chapman-Robson, Poisson GLM and GLMER methods.
 }
 \usage{
-agesurv(type = 1, age = NULL,  number = NULL, full = NULL, last = NULL, 
-estimate = c("s", "z"), method = c("lr", "he", "cr", "crcb","ripois","wlr","pois"), 
-glmer.control = glmerControl(optCtrl=list(maxfun=10000), optimizer="bobyqa"))
+agesurv(type=1, age=NULL, number=NULL, full=NULL, last=NULL, estimate=c("s","z"),
+method=c("lr","he","cr","crcb","ripois","wlr","pois"), sign.est=3, sign.se=3, 
+ glmer.control=glmerControl(optCtrl=list(maxfun=10000),optimizer="bobyqa"))
 }
+
 \arguments{
   \item{type}{ the format of data. 1 = a single vector, each row represents the age of an individual (default), 
         2 = summarized, one column of age and one column of numbers-at-age.}
@@ -26,6 +27,9 @@ glmer.control = glmerControl(optCtrl=list(maxfun=10000), optimizer="bobyqa"))
 	Poisson mixed model estimator, "wlr" for Maceine-Bettoli weighted regression,
         "pois" for Poisson generalized linear model with overdispersion correction.
          Default is all.}
+  \item{sign.est}{significant digits for survival estimates.}
+  \item{sign.se}{significant digits for standard error of survival estimates.}
+
   \item{glmer.control}{controls for function \code{glmer} used in the random-intercept Poisson mixed model. See
        \code{glmerControl}.}
 }

@@ -1,6 +1,6 @@
 Package: fishmethods
-Version: 1.11-1
-Date: 2019-12-13
+Version: 1.11-2
+Date: 2021-07-16
 Title: Fishery Science Methods and Models
 Author: Gary A. Nelson <gary.nelson@mass.gov>
 Maintainer: Gary A. Nelson <gary.nelson@mass.gov>
@@ -11,6 +11,6 @@ License: GPL (>= 2)
 LazyData: true
 RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2019-12-13 16:04:39 UTC; gnelson
+Packaged: 2021-07-16 20:06:28 UTC; GNelson
 Repository: CRAN
-Date/Publication: 2019-12-13 16:40:02 UTC
+Date/Publication: 2021-07-16 20:30:02 UTC

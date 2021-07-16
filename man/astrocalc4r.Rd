@@ -8,7 +8,8 @@ and PAR (photosynthetically available radiation, 400-700 nm) under clear
 skies and average atmospheric conditions
 (marine or continental) anywhere on the surface of the earth based on date, time, and location.}
 \usage{
-astrocalc4r(day, month, year, hour, timezone, lat, lon, withinput = FALSE, 
+astrocalc4r(day, month, year, hour, timezone, lat, lon, 
+withinput = FALSE, 
 seaorland = "maritime", acknowledgment = FALSE)
 }
 \arguments{
@@ -94,11 +95,7 @@ This function is an R implementation of:
 
 Jacobson L, Seaver A, Tang J. 2011. AstroCalc4R: software to calculate solar zenith angle; 
 time at sunrise, local noon and sunset; and photosynthetically available radiation based on date, 
-time and location. US Dept Commer, Northeast Fish Sci Cent Ref Doc. 11-14; 10 p.  
-Available from: National Marine Fisheries Service, 166 Water Street, Woods Hole, MA 02543-1026, 
-or online at \url{http://www.nefsc.noaa.gov/nefsc/publications/}.
-Note that the documentation may be easiest to obtain at
-\url{http://www.nefsc.noaa.gov/publications/crd/crd1114/index.html} 
+time and location. US Dept Commer, Northeast Fish Sci Cent Ref Doc. 11-14; 10 p.   
 }
 \author{
 Larry Jacobson, Alan Seaver, and Jiashen Tang

@@ -5,7 +5,8 @@
   Calculate the equilibrium Beverton-Holt estimator of instantaneous total mortality (Z) from length data with bootstrapped standard errors or the same using the Ehrhardt and Ault(1992) bias-correction 
 }
 \usage{
-bheq(len, type = c(1,2), K = NULL, Linf = NULL, Lc = NULL, La = NULL, nboot = 100)
+bheq(len, type = c(1,2), K = NULL, Linf = NULL, Lc = NULL, 
+La = NULL, nboot = 100)
 }
 \arguments{
   \item{len}{the vector of length data. Each row represents one record per individual fish.}
