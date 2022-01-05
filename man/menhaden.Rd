@@ -12,7 +12,7 @@ to calculate eggs-per-recruit.
 This data frame contains the following columns:
 \describe{
 \item{age}{vector of ages}
-\item{fecundity}{vector of weights at spawning for each age}
+\item{fecundity}{vector of mean eggs per individual for each age}
 \item{partial}{partial recruitment vector}
 \item{pmat}{vector of fraction of females mature at age}
 \item{M}{vector of natural mortality value-at-age}

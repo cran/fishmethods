@@ -112,7 +112,8 @@ Tags are relocated over six occasions.  One model structure might be separate fi
 
 Specification of model 18 listed in Table 1 of Hightower et al. (2001) is shown.  Each occasion represented a quarter of the year. The quarter-year design for F, M and P specifies that quarterly estimates are made in each year. \code{Fdesign} is c(\dQuote{1},\dQuote{4},\dQuote{7},\dQuote{11},\dQuote{14},\dQuote{17}, 
 \dQuote{20},\dQuote{24}). \code{Mdesign} is c(\dQuote{1},\dQuote{4},\dQuote{7},\dQuote{11},\dQuote{14},\dQuote{17},\dQuote{20},\dQuote{24}) and the \code{Pdesign} is c(\dQuote{2},\dQuote{4},\dQuote{7},\dQuote{11},\dQuote{14},\dQuote{17}, 
-\dQuote{20},\dQuote{24}). 
+\dQuote{20},
+\dQuote{24}). 
 
 If the number of occasions to be assigned parameters from other occasions are less than the number of original parameters (e.g., c(\dQuote{11:13*24:25}), then only the beginning sequence of original parameters equal to the number of occasions are used. For instance, in c(\dQuote{11:13*24:25}), only parameters 11 and 12 would be assigned to occasions 24 and 25.
 

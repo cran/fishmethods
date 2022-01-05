@@ -65,7 +65,7 @@ if(unit==1){#Length
         	 		sqrt(wgts)*(log(size)-log(vpred)) 
       		}
     		vbl <- try(nls( ~ mult1(size,age,Sinf,K,t0), data = x, 
-                  start = list(Sinf = Sinf, K = K,t0=t0), 
+                  start = list(Sinf = Sinf, K = K,t0=t0),control=control, 
                    trace = FALSE),silent=FALSE) 
     		
     		mult3<-function(size,age,Sinf,K,t0){
@@ -74,7 +74,7 @@ if(unit==1){#Length
     		  sqrt(wgts)*(log(size)-log(vpred)) 
     		}
     		gomp <- try(nls( ~ mult3(size,age,Sinf,K,t0), data = x, 
-    		                 start = list(Sinf = Sinf, K = K,t0=t0), 
+    		                 start = list(Sinf = Sinf, K = K,t0=t0),,control=control, 
     		                 trace = FALSE),silent=FALSE) 
     		# Logistic
     		mult4<-function(size,age,Sinf,K,t0){
@@ -83,7 +83,7 @@ if(unit==1){#Length
     		  sqrt(wgts)*(log(size)-log(vpred)) 
     		}
     		logist <- try(nls( ~ mult4(size,age,Sinf,K,t0), data = x, 
-    		                   start = list(Sinf = Sinf, K = K,t0=t0), 
+    		                   start = list(Sinf = Sinf, K = K,t0=t0),control=control,
     		                   trace = FALSE),silent=FALSE) 
        }        
  }#unit==1
@@ -111,7 +111,7 @@ if(unit==2){#Weight
         	 		sqrt(wgts)*(log(size)-log(vpred)) 
       		}
     		 vbl <- try(nls( ~ mult2(size,age,Bs,Sinf,K,t0), data = x, 
-                start = list(Sinf = Sinf, K = K,t0=t0), 
+                start = list(Sinf = Sinf, K = K,t0=t0),control=control, 
                 trace = FALSE),silent=FALSE)
  		 
 		# Gompertz
@@ -121,7 +121,7 @@ if(unit==2){#Weight
         	 		sqrt(wgts)*(log(size)-log(vpred)) 
       		}
     		gomp <- try(nls( ~ mult3(size,age,Sinf,K,t0), data = x, 
-                 start = list(Sinf = Sinf, K = K,t0=t0), 
+                 start = list(Sinf = Sinf, K = K,t0=t0),control=control,
                  trace = FALSE),silent=FALSE) 
  		
 		# Logistic
@@ -131,7 +131,7 @@ if(unit==2){#Weight
         	 		sqrt(wgts)*(log(size)-log(vpred)) 
       		}
     		logist <- try(nls( ~ mult4(size,age,Sinf,K,t0), data = x, 
-                   start = list(Sinf = Sinf, K = K,t0=t0), 
+                   start = list(Sinf = Sinf, K = K,t0=t0),control=control,
                    trace = FALSE),silent=FALSE) 
           }#error=2
  }  #unit=2

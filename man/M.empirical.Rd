@@ -20,7 +20,7 @@ M.empirical(Linf = NULL, Winf = NULL, Kl = NULL, Kw = NULL,
   \item{TC}{the mean water temperature (Celsius) experienced by the stock.}
   \item{tmax}{the oldest age observed for the species.}
   \item{tm}{the age at maturity.}
-  \item{GSI}{gonadosomatic index (wet ovary weight over wet body weight).}
+  \item{GSI}{gonadosomatic index (wet ovary weight over wet somatic weight(total-gonad wgt)).}
   \item{Wdry}{total dry weight in grams.}
   \item{Wwet}{total wet weight at mean length in grams.}
   \item{Bl}{body length in cm.}

@@ -16,7 +16,15 @@ agesurv<-function(type=1,age=NULL,number=NULL,full=NULL,last=NULL,estimate=c("s"
     st_obj<-data.frame(age=age,number=number)
     st_obj<-st_obj[!is.na(st_obj$age),]
   }
+  ##Need to add missing ages for Chapman Robson
+  amin<-min(st_obj[,1]);amax<-max(st_obj[,1])
+  agefreq<-data.frame(age=seq(amin,amax,1))
+  st_obj<-merge(agefreq,st_obj,by.x="age",by.y="age",all.x=TRUE,all.y=TRUE)
+  names(st_obj)[2]<-"number"
+  st_obj$number[is.na(st_obj$number)]<-0
+
   if(is.null(last)) last<-max(age) else last<-last 
+  
   d<<-subset(st_obj,st_obj[,1]>=full & st_obj[,1]<=last)
   names(d)<-c("age","number")
   if(d[1,1]!=full) stop ("Age specified as fully-recruited does not exist.")
@@ -242,7 +250,4 @@ agesurv<-function(type=1,age=NULL,number=NULL,full=NULL,last=NULL,estimate=c("s"
   out<-list(results,d);names(out)<-c("results","data")
   return(out)
 }
-
-
-
 
