@@ -184,7 +184,7 @@ results[cnt,4]<-model4$par[3];results[cnt,6]<-model4$par[4]
 results[cnt,7]<-warn4;results[cnt,8]<-model4$value;
 results[cnt,9]<-2*model4$value+2*length(model4$par)
 results[cnt,10]<-mm$method[index]
-residuals[,cnt]<-grdat$L2-((model4$par[1]-grdat$L1)*(1-exp(-model4$par[2]*grdat$ti))+grdat$L1+exp(-model4$par[2]*grdat$ti)*mu_measure+model4$par[4])
+residuals[,cnt]<-grdat$L2-((model4$par[1]-grdat$L1)*(1-exp(-model4$par[2]*grdat$ti))+grdat$L1+exp(-model4$par[2]*grdat$ti)*mu_measure)
 if(varcov[cnt]==TRUE) varcov1[cnt]<-list(solve(model4$hessian))
 }#model 4
 

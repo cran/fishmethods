@@ -171,7 +171,7 @@ Chris Francis \email{chrisfrancis341@gmail.com}
 
 Marco Kienzle \email{Marco.Kienzle@gmail.com}
 
-Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@state.ma.us}
+Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 }
 \seealso{\code{\link{plot.grotagplus}} \code{\link{print.grotagplus}}}
 \examples{

@@ -1,6 +1,7 @@
 remp<-function(n=NULL,obs=NULL){
   if(is.null(obs)) stop("y is empty.")
-  if(class(obs)!="numeric") stop("obs is not a numeric vector.")
+  obstype<-class(obs)
+  if(obstype!="numeric") stop("obs is not a numeric vector.")
   if(n<=0) stop("n must be greater than zero.")
   outpt<-rep(NA,n)
   x<-data.frame(ros=sort(obs[!is.na(obs)]))

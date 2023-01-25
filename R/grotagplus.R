@@ -383,8 +383,9 @@ function(tagdata,dataID=NULL,alpha,beta=NULL,
                   silent=TRUE)
     }
     else
-        mod1 <- list(value=NLL(startpar),convergence=0) 
-    if(class(mod1)=="try-error"){
+        mod1 <- list(value=NLL(startpar),convergence=0)
+       classtype<-class(mod1)
+    if(classtype=="try-error"){
         cat('Fit failed\n')
         stop(mod1$message)
     }

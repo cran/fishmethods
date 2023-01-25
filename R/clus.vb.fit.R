@@ -35,7 +35,8 @@ ins<-ins[order(ins$cluster),]
   vbmodel<-try(nls(len~Linf*(1-exp(-K*(age-t0))),data=x,
               start=c(Linf=Linf1[[1]],K=K1[[1]],t0=t01[[1]]),
               control=control),silent=TRUE)
-  if(class(vbmodel)!="try-error"){ 
+    vbtype<-class(vbmodel)
+  if(vbtype!="try-error"){ 
      parms[i,1]<-coef(vbmodel)[1]
      parms[i,2]<-coef(vbmodel)[2]
      parms[i,3]<-coef(vbmodel)[3] 
@@ -44,7 +45,7 @@ ins<-ins[order(ins$cluster),]
      parms[i,5]<-cor[1,3]
      parms[i,6]<-cor[2,3]
   }
-  if(class(vbmodel)=="try-error"){ 
+  if(vbtype=="try-error"){ 
     parms[i,1]<-NA
     parms[i,2]<-NA
     parms[i,3]<-NA

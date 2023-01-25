@@ -120,7 +120,7 @@ irm_h<-function(relyrs=NULL,recapyrs=NULL,N=NULL,recapharv=NULL,lambda=NULL,phi=
  		for (t in styrR:endyrR){
     			for (y in as.numeric(styr+cnt):endyr){
        			ll_h[t,y]<-0
-        			if(recapharv[t,y]!=0){
+        			if(recapharv[t,y]>0){
           				ll_h[t,y]<-recapharv[t,y]*log(exp_prob_h[t,y])
          			}
         		
@@ -306,7 +306,7 @@ pear_ns<-NULL
 exp_ns<-NULL
 for (t in styrR:endyrR){
   for (y in as.numeric(styr+cnt):endyr){
-    if(exp_r_h[t,y]>0){
+    if(recapharv[t,y]>0){
       pear_h[t,y]<-(recapharv[t,y]-exp_r_h[t,y])/sqrt(exp_r_h[t,y])
       chi_h[t,y]<-(recapharv[t,y]-exp_r_h[t,y])^2/exp_r_h[t,y]
       up_count<-up_count+1
@@ -318,9 +318,7 @@ for (t in styrR:endyrR){
   exp_ns[t]<-N[t]*(1-(sum_prob_h[t]))
 }
 #Not seen chi
-ns_count<-0
 for (t in styrR:endyrR){
-    ns_count<-ns_count+1
     chi_ns[t]<-0
     chi_ns[t]<-((N[t]-tags[t])-exp_ns[t])^2/exp_ns[t]
     pear_ns[t]<-((N[t]-tags[t])-exp_ns[t])/sqrt(exp_ns[t])
@@ -328,7 +326,7 @@ for (t in styrR:endyrR){
 ####total chi square
 up_chi<-sum(chi_h,na.rm=T)+sum(chi_ns,na.rm=T)
 K<-length(Fyr)+length(Myr)
-up_df<-up_count+ns_count-K;
+up_df<-up_count-K;
 up_chat<-up_chi/up_df
 AIC<-2*results$value+2*K
 AICc<-AIC+(2*K*(K+1))/(sum(N)-K-1)
@@ -347,7 +345,6 @@ for (t in styrR:endyrR){
   cnt<-cnt+1
 }
 cnt<-0
-hess<-0
 for(t in styrR:endyrR){    
   for(y in endyr:as.numeric(styr+cnt)){
     if(pool_h_e[t,y]>=2){
@@ -356,7 +353,6 @@ for(t in styrR:endyrR){
     }
     if(pool_h_e[t,y]>=0 & pool_h_e[t,y]<2){ 
       if (y!=as.numeric(styr+cnt)){
-        hess<-hess+1
         pool_h_e[t,y-1]<-pool_h_e[t,y-1]+pool_h_e[t,y]
         pool_h[t,y-1]<-pool_h[t,y-1]+pool_h[t,y]
         pool_h[t,y]<-0
@@ -367,7 +363,7 @@ for(t in styrR:endyrR){
   }
   cnt<-cnt+1
 }
-p_df<-up_count+ns_count-hess-K
+p_df<-sum(pool_h>0)-K
 ####Pooled Chi-square
 p_chi_h<-array(0,dim=c(endyrR,endyr))
 p_chi_r<-array(0,dim=c(endyrR,endyr))

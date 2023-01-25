@@ -19,24 +19,23 @@ tag_model_avg<-function(...,global=NULL){
    #Create Statistics Table
         outpt<-array(NA,dim=c(n,11))
         rownames(outpt)<-c(unique(foo.call))
-        #rownames(outpt)<-c(dodo[-length(dodo)])
-        colnames(outpt)<-c("Likelihood","No. Parms","AIC","AICc","N","QAIC"
+        colnames(outpt)<-c("Likelihood","No. Parms+1","AIC","AICc","N","QAIC"
                  ,"QAICc","dQAICc","e(-0.5*dQAICc)","QAICc Wgts","Global chat")
          cnt<-0
          for(x in list(...)){  
                cnt<-cnt+1
-          outpt[cnt,1]<-x$statistics[1]
-          outpt[cnt,2]<-x$statistics[2]
-          outpt[cnt,3]<-x$statistics[3]
-          outpt[cnt,4]<-x$statistics[4]
-          outpt[cnt,5]<-x$statistics[5]
-          outpt[cnt,6]<-((-2*outpt[cnt,1])/chat)+2*(outpt[cnt,2]+1)
-          outpt[cnt,7]<-outpt[cnt,6]+(2*(outpt[cnt,2]+1)*(outpt[cnt,2]+2))/(outpt[cnt,5]-outpt[cnt,2])
+          outpt[cnt,1]<-x$statistics[1] #LL
+          outpt[cnt,2]<-x$statistics[2]+1#K +1 for chat
+          outpt[cnt,3]<-x$statistics[3]#AIC
+          outpt[cnt,4]<-x$statistics[4]#AICc
+          outpt[cnt,5]<-x$statistics[5]#N
+          outpt[cnt,6]<-round(-(2*(outpt[cnt,1])/chat)+2*outpt[cnt,2],5) #QAIC +1 for chat
+          outpt[cnt,7]<-round(outpt[cnt,6]+((2*outpt[cnt,2])*(outpt[cnt,2]+1))/(outpt[cnt,5]-outpt[cnt,2]-1),5)#QAICc +1 for chat
          }
-         outpt[,8]<-outpt[,7]-min(outpt[,7])
-         outpt[,9]<-exp(-0.5*outpt[,8])
-         outpt[,10]<-outpt[,9]/sum(outpt[,9])
-         outpt[,11]<-chat
+         outpt[,8]<-round(outpt[,7]-min(outpt[,7]),5) #DQAICc
+         outpt[,9]<-round(exp(-0.5*outpt[,8]),5) #exp(-0.5*dQAIC)
+         outpt[,10]<-round(outpt[,9]/sum(outpt[,9]),5)#QAICCwgts
+         outpt[,11]<-chat #chat
 
   #################Generate Adjusted SE          
        for(i in 1:n){
@@ -115,7 +114,7 @@ tag_model_avg<-function(...,global=NULL){
 	ans$model_averaged_M<-M
 	ans$model_averaged_Z<-Z
 	ans$model_averaged_S<-S
-     if(unique(check)=="cr") ans$model_averaged_FA<-FA
-          return(ans)  
+  if(unique(check)=="cr") ans$model_averaged_FA<-FA
+  return(ans)  
 } 
 

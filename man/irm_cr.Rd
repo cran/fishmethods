@@ -11,7 +11,7 @@ irm_cr(relyrs = NULL, recapyrs = NULL, N = NULL, recapharv = NULL,
 recaprel = NULL, hlambda = NULL, rlambda = NULL, hphi = NULL, 
 rphi = NULL, hmrate = NULL, Fyr = NULL, FAyr = NULL, Myr = NULL,
 initial = c(0.1,0.05,0.1), lower = c(0.0001,0.0001,0.0001), 
-upper=c(5,5,5),maxiter=10000)
+upper=c(5,5,5),maxiter=500)
 }
 \arguments{
   \item{relyrs}{vector containing the start and end year of the entire release period (e.g., c(1992, 2006)).}
