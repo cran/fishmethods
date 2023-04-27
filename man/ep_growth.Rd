@@ -36,7 +36,12 @@ tmb.control=list(maxit=5000,trace=FALSE),plot=TRUE)
 Perrault, A. M. J., N. Zhang and Noel G. Cadigan. 2020. Estimation of growth parameters based on 
 length-stratified age samples. Canadian Journal of Fisheries and Aquatic Sciences 77: 439-450. 
 }
-\author{Andrea Perrault, Marine Institute of Memorial University of Newfoundland \email{andrea.perrault@mi.mun.ca}}
+\author{Andrea Perrault,
+Marine Institute of Memorial University of Newfoundland
+
+ \email{andrea.perrault@mi.mun.ca}
+ 
+}
 \examples{
  \dontrun{
 	data(ep.data)

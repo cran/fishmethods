@@ -3,14 +3,19 @@
 #define TMB_LIB_INIT R_init_fishmethods_TMBExports
 #include <TMB.hpp>
 #include "EP_likelihood.hpp"
+#include "grow_sel.hpp"
 
 template<class Type>
 Type objective_function<Type>::operator() () {
   DATA_STRING(model);
   if(model == "EP_likelihood") {
     return EP_likelihood(this);
+  } else if(model == "grow_sel") {
+    return grow_sel(this);
   } else {
     Rf_error("Unknown model.");
   }
   return 0;
 }
+
+

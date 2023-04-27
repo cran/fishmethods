@@ -1,5 +1,5 @@
-83125fc1fc2ffd695dc98cedc079b066 *DESCRIPTION
-02ab7b7a79ada1a84c71f959f849498a *NAMESPACE
+d5ae8d86607c9f121a3c6ac447d57251 *DESCRIPTION
+b67bc1bf9b696296b2385f9271186f53 *NAMESPACE
 33ad0041f267b36aa2940ec13e5390cd *R/M.empirical.R
 3bbaa7c2bc994d69a89ab3f752d66f25 *R/agesurv.R
 36df7a1fa97b02ab234493a21ea84acb *R/agesurvcl.R
@@ -22,6 +22,7 @@ d6114a6354b5772dfe12d23e198116a3 *R/clus.lf.R
 734aaf5783cba8e29903cdab969e1ec2 *R/clus.t.test.R
 63860a7c65f684de7c1744bf3d5df710 *R/clus.vb.fit.R
 23101d7b9247992ae1e12f42e270048d *R/combinevar.R
+b8f34e6c2cff4d9b06a8c4e26c171f96 *R/compare.lrt.plus.R
 1e55f0323e6e4153e3fa4781b9d37936 *R/compare2.R
 169ef7bbf8fc6874eeca6d57cd0bcba5 *R/convmort.R
 576450444221c2ee7e2d732cd6b0bf8c *R/cpuekapp.R
@@ -42,7 +43,9 @@ ce71138ae61e09e3a9a609ebc63fd079 *R/grotagplus.R
 dc2775cf4130f13ce286e147c256b812 *R/growth.R
 31b275610b1556ea3ecd0a36bcc8855e *R/growthResid.R
 18a29c9a651dd0dbe50339f2cef283ae *R/growthTraject.R
+ca1161333da64f2962f6fd1bd60a3c64 *R/growth_sel.R
 2af8e6a4ff7a89cb8dff7d1121547b06 *R/growthlrt.R
+0e171f8ec1fbc02a2b1c97291048847b *R/growthlrt.plus.R
 5a2de048afd8a67c69a2d69204ab4f83 *R/growthmultifit.R
 f6635d88077640df4ba2a325008a84c9 *R/growtrans.R
 5123ef5a36985a17e3019b7d32c10f1a *R/irm_cr.R
@@ -69,6 +72,7 @@ c33aba264ade8c6d0849f97d2c1f2bea *R/sr.R
 f91a7e6eaf2218bfb930407e5cfdd021 *R/vbfr.R
 7a2dad70acb1367c7028d112f5067dcd *R/ypr.R
 948795bbe7fb960470f1040162498a3d *R/zt.R
+80ee6e8edf56e00a5f205abe2e394023 *data/AtkaMack.rda
 e2f2f46700c4cd0db01e6bdae7bc04de *data/Gerking.rda
 129b3506efcc3cbd5d500c2d3fc2832c *data/Hightower.rda
 65a1d22eda873f886f6bcf28f756ac71 *data/Hoenig.rda
@@ -99,12 +103,14 @@ fefea44414cf0bc787758c26af15ab88 *data/rig.rda
 dfb0ad37f0e2e14df2c5ee41254552fc *data/rockbass.rda
 07374e81d906dd0eff4036a6413c7427 *data/sblen.rda
 e63322bf7046547279df5105d14a5833 *data/sbotos.rda
+15c49198315ad232ff950d05885e473e *data/simulus.rda
 80a78d8effba45eaadebfe2bd52dd4ff *data/sole.rda
 c6151406c2f9eba2296ba885fff181f2 *data/striper.rda
 3726ad3adc92b5e4ff67a844c2c0054e *data/tanaka.rda
 c412400627b0acb9cf19a9433d881927 *data/trout.rda
 2d0610cb30f3712c939813e6e421ce78 *data/wolffish.rda
 7989003de8a3f747722bc9fb27147e8b *data/yellowtail.rda
+b90c8ebf42d219214b47b4cf117b34ad *man/AtkaMack.Rd
 86c845e019e7e90da2b4042ada2f9aca *man/Gerking.Rd
 fa35577286f1cac3a501d85cee3642bc *man/Hightower.Rd
 6f246c60c83b4c4d1b6039346980e089 *man/Hoenig.Rd
@@ -141,6 +147,7 @@ a1790f75ef03f4cac5b351b0723b83e9 *man/clus.rho.g.Rd
 d9215cb04579fa7dcef589dfec6c46d6 *man/codcluslen.Rd
 8d91a1f7754c843a58d654c83bb1ecd7 *man/codstrcluslen.Rd
 ec772a753a462ba8539ce2d9250bcc40 *man/combinevar.Rd
+a5a8a58965515fe25e24c5d28a2bb598 *man/compare.lrt.plus.Rd
 d365946f0312d05e8bea3ec50510752e *man/compare2.Rd
 c43f2a118cc6c4d0da46b7dd9a0b2047 *man/convmort.Rd
 1cef0e48feaa5ed758ffad0f1b44ed36 *man/counts.Rd
@@ -152,7 +159,7 @@ e579ae9a192468091c12284af80ae00d *man/dbsra.Rd
 d21f14613d2144a0ef471cae7de2c554 *man/deplet.Rd
 5a5b0bd3d6667b7fa6e60c28e4f0d6d1 *man/dlproj.Rd
 29c62c1e9b608bcc9c13b7e6cf3925da *man/ep.data.Rd
-4802f7649b586c1af7348841adcd111a *man/ep_growth.Rd
+027508e44d31986ceacb98b615432957 *man/ep_growth.Rd
 65a816b3433b152076c8614e3fb59e33 *man/epr.Rd
 3f29d182b13ba2651d755f578286e4f6 *man/fm_checkdesign.Rd
 c79e5ce55b65704b2b95c5893383cd32 *man/fm_model_avg.Rd
@@ -166,7 +173,9 @@ aacb8bbbf0237829ecb3e258e9542dd7 *man/growhamp.Rd
 81b818ef8f790f9296904d20f2cc4e90 *man/growth.Rd
 1bd29e8ff880da3690d511991fce83ff *man/growthResid.Rd
 08bd702493b773883fb59ca9aa0bdfb0 *man/growthTraject.Rd
+a322c5db521b1e7b6f0bf7d0d1131d17 *man/growth_sel.Rd
 09afbb222d6693823d57cecf5f3d3d9f *man/growthlrt.Rd
+662005c1901c4b75165ab96afac65f35 *man/growthlrt.plus.Rd
 cb66638515bfd3c2d66f185d1b284469 *man/growthmultifit.Rd
 ab98b0f1e7cbd8f31d4a88c22a87a47f *man/growtrans.Rd
 009b2c139eefc33b5525874f546d4db6 *man/haddock.Rd
@@ -196,6 +205,7 @@ d55a825c1be4a73bbe03dae20d03ce50 *man/sblen.Rd
 f8fabfb22b6be1a9043f4af317735258 *man/sbotos.Rd
 bd86056b8b134c22e3779afb1427a673 *man/sbpr.Rd
 9fd08b4bf54b25af32bf34400b7d43fe *man/schnabel.Rd
+9ca08a1b423659c88b3aed0c1095f834 *man/simulus.rd
 33e01f163a3cb30d0fb334113ba1e65f *man/slca.Rd
 51df75d8d3420bb8d8df90d238ff4577 *man/sole.Rd
 c958d67786d654549213234a970d7396 *man/sr.Rd
@@ -214,5 +224,6 @@ e7e038e7a503a99440d1da2dca19c5ca *src/Makevars
 b93b97d391a57793518a9abaa2bbab8d *src/Makevars.win
 7c1b1fadfe3627aba30240538af4432b *src/TMB/EP_likelihood.hpp
 17231fcbfbbc8365f5bb66b1417768c0 *src/TMB/compile.R
-fd6c3fa34a83e2fbc5b33d3452a5d027 *src/TMB/fishmethods_TMBExports.cpp
+5fb80ca588f8d3c7be774e9b6415e73c *src/TMB/fishmethods_TMBExports.cpp
+0393b25c68ba8ee9b700f633bfb3d71f *src/TMB/grow_sel.hpp
 0753bc7be28a329f8668f5e859041f94 *src/init_dummy_file.cpp

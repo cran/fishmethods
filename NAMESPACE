@@ -17,7 +17,7 @@ importFrom("stats", "acf", "na.omit","aggregate", "anova", "aov", "arima",
              "pt", "qbinom", "qhyper", "qnorm", "qpois", "qt",
              "quantile", "rbinom", "residuals", "rexp", "rlnorm",
              "rmultinom", "rnorm", "runif", "sd", "ts", "var", "glm", 
-	     "model.matrix", "AIC", "nlm", "lowess","uniroot","vcov","nlminb")
+	     "model.matrix", "AIC", "nlm", "lowess","uniroot","vcov","nlminb","as.formula","setNames","terms")
 importFrom("utils", "read.csv", "stack", "write.table")
 S3method(print,grotagplus)
 S3method(plot,grotagplus)
