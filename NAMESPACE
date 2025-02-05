@@ -6,8 +6,9 @@ import(data.table)
 importFrom("TMB","MakeADFun","sdreport")
 importFrom("methods","is")
 importFrom("lme4","glmer","glmerControl")
+
 importFrom("grDevices", "dev.off", "rgb", "tiff","rainbow")
-importFrom("graphics", "abline", "arrows", "axis", "barplot", "box",
+importFrom("graphics", "abline", "arrows", "axis", "barplot", "box","persp",
              "curve", "hist", "lines", "matplot", "par", "plot", "rect",
              "points", "text", "legend", "mtext")
 importFrom("stats", "acf", "na.omit","aggregate", "anova", "aov", "arima",

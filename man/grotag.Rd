@@ -1,8 +1,8 @@
 \name{grotag}
 \alias{grotag}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Maximum likelihood estimation of growth and growth variability from tagging data - Francis (1988)}
+Maximum likelihood estimation of growth and growth variability from tagging data - Francis (1988)
+}
 \description{
 This function estimates parameters of Francis (1988)'s growth model
 using tagging data. The data are fitted using a constrained maximum
@@ -63,9 +63,10 @@ from tagging data. New Zealand Journal of Marine and Freshwater Research, 22, p.
 }
 
 \author{
+Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}
 Marco Kienzle \email{Marco.Kienzle@gmail.com}
+}
 
-Gary A. Nelson, Massachusetts Division of Marine Fisheries \email{gary.nelson@mass.gov}}
 \seealso{\code{\link{grotagplus}}}
 \examples{
 data(bonito)

@@ -1,27 +1,35 @@
-ypr<-function(age=NULL,wgt=NULL,partial=NULL,M=NULL,plus=FALSE,oldest=NULL,maxF=2,incrF=0.001,graph=TRUE){										          
+
+ypr<-function(age=NULL,wgt=NULL,partial=NULL,M=NULL,plus=FALSE,oldest=NULL,maxF=2,
+              incrF=0.001,options=c(1),Fsol=NULL,graph=TRUE){	
+  #8/21/2023 add options argument and procedures 
 	if(is.null(age)) 
          stop ("age vectoris missing") 
-  	if(is.null(age)) 
+  if(is.null(age)) 
          stop ("wgt vector is missing") 
-     	if(is.null(partial)) 
+  if(is.null(partial)) 
          stop ("partial recruitment vector is missing")
-  	if(is.null(M)) 
+  if(is.null(M)) 
          stop ("M value or vector is missing")
-      if(plus==TRUE & is.null(oldest)) stop("oldest must be specified for plus group calculation.")    
-      if(any(length(age)!=c(length(age),length(wgt),length(partial))))
+  if(plus==TRUE & is.null(oldest)) stop("oldest must be specified for plus group calculation.")    
+  if(any(length(age)!=c(length(age),length(wgt),length(partial))))
          stop("Length of vectors unequal")
-      if(length(M)==1) M<-rep(M,length(age))
-        data<-as.data.frame(cbind(age,wgt,partial,M))
+  if(length(M)==1) M<-rep(M,length(age))
+  if(length(which(!options %in% c(1,2)))>0) stop("invalid option number") 
+  
+  data<-as.data.frame(cbind(age,wgt,partial,M))
 	YPR<-as.data.frame(cbind(rep(NA,ceiling(maxF/incrF)+1),rep(NA,ceiling(maxF/incrF)+1)))
 	names(YPR)<-c("F","YPR")
-        if(plus==TRUE){
-                 len<-oldest-min(data$age)+1
-                 if(oldest>max(data$age)){
-                 pdata<-data[rep(length(data$age),times=oldest-data$age[length(data$age)]), ] 
-                 pdata$age<-seq(max(data$age)+1,oldest,1)
-                 data<-rbind(data,pdata)}
-           }
-        if(plus==FALSE) len<-max(data$age)-min(data$age)+1
+  if(plus==TRUE){
+       len<-oldest-min(data$age)+1
+       if(oldest>max(data$age)){
+          pdata<-data[rep(length(data$age),times=oldest-data$age[length(data$age)]), ] 
+          pdata$age<-seq(max(data$age)+1,oldest,1)
+          data<-rbind(data,pdata)
+        }
+    }
+  if(plus==FALSE) len<-max(data$age)-min(data$age)+1
+	
+	if(any(options==1)){
 	  F<-0.0					      
 	  for(i in 1:length(YPR$F)){
             data$S<-exp(-data$partial*F-data$M) 
@@ -36,7 +44,7 @@ ypr<-function(age=NULL,wgt=NULL,partial=NULL,M=NULL,plus=FALSE,oldest=NULL,maxF=
     		YPR$F[i]<-F
     		F<-F+incrF
   	 }
-     	 Ymax<-max(YPR$YPR)
+   Ymax<-max(YPR$YPR)
 	 Fmax<-YPR$F[which(YPR$YPR==max(YPR$YPR))]
 	 s10<-((YPR$YPR[2]-YPR$YPR[1])/(YPR$F[2]-YPR$F[1]))*0.10
 
@@ -48,7 +56,7 @@ ypr<-function(age=NULL,wgt=NULL,partial=NULL,M=NULL,plus=FALSE,oldest=NULL,maxF=
        		data$s1p[y]<-data$s1[y-1]
       }
     	data$s1p<-cumprod(data$s1p)
-   	d1<-sum(((data$partial*F10)/(data$partial*F10+data$M))*
+    	d1<-sum(((data$partial*F10)/(data$partial*F10+data$M))*
              (1-exp(-data$partial*F10-data$M))*data$s1p*data$wgt)
     	data$s2<-exp(-data$partial*(F10+0.0001)-data$M)
     	data$s2p<-1
@@ -58,22 +66,50 @@ ypr<-function(age=NULL,wgt=NULL,partial=NULL,M=NULL,plus=FALSE,oldest=NULL,maxF=
     	data$s2p<-cumprod(data$s2p)
     	d2<-sum(((data$partial*(F10+0.0001))/(data$partial*(F10+0.0001)+data$M))*
             	(1-exp(-data$partial*(F10+0.0001)-data$M))*data$s2p*data$wgt)
-   	slope<-(d2-d1)/((F10+0.0001)-F10)
-   	if(abs(s10-slope)<=fuzz) ok<-1
-      if(ok==0){
+   	  slope<-(d2-d1)/((F10+0.0001)-F10)
+   	  if(abs(s10-slope)<=fuzz) ok<-1
+       if(ok==0){
         if(slope>s10) F10<-F10+df
     	  if(slope<s10) F10<-F10-df
     	  df<-df/2 
     	}
     	Y10<-d1  
-  }
-         ans<-NULL  
-         ans<-matrix(NA,2L,2L)
-         ans<-rbind(cbind(F10,Y10),cbind(Fmax,Ymax))   
-         dimnames(ans)<-list(cbind("F0.10","Fmax"),c("F","Yield_Per_Recruit"))  
-     outpt<-list(ans,YPR);names(outpt)<-c("Reference_Points","F_vs_YPR")
-    if(graph==TRUE) plot(YPR[,2]~YPR[,1],ylab="Yield-Per-Recruit",xlab="F",type="l")
-    return(outpt)
+	 }
+}#options==1
+	
+#Find YPR for single F
+if(any(options==2)){
+    if(is.null(Fsol)) stop ("Fsol value is missing for option 2.")
+      data$S<-exp(-data$partial*Fsol-data$M) 
+      data$psb[1]<-1
+      for(y in 2:len){
+        data$psb[y]<-data$S[y-1]
+      }
+      data$psb<-cumprod(data$psb)
+      data$YPR<-((data$partial*Fsol)/(data$partial*Fsol+data$M))*
+        (1-exp(-data$partial*Fsol-data$M))*data$psb*data$wgt
+    YPR2<-data.frame(F=Fsol,YPR=sum(data$YPR))
+} 
+	ans<-NULL
+	labels<-NULL
+if(any(options==1)){
+  tempo<-data.frame(F=c(F10,Fmax),Yield=c(Y10,Ymax))
+  rownames(tempo)<-c("F0.10","FMax")
+  ans<-c(ans,list(tempo))
+  labels<-c(labels,"Reference_Points")
+}	
+	if(any(options==2)){
+	  ans<-c(ans,list(YPR2)) 
+	  labels<-c(labels,"YPR_at_Fsol")
+	}
+
+	if(any(options==1)){
+	  ans<-c(ans,list(YPR))
+	  labels<-c(labels,"F_vs_YPR")
+	}
+	names(ans)<-labels  
+    if(any(options==1) & graph==TRUE) {
+      plot(YPR[,2]~YPR[,1],ylab="Yield-Per-Recruit",xlab="F",type="l")
+    }
+    return(ans)
 }
-
-

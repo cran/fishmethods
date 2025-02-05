@@ -4,6 +4,7 @@
 #include <TMB.hpp>
 #include "EP_likelihood.hpp"
 #include "grow_sel.hpp"
+#include "grow_LEP.hpp"
 
 template<class Type>
 Type objective_function<Type>::operator() () {
@@ -12,6 +13,8 @@ Type objective_function<Type>::operator() () {
     return EP_likelihood(this);
   } else if(model == "grow_sel") {
     return grow_sel(this);
+  } else if(model == "grow_LEP") {
+    return grow_LEP(this);
   } else {
     Rf_error("Unknown model.");
   }

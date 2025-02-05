@@ -1,9 +1,8 @@
 Package: fishmethods
-Version: 1.12-1
-Date: 2023-4-25
 Title: Fishery Science Methods and Models
-Author: Gary A. Nelson <gary.nelson@mass.gov>
-Maintainer: Gary A. Nelson <gary.nelson@mass.gov>
+Version: 1.13-1
+Date: 2025-2-5
+Authors@R: person(given="Gary A.",family="Nelson",email = "gary.nelson@mass.gov",role = c("aut", "cre"))
 Depends: R (>= 3.5.0)
 LinkingTo: TMB
 Imports: methods, data.table, MASS, boot, lme4, bootstrap, numDeriv,
@@ -13,6 +12,8 @@ License: GPL (>= 2)
 LazyData: true
 RoxygenNote: 7.2.0
 NeedsCompilation: yes
-Packaged: 2023-04-26 11:58:16 UTC; Gary
+Packaged: 2025-02-05 13:11:46 UTC; GNelson
+Author: Gary A. Nelson [aut, cre]
+Maintainer: Gary A. Nelson <gary.nelson@mass.gov>
 Repository: CRAN
-Date/Publication: 2023-04-27 08:33:01 UTC
+Date/Publication: 2025-02-05 13:50:02 UTC

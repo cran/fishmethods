@@ -62,8 +62,8 @@ known.  This model assumes that tagged fish are fully-recruited to the fishery a
 the year.  Similar to Hoenig et al. (1998), observed recovery matrices from the harvest and catch/release fish with 
 removed tags are compared to expected recovery matrices to estimate model parameters. Asymmetric recovery matrices 
 are allowed (recovery years > release years). All summary statistics follow Burnham and Anderson (2002).  Model 
-degrees of freedom are calculated as the number of cells from the harvested and released recapture matrices 
-and not-seen vector minus the number of estimated parameters. Total chi-square is calculated by summing cell 
+degrees of freedom are calculated as the number of non-zero cells in the harvested and released recapture matrices 
+minus the number of estimated parameters. Total chi-square is calculated by summing cell 
 chi-square values for all cells of the harvest, released, and not seen matrices. C-hat, a measure 
 of overdispersion, is estimated by dividing the total chi-square value by the model degrees of freedom. Pooling 
 of cells to achieve an expected cell value of 1 is performed and pooled chi-square and c-hat metrics are 

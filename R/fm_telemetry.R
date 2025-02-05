@@ -138,6 +138,7 @@ parms<-c(Fp,Mp,pp)
 ################ How many Release Cohorts? ######################
 cohorts<-0
 Rs<-0
+locate<-NULL
 if(any(substr(datar,1,1)%in% c("1"))){
   cohorts<-cohorts+1
   Rs<-sum(substr(datar,1,1)=="1")
@@ -208,10 +209,11 @@ datar2<-datar
        }
      }
     
+   if(!is.null(remRs)){
    setR<-as.data.frame(table(remRs))
    setR[,1]<-as.numeric(as.character(setR[,1]))
    live[c(setR[,1]),1]<-live[c(setR[,1]),1]-setR[,2]
-   
+   }
    ns<-colSums(live[,1:ncol(live)])
     for(i in 2:nrow(live)){
     live[i,1]<-live[i,1]+ns[i]
@@ -219,6 +221,7 @@ datar2<-datar
     }
    never_seen<-live[,1]-rowSums(live[,2:ncol(live)])-rowSums(dead[,2:ncol(dead)])
    marray<-list(live=live,dead=dead,never_seen=never_seen)
+   
   ######################### Create occasions likelihood cells
   liveschedule<-data.frame(occ=1:c(nocc-1),firstcell=2:nocc,lastcell=nocc)
   if(!is.null(whichlivecells[[1]])){

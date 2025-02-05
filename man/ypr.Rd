@@ -2,12 +2,12 @@
 \alias{ypr}
 \title{Yield-Per-Recruit Analysis}
 \description{
- Yield-per-recruit (YPR) analysis is conducted following the modified Thompson-Bell algorithm.  Reference points
-Fmax and F0.1 are calculated.
+ Yield-per-recruit (YPR) analysis is conducted following the modified Thompson-Bell algorithm. 
 }
 \usage{
 ypr(age = NULL, wgt = NULL, partial = NULL, M = NULL,
- plus = FALSE, oldest = NULL, maxF = 2, incrF = 0.001, graph = TRUE)
+ plus = FALSE, oldest = NULL, maxF = 2, incrF = 0.001, options = c(1), Fsol = NULL,
+ graph = TRUE)
 }
 \arguments{
   \item{age}{the vector of cohort ages, e.g. c(1,2,3,4,5). If the last age is a plus group, 
@@ -21,7 +21,10 @@ must correspond to the length of the age vector. }
   \item{oldest}{if plus=TRUE, a numeric value indicating the oldest age in the plus group. }
   \item{maxF}{the maximum value of F range over which YPR will be calculated. YPR is calculated for F = 0 to maxF.}
   \item{incrF}{ F increment for YPR calculation.}
-  \item{graph}{ logical indicating whether YPR versus F should be plotted. Default=TRUE.}
+  \item{options}{1 = generate yield-per-recruit values for F ranging from 0 to maxF by incrF.
+     2 =find a single YPR value for a given value of F (Fsol).Default = c(1).}
+  \item{Fsol}{F for which to obtain a corresponding YPR. Default = NULL.}
+  \item{graph}{logical indicating whether YPR versus F should be plotted. Default=TRUE.}
 }
 \details{
   Yield-per-recruit analysis is conducted following the modified Thompson-Bell algorithm.  Reference points
@@ -29,8 +32,10 @@ Fmax and F0.1 are calculated. If the last age is a plus-group, the cohort is exp
 \code{oldest} age and the \code{wgt}, \code{partial}, and \code{M} values for the plus age are applied to the expanded cohort ages.
 }
 \value{
-    \item{Reference_Points}{F and yield-per-recruit values for Fmax and F0.1}
-  \item{F_vs_YPR }{Yield-per-recruit values for each F increment}
+  \item{Reference_Points}{If options = 1, F and yield-per-recruit values for Fmax and F0.1}
+  \item{YPR_at_Fsol}{If options = 2, YPR at corresponding \code{Fsol}.}
+  \item{F_vs_YPR}{For options = 1, yield-per-recruit values for each F increment.}
+
 }
 \references{Gabriel, W. L., M. P. Sissenwine, and W. J. Overholtz. 1989. Analysis of spawning stock biomass per recruit:
 an example for Georges Bank haddock. North American Journal of Fisheries Management 9: 383-391.}
@@ -39,6 +44,6 @@ an example for Georges Bank haddock. North American Journal of Fisheries Managem
 \examples{
 data(haddock)
 ypr(age=haddock$age,wgt=haddock$ssbwgt,partial=haddock$partial,M=0.4,
-plus=TRUE,oldest=100,maxF=2,incrF=0.01)
+plus=TRUE,oldest=100,Fsol=0.2,maxF=2,incrF=0.01)
 }
 \keyword{misc}
